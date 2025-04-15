@@ -24,7 +24,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 		s1 = ft_calloc(1, 1);
 	if (!s1 || !s2)
 		return (NULL);
-	strj = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	strj = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 2);
 	if (!strj)
 		return (free(s1), NULL);
 	while (s1 && s1[i])
@@ -32,11 +32,13 @@ char	*ft_strjoin_free(char *s1, char *s2)
 		strj[i] = s1[i];
 		i++;
 	}
+	strj[i] = ' ';
+	i++;
 	while (s2 && s2[j])
 	{
 		strj[i + j] = s2[j];
 		j++;
 	}
-	strj[ft_strlen(s1) + ft_strlen(s2)] = 0;
+	strj[ft_strlen(s1) + ft_strlen(s2) + 1] = 0;
 	return (free(s1), strj);
 }

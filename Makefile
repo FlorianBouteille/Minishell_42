@@ -20,19 +20,23 @@ LIBFT_DIR = ./Libft
 PARSING_DIR= $(addprefix $(SRC_DIR), parsing/)
 LEXING_DIR=	$(addprefix $(SRC_DIR), lexing/)
 EXECUTION_DIR= $(addprefix $(SRC_DIR), execution/)
-MAIN_DIR= $(addprefix $(SRC_DIR), main/)	
+MEMORY_DIR= $(addprefix $(SRC_DIR), memory_utils/)
+DEBUG_DIR= $(addprefix $(SRC_DIR), debug/)
+MAIN_DIR = $(SRC_DIR)
 
-MAIN_SRC = main.c 
 PARSING_SRC = parsing.c
-LEXING_SRC = lexing.c
+LEXING_SRC = lexing.c word_utils.c
 EXECUTION_SRC = execute.c
-
+MEMORY_SRC = free.c
+DEBUG_SRC = print.c
+MAIN_SRC = main.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(PARSING_SRC:.c=.o)) \
 	  $(addprefix $(OBJ_DIR), $(LEXING_SRC:.c=.o)) \
 	  $(addprefix $(OBJ_DIR), $(EXECUTION_SRC:.c=.o)) \
+	  $(addprefix $(OBJ_DIR), $(MEMORY_SRC:.c=.o)) \
+	  $(addprefix $(OBJ_DIR), $(DEBUG_SRC:.c=.o)) \
 	  $(addprefix $(OBJ_DIR), $(MAIN_SRC:.c=.o)) \
-
 
 HEADERS =  -I includes/ -I $(LIBFT_DIR)/includes
 CC = cc -g
@@ -45,13 +49,18 @@ $(OBJ_DIR) :
 
 $(NAME) : $(OBJ)
 		make -C $(LIBFT_DIR) all
-		$(CC) $(CFLAGS) $(INC_H) $(OBJ) -L $(LIBFT_DIR) -lft -o $(NAME)
-
+		$(CC) $(CFLAGS) $(INC_H) $(OBJ) -L $(LIBFT_DIR) -lft -lreadline -o $(NAME)
 
 $(OBJ_DIR)%.o: $(MAIN_DIR)%.c | $(OBJ_DIR)
 		$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
+$(OBJ_DIR)%.o: $(DEBUG_DIR)%.c | $(OBJ_DIR)
+		$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
+
 $(OBJ_DIR)%.o: $(PARSING_DIR)%.c | $(OBJ_DIR)
+		$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
+
+$(OBJ_DIR)%.o: $(MEMORY_DIR)%.c | $(OBJ_DIR)
 		$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 $(OBJ_DIR)%.o: $(LEXING_DIR)%.c | $(OBJ_DIR)

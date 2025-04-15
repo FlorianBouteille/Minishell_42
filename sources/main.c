@@ -10,10 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "minishell.h"
+
+int	minishell(void)
+{
+	char	*line;
+	t_token	*tokens;
+	t_command	*command;
+
+	tokens = NULL;
+	while (1)
+	{
+		line = readline("ya quoi ? > ");
+		if (!line)
+			return (0);
+		tokens = lex_string(line);
+		print_tokens(tokens);
+		command = new_command(tokens);
+		print_command(command);
+		add_history(line);
+		free(line);
+		free_tokens(&tokens);
+	}
+	return (1);
+}
 
 int main(void)
 {
-	printf("Hello, World!\n");
+	minishell();
 	return(0);
 }
