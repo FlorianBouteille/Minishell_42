@@ -51,15 +51,10 @@ void	add_token(char *str, t_token **tokens)
 {
 	t_token *tmp;
 
-	printf("j'entre dans la fonctiion\n");
 	if (!(*tokens))
-	{
-		printf("tokens est NULL, je rentre dans le if\n");
 		*tokens = new_token(str);
-	}
 	else
 	{
-		printf("il y a deja des tokens, je rentre dans le else\n"); 
 		tmp = *tokens;
 		while (tmp && tmp->next)
 			tmp = tmp->next;
@@ -67,12 +62,12 @@ void	add_token(char *str, t_token **tokens)
 	}
 }
 
-
 t_token	*lex_string(char *str)
 {
 	t_token	*tokens;
 	int		i;
 
+	tokens = NULL;
 	i = 0;
 	while (str[i])
 	{
@@ -82,8 +77,6 @@ t_token	*lex_string(char *str)
 			add_token((str + i), &tokens);
 		i += get_word_len(str + i);
 	}
+	free(str);
 	return (tokens);
 }
-
-
-// return si que white spaces

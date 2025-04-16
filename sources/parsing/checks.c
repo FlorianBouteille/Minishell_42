@@ -25,18 +25,17 @@ static int	check_meta_caracters(char *str)
 	return (1);
 }
 
-int	check_tokens(t_token *tokens)
+void	check_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
 		if (!check_meta_caracters(tokens->value))
-			return (0);
+			lex_error("syntax error near <, > or | !\n", &tokens);
 		if (tokens->type != TOKEN_WORD && tokens->type != TOKEN_PIPE)
 		{
 			if (!(tokens->next) || tokens->next->type != TOKEN_WORD)
-				return (0);
+				lex_error("syntax error : file missing !\n", &tokens);
 		}
 		tokens = tokens->next;
 	}
-	return (1);
 }

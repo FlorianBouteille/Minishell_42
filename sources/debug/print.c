@@ -33,11 +33,24 @@ void	print_tokens(t_token *tokens)
 
 void	print_command(t_command *command)
 {
-	printf("j'essaye d'imprimer les commandes\n");
 	printf("infile = %s\n", command->infile);
 	printf("outfile = %s\n", command->outfile);
 	printf("limiter = %s\n", command->limiter);
 	if (command->out_append)
 		printf("Je dois append\n");	
 	printf("command and args = %s\n\n", command->value);
+}
+
+void	print_command_tab(t_command **tab)
+{
+	int	i;
+
+	i = 0;
+	printf("LES COMMMANDES :\n");
+	while (tab[i])
+	{
+		printf("\ncommande %i\n", i + 1);
+		print_command(tab[i]);
+		i++;
+	}
 }

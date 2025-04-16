@@ -43,3 +43,16 @@ void	free_command(t_command *command)
 		free(command->value);
 	free(command);
 }
+
+void	free_command_tab(t_command **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free_command(tab[i]);
+		i++;
+	}
+	free(tab);
+}

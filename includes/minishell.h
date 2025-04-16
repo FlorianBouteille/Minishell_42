@@ -49,26 +49,33 @@ typedef enum e_token_type
 
 //Lexing
 
-t_token	*lex_string(char *str);
-void	add_token(char *str, t_token **tokens);
-t_token	*new_token(char *str);
-int		get_word_len(char *str);
-char	*make_word(char *str);
-char	*add_spaces(char *str);
-int		is_special(char c);
+t_token		*lex_string(char *str);
+void		add_token(char *str, t_token **tokens);
+t_token		*new_token(char *str);
+int			get_word_len(char *str);
+char		*make_word(char *str);
+char		*add_spaces(char *str);
+int			is_special(char c);
 
 //Memory_utils
-void	free_command(t_command *command);
-void	free_tokens(t_token **tokens);
+void		free_command(t_command *command);
+void		free_command_tab(t_command **tab);
+void		free_tokens(t_token **tokens);
 
 // Parsing
 
 t_command	*new_command(t_token *tokens);
-int	check_tokens(t_token *tokens);
+t_command	**build_command_tab(t_token *tokens);
+void		check_tokens(t_token *tokens);
 
 //Debug
 
-void	print_tokens(t_token *token);
-void	print_command(t_command *command);
+void		print_tokens(t_token *token);
+void		print_command(t_command *command);
+void		print_command_tab(t_command **tab);
+
+//Error
+
+void		lex_error(char *str, t_token **tokens);
 
 #endif
