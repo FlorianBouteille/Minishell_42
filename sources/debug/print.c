@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:22:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/15 14:22:58 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:26:17 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_tokens(t_token *tokens)
 		printf("token number %i\n", i);
 		printf("value = %s\n", tokens->value);
 		printf("type = %i\n", tokens->type);
-		printf("____________\n");
+		printf("____________\n\n");
 		tokens = tokens->next;
 		i++;
 	}
@@ -39,5 +39,5 @@ void	print_command(t_command *command)
 	printf("limiter = %s\n", command->limiter);
 	if (command->out_append)
 		printf("Je dois append\n");	
-	printf("command and args = %s\n", command->value);
+	printf("command and args = %s\n\n", command->value);
 }

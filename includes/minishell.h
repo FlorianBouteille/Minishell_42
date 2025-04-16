@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/15 11:01:45 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/16 15:13:17 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,17 @@ void	add_token(char *str, t_token **tokens);
 t_token	*new_token(char *str);
 int		get_word_len(char *str);
 char	*make_word(char *str);
+char	*add_spaces(char *str);
+int		is_special(char c);
+
+//Memory_utils
+void	free_command(t_command *command);
 void	free_tokens(t_token **tokens);
 
 // Parsing
 
 t_command	*new_command(t_token *tokens);
+int	check_tokens(t_token *tokens);
 
 //Debug
 

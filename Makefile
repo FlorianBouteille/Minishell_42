@@ -6,7 +6,7 @@
 #    By: csolari <csolari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 10:48:16 by csolari           #+#    #+#              #
-#    Updated: 2025/04/15 11:05:34 by csolari          ###   ########.fr        #
+#    Updated: 2025/04/16 14:57:50 by csolari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ MEMORY_DIR= $(addprefix $(SRC_DIR), memory_utils/)
 DEBUG_DIR= $(addprefix $(SRC_DIR), debug/)
 MAIN_DIR = $(SRC_DIR)
 
-PARSING_SRC = parsing.c
-LEXING_SRC = lexing.c word_utils.c
+PARSING_SRC = parsing.c checks.c
+LEXING_SRC = lexing.c word_utils.c add_spaces.c
 EXECUTION_SRC = execute.c
 MEMORY_SRC = free.c
 DEBUG_SRC = print.c

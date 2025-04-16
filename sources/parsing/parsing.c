@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/15 16:17:38 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:28:07 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,34 +33,43 @@ t_command	*new_command(t_token *tokens)
 	init_command(&command);
 	while (tokens && tokens->type != TOKEN_PIPE)
 	{
-		if (tokens->type == TOKEN_REDIR_IN && tokens->next->type == TOKEN_WORD)
+		if (tokens->type == TOKEN_REDIR_IN && tokens->next && tokens->next->type == TOKEN_WORD )
 		{
 			command->infile = ft_strdup(tokens->next->value);
 			tokens = tokens->next;
 		}
-		else if (tokens->type == TOKEN_REDIR_OUT && tokens->next->type == TOKEN_WORD)
+		else if (tokens->type == TOKEN_REDIR_OUT && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
 			command->outfile = ft_strdup(tokens->next->value);
 			tokens = tokens->next;
 		}
-		else if (tokens->type == TOKEN_HEREDOC && tokens->next->type == TOKEN_WORD)
+		else if (tokens->type == TOKEN_HEREDOC  && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
 			command->infile = ft_strdup("heredoc");
 			command->limiter = ft_strdup(tokens->next->value);
 			tokens = tokens->next;
 		}
-		else if (tokens->type == TOKEN_APPEND && tokens->next->type == TOKEN_WORD)
+		else if (tokens->type == TOKEN_APPEND  && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
 			command->outfile = ft_strdup(tokens->next->value);
 			command->out_append = 1;
 			tokens = tokens->next;
 		}
-		else
+		else if (tokens->type == TOKEN_WORD)
 		{
 			cmd_string = ft_strjoin_free(cmd_string, tokens->value);
 		}
+		else
+			printf("ERROR PARSING\n");
 		tokens = tokens->next;
 	}
 	command->value = cmd_string;
 	return (command);
 }
+
+// int		count_pipe(t_token )
+
+
+
+
+

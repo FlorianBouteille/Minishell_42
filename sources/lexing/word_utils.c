@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:52:19 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/15 13:52:20 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:12:35 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	get_word_len(char *str)
 {
 	int	i;
-	int quote_type;
+	int	quote_type;
 
 	i = 0;
 	quote_type = 0;

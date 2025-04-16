@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexing.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:56:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/15 11:56:38 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:55:20 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_token	*new_token(char *str)
 {
 	t_token *token;
 
+	// token = NULL;
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
@@ -50,16 +51,22 @@ void	add_token(char *str, t_token **tokens)
 {
 	t_token *tmp;
 
-	if (!tokens || !(*tokens))
+	printf("j'entre dans la fonctiion\n");
+	if (!(*tokens))
+	{
+		printf("tokens est NULL, je rentre dans le if\n");
 		*tokens = new_token(str);
+	}
 	else
 	{
+		printf("il y a deja des tokens, je rentre dans le else\n"); 
 		tmp = *tokens;
-		while (tmp->next)
+		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_token(str);
 	}
 }
+
 
 t_token	*lex_string(char *str)
 {
@@ -77,3 +84,6 @@ t_token	*lex_string(char *str)
 	}
 	return (tokens);
 }
+
+
+// return si que white spaces

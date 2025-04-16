@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:58:59 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/15 13:59:00 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:47:10 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,20 @@ void	free_tokens(t_token **tokens)
 		free(*tokens);
 		*tokens = tmp;
 	}
+	*tokens = NULL;
+}
+
+void	free_command(t_command *command)
+{
+	if (!command)
+		return ;
+	if (command->infile)
+		free(command->infile);
+	if (command->outfile)
+		free(command->outfile);
+	if (command->limiter)
+		free(command->limiter);
+	if (command->value)
+		free(command->value);
+	free(command);
 }
