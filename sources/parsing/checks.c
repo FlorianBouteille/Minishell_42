@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:57:30 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/16 15:13:41 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/17 11:34:31 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,17 @@ static int	check_meta_caracters(char *str)
 
 void	check_tokens(t_token *tokens)
 {
+	t_token	*tmp;
+
+	tmp = tokens;
 	while (tokens)
 	{
 		if (!check_meta_caracters(tokens->value))
-			lex_error("syntax error near <, > or | !\n", &tokens);
+			lex_error("syntax error near <, > or | !\n", &tmp);
 		if (tokens->type != TOKEN_WORD && tokens->type != TOKEN_PIPE)
 		{
 			if (!(tokens->next) || tokens->next->type != TOKEN_WORD)
-				lex_error("syntax error : file missing !\n", &tokens);
+				lex_error("syntax error : file missing !\n", &tmp);
 		}
 		tokens = tokens->next;
 	}

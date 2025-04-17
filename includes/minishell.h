@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/16 15:13:17 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/17 15:13:10 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/wait.h>
 
 typedef struct	s_token
 {
@@ -29,6 +30,8 @@ typedef struct	s_token
 
 typedef struct s_command
 {
+	int		index;
+	int		number_commands;
 	int		out_append;
 	char	*infile;
 	char 	*outfile;
@@ -64,9 +67,13 @@ void		free_tokens(t_token **tokens);
 
 // Parsing
 
-t_command	*new_command(t_token *tokens);
+t_command	*new_command(t_token *tokens, int index, int number_commands);
 t_command	**build_command_tab(t_token *tokens);
 void		check_tokens(t_token *tokens);
+
+//Execution
+
+void		exec_commands(t_command **tab, char *envp[]);
 
 //Debug
 

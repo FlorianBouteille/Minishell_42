@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:53:11 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/16 16:53:13 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:11:50 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	count_commands(t_token *tokens)
 			count++;
 		tokens = tokens->next;
 	}
+	printf("count == %i\n", count);
 	return (count);
 }
 
@@ -41,7 +42,7 @@ t_command	**build_command_tab(t_token *tokens)
 	tmp = tokens;
 	while (i < number_of_commands)
 	{
-		tab[i] = new_command(tmp);
+		tab[i] = new_command(tmp, i, number_of_commands);
 		while (tmp && tmp->next && tmp->type != TOKEN_PIPE)
 			tmp = tmp->next;
 		if (tmp && tmp->next && tmp->type == TOKEN_PIPE)
