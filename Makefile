@@ -27,7 +27,7 @@ MAIN_DIR = $(SRC_DIR)
 
 PARSING_SRC = parsing.c checks.c build_commands.c
 LEXING_SRC = lexing.c word_utils.c add_spaces.c
-EXECUTION_SRC = execute.c
+EXECUTION_SRC = execute.c path.c
 MEMORY_SRC = free.c
 ERROR_SRC = error.c
 DEBUG_SRC = print.c

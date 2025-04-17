@@ -65,16 +65,7 @@ void	redirect_input(t_command *command, int pipe_fd[2])
 			perror("dup error");
 		close(fd_in);
 	}
-	else if (command->index != 0)
-	{
-		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
-		{
-			printf("ici0\n");
-			perror("dup error");
-		}
-	}
 	close(pipe_fd[0]);
-	
 }
 
 void	redirect_output(t_command *command, int pipe_fd[2])
@@ -86,19 +77,13 @@ void	redirect_output(t_command *command, int pipe_fd[2])
 	{
 		fd_out = open_file(command, 1);
 		if (dup2(fd_out, STDOUT_FILENO) == -1)
-		{
-			printf("ici1\n");
 			perror("dup error");
-		}
 		close(fd_out);
 	}
 	else if (command->index != command->number_commands - 1)
 	{
 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-		{
-			printf("ici2\n");
 			perror("dup error");
-		}
 	}
 	close(pipe_fd[1]);
 }
@@ -107,6 +92,7 @@ void	exec_child(t_command *command, char **envp)
 {
 	int		pipe_fd[2];
 	int		pid;
+	char	*path;
 
 	pipe(pipe_fd);
 	pid = fork();
@@ -120,7 +106,8 @@ void	exec_child(t_command *command, char **envp)
 		redirect_input(command, pipe_fd);
 		redirect_output(command, pipe_fd);
 		char **cmd = ft_split(command->value, ' ');
-		execve(cmd[0], cmd, envp);
+		path = get_path(cmd[0], envp);
+		execve(path, cmd, envp);
 	}
 	else
 	{

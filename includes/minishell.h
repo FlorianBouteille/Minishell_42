@@ -74,6 +74,8 @@ void		check_tokens(t_token *tokens);
 //Execution
 
 void		exec_commands(t_command **tab, char *envp[]);
+char		*get_path(char *str, char *envp[]);
+
 
 //Debug
 

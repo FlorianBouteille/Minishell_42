@@ -58,7 +58,7 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 		}
 		else if (tokens->type == TOKEN_WORD)
 		{
-			cmd_string = ft_strjoin_free(cmd_string, tokens->value);
+			cmd_string = ft_strjoin_free_sep(cmd_string, tokens->value, ' ');
 		}
 		else
 			printf("ERROR PARSING\n");

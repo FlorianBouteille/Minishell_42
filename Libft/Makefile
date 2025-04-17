@@ -39,7 +39,7 @@ MEMORY_SRC = ft_memchr.c ft_memcmp.c ft_memset.c ft_bzero.c ft_memcpy.c ft_memmo
 
 STRINGS_SRC = ft_strlen.c  ft_strlcpy.c ft_strlcat.c  ft_strchr.c ft_strrchr.c ft_strncmp.c ft_strmapi.c \
 				ft_strnstr.c   ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_striteri.c \
-				ft_strjoin_free.c\
+				ft_strjoin_free.c ft_strjoin_free_sep.c \
 
 OBJ = $(addprefix $(OBJ_DIR), $(CHECKS_SRC:.c=.o)) \
 	  $(addprefix $(OBJ_DIR), $(CONVERSION_SRC:.c=.o)) \
