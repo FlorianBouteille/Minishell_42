@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/17 14:22:20 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 15:43:42 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	minishell(char **envp)
 			return (0);
 		add_history(line);
 		line = add_spaces(line);
-		printf("line with spaces = %s\n", line);
 		tokens = lex_string(line);
+	//	print_tokens(tokens);
 		check_tokens(tokens);
 		tab = build_command_tab(tokens);
+	//	print_command_tab(tab);
 		exec_commands(tab, envp);
 		free_tokens(&tokens);
 		free_command_tab(tab);

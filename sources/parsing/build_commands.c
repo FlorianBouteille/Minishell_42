@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:53:11 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/17 15:11:50 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 12:06:26 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	count_commands(t_token *tokens)
 			count++;
 		tokens = tokens->next;
 	}
-	printf("count == %i\n", count);
 	return (count);
 }
 

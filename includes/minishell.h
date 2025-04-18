@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/17 15:13:10 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 16:52:34 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_command
 	char	*infile;
 	char 	*outfile;
 	char	*limiter;
+	int		fd_heredoc;
 	char	*value;
 }	t_command;
 
@@ -64,6 +65,7 @@ int			is_special(char c);
 void		free_command(t_command *command);
 void		free_command_tab(t_command **tab);
 void		free_tokens(t_token **tokens);
+void		ft_free_tab(char **tab);
 
 // Parsing
 
@@ -75,6 +77,9 @@ void		check_tokens(t_token *tokens);
 
 void		exec_commands(t_command **tab, char *envp[]);
 char		*get_path(char *str, char *envp[]);
+int			get_heredocs( t_command **tab);
+void		redirect_input(t_command *command, int pipe_fd[2]);
+void		redirect_output(t_command *command, int pipe_fd[2]);
 
 
 //Debug

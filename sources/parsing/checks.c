@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:57:30 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/17 11:34:31 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 12:30:49 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ void	check_tokens(t_token *tokens)
 	t_token	*tmp;
 
 	tmp = tokens;
+	if (tokens->type == TOKEN_PIPE)
+	{
+		lex_error("syntax error near |\n", &tmp);			
+		return ;
+	}
 	while (tokens)
 	{
 		if (!check_meta_caracters(tokens->value))
@@ -39,6 +44,12 @@ void	check_tokens(t_token *tokens)
 			if (!(tokens->next) || tokens->next->type != TOKEN_WORD)
 				lex_error("syntax error : file missing !\n", &tmp);
 		}
+		if (tokens->type == TOKEN_PIPE)
+		{
+			if (!(tokens->next) || tokens->next->type == TOKEN_PIPE)
+				lex_error("syntax error : near |\n", &tmp);
+		} 
 		tokens = tokens->next;
 	}
 }
+

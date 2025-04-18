@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/17 16:42:06 by fbouteil         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:33:32 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char	*get_path(char *str, char *envp[])
 {
 	char	*path;
 
+	if (!str)
+		return (NULL);
 	path = NULL;
 	/*if (is_builtin(str))
 		exec_builtin(str);*/

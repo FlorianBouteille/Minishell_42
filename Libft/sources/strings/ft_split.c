@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 10:27:44 by csolari           #+#    #+#             */
-/*   Updated: 2025/03/21 14:56:24 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 12:10:08 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static size_t	ft_end_word(const char *s, char sep, size_t index)
 	return (i);
 }
 
-static void	ft_free_tab(char **tab, size_t i)
+static void	ft_free_tab(char **tab, int i)
 {
 	while (i >= 0)
 	{
@@ -116,7 +116,7 @@ char	**ft_split(char const *s, char c)
 		len = ft_end_word(s, c, i) - start;
 		tab[i] = (char *)malloc(sizeof(char) * (len + 1));
 		if (!tab[i])
-			return (ft_free_tab(tab, i - 1), NULL);
+			return (ft_free_tab(tab, (int)i - 1), NULL);
 		ft_strlcpy(tab[i], (s + start), len + 1);
 		i++;
 	}
