@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:58:59 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/18 16:53:05 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:26:28 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_tokens(t_token **tokens)
 {
 	t_token	*tmp;
-	
+
 	if (!(*tokens))
 		return ;
 	tmp = *tokens;
@@ -59,13 +59,12 @@ void	ft_free_tab(char **tab)
 	free(tab);
 }
 
-
 void	free_command_tab(t_command **tab)
 {
 	int	i;
 
 	i = 0;
-	if(!tab || !(*tab))
+	if (!tab || !(*tab))
 		return ;
 	while (tab[i])
 	{

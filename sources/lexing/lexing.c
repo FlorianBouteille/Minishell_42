@@ -6,13 +6,13 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:56:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/16 15:55:20 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:26:36 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int find_type(char *str)
+int	find_type(char *str)
 {
 	if (ft_strlen(str) == 1)
 	{
@@ -35,7 +35,7 @@ int find_type(char *str)
 
 t_token	*new_token(char *str)
 {
-	t_token *token;
+	t_token	*token;
 
 	// token = NULL;
 	token = malloc(sizeof(t_token));
@@ -49,7 +49,7 @@ t_token	*new_token(char *str)
 
 void	add_token(char *str, t_token **tokens)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (!(*tokens))
 		*tokens = new_token(str);

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/18 16:33:32 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:26:08 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*try_env_paths(char *str)
 	char	*env_path_str;
 	char	*path;
 	int		i;
-	
+
 	i = 0;
 	env_path_str = getenv("PATH");
 	if (!env_path_str)

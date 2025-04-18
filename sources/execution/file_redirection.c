@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/18 16:38:04 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:26:00 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	open_file(t_command *command, int option)
 	if (fd == -1)
 	{
 		ft_putstr_fd("error : no such file or rights on one of the file ", 2);
-			/// A CHANGER
+		/// A CHANGER
 		// ft_putendl_fd(, 2);
 	}
 	return (fd);

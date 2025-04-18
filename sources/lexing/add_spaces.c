@@ -6,20 +6,20 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:35:58 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/16 14:44:46 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:26:33 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_special(char c)
+int	is_special(char c)
 {
-	return((c == '>' || c == '<' || c == '|'));
+	return ((c == '>' || c == '<' || c == '|'));
 }
 char	*add_space(char *str, int index)
 {
 	char	*new_str;
-	int	i;
+	int		i;
 
 	i = 0;
 	new_str = malloc((ft_strlen(str) + 2) * sizeof(char));
@@ -42,7 +42,7 @@ char	*add_space(char *str, int index)
 }
 char	*add_spaces(char *str)
 {
-	int 	i;
+	int i;
 
 	i = 0;
 	if (!str)
@@ -55,5 +55,5 @@ char	*add_spaces(char *str)
 			str = add_space(str, (i + 1));
 		i++;
 	}
-	return(str);
+	return (str);
 }
