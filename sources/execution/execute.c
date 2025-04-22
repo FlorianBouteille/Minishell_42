@@ -38,7 +38,7 @@ void	exec_child(t_command *command, char **envp)
 	}
 	else if (pid == 0)
 	{
-		redirect_input(command, pipe_fd);
+		redirect_all_inputs(command, pipe_fd);
 		redirect_output(command, pipe_fd);
 		cmd = ft_split(command->value, ' ');
 		path = get_path(cmd[0], envp);
@@ -63,7 +63,7 @@ void	exec_commands(t_command **tab, char **envp)
 {
 	int	i;
 	int	number_commands;
-	int	number_heredoc;
+	//int	number_heredoc;
 	int	stdin_copy;
 	int	stdout_copy;
 
@@ -71,7 +71,7 @@ void	exec_commands(t_command **tab, char **envp)
 	i = 0;
 	stdin_copy = dup(STDIN_FILENO);
 	stdout_copy = dup(STDOUT_FILENO);
-	number_heredoc = get_heredocs(tab);
+	//number_heredoc = get_heredocs(tab);
 	while (i < number_commands)
 	{
 		exec_child(tab[i], envp);

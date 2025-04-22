@@ -25,7 +25,7 @@ DEBUG_DIR= $(addprefix $(SRC_DIR), debug/)
 ERROR_DIR= $(addprefix $(SRC_DIR), error/)
 MAIN_DIR = $(SRC_DIR)
 
-PARSING_SRC = parsing.c checks.c build_commands.c
+PARSING_SRC = parsing.c checks.c build_commands.c file_utils.c
 LEXING_SRC = lexing.c word_utils.c add_spaces.c
 EXECUTION_SRC = execute.c path.c heredoc.c file_redirection.c
 MEMORY_SRC = free.c

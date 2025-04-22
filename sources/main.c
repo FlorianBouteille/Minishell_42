@@ -30,7 +30,7 @@ int	minishell(char **envp)
 		//	print_tokens(tokens);
 		check_tokens(tokens);
 		tab = build_command_tab(tokens);
-		//	print_command_tab(tab);
+		print_command_tab(tab);
 		exec_commands(tab, envp);
 		free_tokens(&tokens);
 		free_command_tab(tab);

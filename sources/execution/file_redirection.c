@@ -12,17 +12,17 @@
 
 #include "minishell.h"
 
-int	open_file(t_command *command, int option)
+int	open_file(char *file_name, int option)
 {
 	int	fd;
 
 	fd = 0;
 	if (option == 0)
-		fd = open(command->infile, O_RDONLY, 0644);
+		fd = open(file_name, O_RDONLY, 0644);
 	else if (option == 1)
-		fd = open(command->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	else if (option == 2)
-		fd = open(command->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
 		ft_putstr_fd("error : no such file or rights on one of the file ", 2);
@@ -32,7 +32,19 @@ int	open_file(t_command *command, int option)
 	return (fd);
 }
 
-void	redirect_input(t_command *command, int pipe_fd[2])
+void	redirect_all_inputs(t_command *command, int pipe_fd[2])
+{
+	t_file	*temp;
+
+	temp = command->infile;
+	while (temp->next != NULL)
+	{
+		redirect_input(command, temp, pipe_fd);
+		temp = temp->next;
+	}
+}
+
+void	redirect_input(t_command *command, t_file *infile, int pipe_fd[2])
 {
 	int	fd_in;
 
@@ -44,18 +56,19 @@ void	redirect_input(t_command *command, int pipe_fd[2])
 			perror("dup error");
 		close(command->fd_heredoc);
 	}
-	else if (command->infile)
+	else if (infile->name)
 	{
-		fprintf(stderr, "Je lis dans le infile : %s\n", command->infile);
-		fd_in = open_file(command, 0);
+		fprintf(stderr, "Je lis dans le infile : %s\n", infile->name);
+		fd_in = open_file(infile->name, 0);
 		if (dup2(fd_in, STDIN_FILENO) == -1)
 			perror("dup error");
 		close(fd_in);
 	}
-	close(pipe_fd[0]);
+	if (infile->next == NULL)
+		close(pipe_fd[0]);
 }
 
-void	redirect_output(t_command *command, int pipe_fd[2])
+void	redirect_output(t_command *command, t_file *outfile, int pipe_fd[2])
 {
 	int	fd_out;
 

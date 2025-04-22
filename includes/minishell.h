@@ -32,17 +32,26 @@ typedef struct s_token
 /// qui nous permette de savoir si faut expendre les dollars
 /// entre single quote pas d expension (bool = false) entre double oui(bool = 1)
 
+typedef struct	s_file
+{
+	char			*name;
+	char			*limiter;
+	int				out_append;
+	struct s_file	*next;
+}					t_file;
+
 typedef struct s_command
 {
 	int				index;
 	int				number_commands;
-	int				out_append;
-	char			*infile;
-	char			*outfile;
-	char			*limiter;
+	//int				out_append;
+	t_file			*infile;
+	t_file			*outfile;
+	//char			*limiter;
 	int				fd_heredoc;
 	char			*value;
 }					t_command;
+
 
 typedef enum e_token_type
 {
@@ -74,17 +83,22 @@ void				ft_free_tab(char **tab);
 // Parsing
 
 t_command			*new_command(t_token *tokens, int index,
-						int number_commands);
+		int number_commands);
 t_command			**build_command_tab(t_token *tokens);
 void				check_tokens(t_token *tokens);
+t_file				*create_new_file(char *name, char *limiter, int out_append);
+void				add_file_back(t_file **files, char *name, char *limiter, int out_append);
+
+
 
 // Execution
 
 void				exec_commands(t_command **tab, char *envp[]);
 char				*get_path(char *str, char *envp[]);
 int					get_heredocs(t_command **tab);
-void				redirect_input(t_command *command, int pipe_fd[2]);
-void				redirect_output(t_command *command, int pipe_fd[2]);
+void				redirect_input(t_command *command, t_file *infile, int pipe_fd[2]);
+void				redirect_output(t_command *command,t_file *outfile, int pipe_fd[2]);
+void				redirect_all_inputs(t_command *command, int pipe_fd[2]);
 
 // Debug
 

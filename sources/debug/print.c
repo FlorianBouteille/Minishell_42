@@ -31,14 +31,36 @@ void	print_tokens(t_token *tokens)
 	}
 }
 
+void	print_files(t_file *file)
+{
+	int	i;
+
+	i = 0;
+	if (!file)
+	{
+		printf("No files found\n");
+		return ;
+	}
+	while (file)
+	{
+		printf("file %i\n", i);
+		printf("name = %s\n", file->name);
+		printf("limiter = %s\n", file->limiter);
+		if (file->out_append)
+			printf("je dois append\n");
+		file = file->next;
+		i++;
+	}
+}
+
 void	print_command(t_command *command)
 {
-	printf("infile = %s\n", command->infile);
-	printf("outfile = %s\n", command->outfile);
-	printf("limiter = %s\n", command->limiter);
-	if (command->out_append)
-		printf("Je dois append\n");	
+	printf("infiles = \n");
+	print_files(command->infile);
+	//printf("outfiles = \n");
+	//print_files(command->outfile);
 	printf("command and args = %s\n\n", command->value);
+	printf("heredoc = %i\n", command->fd_heredoc);
 }
 
 void	print_command_tab(t_command **tab)

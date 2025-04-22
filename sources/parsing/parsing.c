@@ -17,10 +17,10 @@ void	init_command(t_command **command)
 	(*command)->infile = NULL;
 	(*command)->outfile = NULL;
 	(*command)->value = NULL;
-	(*command)->limiter = NULL;
+	//(*command)->limiter = NULL;
 	(*command)->fd_heredoc = -1;
 	(*command)->number_commands = 0;
-	(*command)->out_append = 0;
+	//(*command)->out_append = 0;
 	(*command)->index = -1;
 }
 
@@ -36,26 +36,29 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 	init_command(&command);
 	while (tokens && tokens->type != TOKEN_PIPE)
 	{
-		if (tokens->type == TOKEN_REDIR_IN && tokens->next && tokens->next->type == TOKEN_WORD )
+		if (tokens->type == TOKEN_REDIR_IN && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
-			command->infile = ft_strdup(tokens->next->value);
+			add_file_back(&command->infile, ft_strdup(tokens->next->value), NULL, 0);		
+			//command->infile = ft_strdup(tokens->next->value);
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_REDIR_OUT && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
-			command->outfile = ft_strdup(tokens->next->value);
+			add_file_back(&command->outfile, ft_strdup(tokens->next->value), NULL, 0);		
+			//command->outfile = ft_strdup(tokens->next->value);
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_HEREDOC  && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
-			//command->infile = ft_strdup("heredoc");
-			command->limiter = ft_strdup(tokens->next->value);
+			add_file_back(&command->infile, NULL, ft_strdup(tokens->next->value), 0);		
+			//command->limiter = ft_strdup(tokens->next->value);
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_APPEND  && tokens->next && tokens->next->type == TOKEN_WORD)
 		{
-			command->outfile = ft_strdup(tokens->next->value);
-			command->out_append = 1;
+			add_file_back(&command->outfile, ft_strdup(tokens->next->value), NULL, 1);		
+			//command->outfile = ft_strdup(tokens->next->value);
+			//command->out_append = 1;
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_WORD)

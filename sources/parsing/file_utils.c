@@ -1,0 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbouteil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/22 11:17:55 by fbouteil          #+#    #+#             */
+/*   Updated: 2025/04/22 11:17:57 by fbouteil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+t_file	*create_new_file(char *name, char *limiter, int out_append)
+{
+	t_file	*new;
+
+	new = NULL;
+	new = malloc(sizeof(t_file));
+	if (!new)
+		return (NULL);
+	new->name = name;
+	new->limiter = limiter;
+	new->out_append = out_append;
+	new->next = NULL;
+	return (new);
+}
+
+void	add_file_back(t_file **files, char *name, char *limiter, int out_append)
+{
+	t_file	*temp;
+
+	if (!files || !(*files))
+	{
+		*files = create_new_file(name, limiter, out_append);
+		return ;
+	}
+	temp = *files;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = create_new_file(name, limiter, out_append);
+}
