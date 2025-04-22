@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/18 16:03:22 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/22 16:59:03 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	init_command(t_command **command)
 	(*command)->value = NULL;
 	//(*command)->limiter = NULL;
 	(*command)->fd_heredoc = -1;
+	(*command)->skip_command = 0;
 	(*command)->number_commands = 0;
 	//(*command)->out_append = 0;
 	(*command)->index = -1;
@@ -64,6 +65,7 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 		else if (tokens->type == TOKEN_WORD)
 		{
 			cmd_string = ft_strjoin_free_sep(cmd_string, tokens->value, ' ');
+			//printf("cmd_string = %s\n", cmd_string);
 		}
 		else
 			printf("ERROR PARSING\n");

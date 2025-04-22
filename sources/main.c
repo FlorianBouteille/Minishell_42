@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/18 17:26:14 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/22 16:10:38 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	minishell(char **envp)
 	t_command	**tab;
 
 	tokens = NULL;
+	tab = NULL;
 	while (1)
 	{
 		line = readline("ya quoi ? > ");
@@ -27,8 +28,8 @@ int	minishell(char **envp)
 		add_history(line);
 		line = add_spaces(line);
 		tokens = lex_string(line);
-		//	print_tokens(tokens);
 		check_tokens(tokens);
+	//	print_tokens(tokens);
 		tab = build_command_tab(tokens);
 		print_command_tab(tab);
 		exec_commands(tab, envp);

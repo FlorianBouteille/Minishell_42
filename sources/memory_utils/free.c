@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:58:59 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/18 17:26:28 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/22 13:56:21 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	free_command(t_command *command)
 		free(command->infile);
 	if (command->outfile)
 		free(command->outfile);
-	if (command->limiter)
-		free(command->limiter);
 	if (command->value)
 		free(command->value);
 	free(command);

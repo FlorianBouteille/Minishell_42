@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:40 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/18 17:26:03 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:19:37 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_limiter(char *str, char *limiter)
 	return (1);
 }
 
-void	heredoc(t_command *tab)
+void	heredoc(t_command *tab, t_file *file)
 {
 	char	*line;
 	int		fd[2];
@@ -48,7 +48,7 @@ void	heredoc(t_command *tab)
 		while (1)
 		{
 			line = readline("heredoc > ");
-			if (!line || (is_limiter(line, tab->limiter) == 1))
+			if (!line || (is_limiter(line, file->limiter) == 1))
 			{
 				free(line);
 				break ;
@@ -75,15 +75,22 @@ int	get_heredocs(t_command **tab)
 {
 	int	i;
 	int	number_heredoc;
+	t_file	*temp;
 
 	i = 0;
 	number_heredoc = 0;
 	while (tab[i])
 	{
-		if (tab[i]->limiter)
+		temp = tab[i]->infile;
+		print_files(tab[i]->infile);
+		while(temp)
 		{
-			heredoc(tab[i]);
-			number_heredoc++;
+			if (temp->limiter)
+			{
+				heredoc(tab[i], temp);
+				number_heredoc++;
+			}
+			temp = temp->next;
 		}
 		i++;
 	}

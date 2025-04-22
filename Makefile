@@ -6,7 +6,7 @@
 #    By: csolari <csolari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 10:48:16 by csolari           #+#    #+#              #
-#    Updated: 2025/04/18 16:38:40 by csolari          ###   ########.fr        #
+#    Updated: 2025/04/22 15:56:46 by csolari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,11 @@ fclean : clean
 		rm -f $(NAME)
 		make -C $(LIBFT_DIR) fclean
 
+
+go : all
+		./$(NAME)
+		rm -f $(NAME)
+	
 re : fclean all
 
 .PHONY : all clean fclean re 

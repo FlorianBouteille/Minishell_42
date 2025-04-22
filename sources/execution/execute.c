@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/18 17:25:57 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:06:51 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	exec_child(t_command *command, char **envp)
 	else if (pid == 0)
 	{
 		redirect_all_inputs(command, pipe_fd);
-		redirect_output(command, pipe_fd);
+		redirect_all_outputs(command, pipe_fd);
+		if (command->skip_command)
+			exit(EXIT_FAILURE);
 		cmd = ft_split(command->value, ' ');
 		path = get_path(cmd[0], envp);
 		execve(path, cmd, envp);
@@ -63,7 +65,7 @@ void	exec_commands(t_command **tab, char **envp)
 {
 	int	i;
 	int	number_commands;
-	//int	number_heredoc;
+	int	number_heredoc;
 	int	stdin_copy;
 	int	stdout_copy;
 
@@ -71,14 +73,13 @@ void	exec_commands(t_command **tab, char **envp)
 	i = 0;
 	stdin_copy = dup(STDIN_FILENO);
 	stdout_copy = dup(STDOUT_FILENO);
-	//number_heredoc = get_heredocs(tab);
+	number_heredoc = get_heredocs(tab);
 	while (i < number_commands)
 	{
 		exec_child(tab[i], envp);
 		i++;
 	}
 	i = 0;
-	fprintf(stderr, "heyyyyyy\n");
 	while (wait(NULL) > 0)
 		;
 	dup2(stdin_copy, STDIN_FILENO);

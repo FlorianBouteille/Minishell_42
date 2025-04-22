@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/18 17:27:31 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/22 16:58:13 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_command
 {
 	int				index;
 	int				number_commands;
+	int				number_heredocs;
+	int				skip_command;
 	//int				out_append;
 	t_file			*infile;
 	t_file			*outfile;
@@ -96,15 +98,17 @@ void				add_file_back(t_file **files, char *name, char *limiter, int out_append)
 void				exec_commands(t_command **tab, char *envp[]);
 char				*get_path(char *str, char *envp[]);
 int					get_heredocs(t_command **tab);
-void				redirect_input(t_command *command, t_file *infile, int pipe_fd[2]);
+void				redirect_input(t_command *command, t_file *infile, int pipe_fd[2], int last);
 void				redirect_output(t_command *command,t_file *outfile, int pipe_fd[2]);
 void				redirect_all_inputs(t_command *command, int pipe_fd[2]);
+void				redirect_all_outputs(t_command *command, int pipe_fd[2]);
 
 // Debug
 
 void				print_tokens(t_token *token);
 void				print_command(t_command *command);
 void				print_command_tab(t_command **tab);
+void				print_files(t_file *file);
 
 // Error
 
