@@ -77,6 +77,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 			fprintf(stderr, "Je lis dans le fd_heredoc = %i\n", command->fd_heredoc);
 			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
 				perror("dup errorhkef2	 goifht	");
+			fprintf(stderr, "Je ferme le heredocu %i\n", command->fd_heredoc);
 			close(command->fd_heredoc);
 		}
 	}

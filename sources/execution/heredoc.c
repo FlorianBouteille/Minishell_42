@@ -32,7 +32,7 @@ int	is_limiter(char *str, char *limiter)
 	return (1);
 }
 
-void	heredoc(t_command *tab, t_file *file)
+void	heredoc(t_command **commands, t_command *tab, t_file *file)
 {
 	char	*line;
 	int		fd[2];
@@ -45,6 +45,7 @@ void	heredoc(t_command *tab, t_file *file)
 		perror("pid error");
 	else if (pid == 0)
 	{
+		close_heredocs_fd(commands);
 		while (1)
 		{
 			line = readline("heredoc > ");
@@ -64,6 +65,8 @@ void	heredoc(t_command *tab, t_file *file)
 	else
 	{
 		close(fd[1]);
+		if (tab->fd_heredoc > 0)
+			close(tab->fd_heredoc);
 		tab->fd_heredoc = fd[0];
 		// dup(fd[0]);
 		//close(fd[0]);
@@ -87,7 +90,7 @@ int	get_heredocs(t_command **tab)
 		{
 			if (temp->limiter)
 			{
-				heredoc(tab[i], temp);
+				heredoc(tab, tab[i], temp);
 				number_heredoc++;
 			}
 			temp = temp->next;

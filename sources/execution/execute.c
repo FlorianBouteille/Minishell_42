@@ -52,7 +52,6 @@ void	exec_child(t_command *command, char **envp)
 		//sigaction.sa_handler = &fonctionpourlesenfants;
 		redirect_all_inputs(command, pipe_fd);
 		redirect_all_outputs(command, pipe_fd);
-		
 		//sigaction(SIGINT, lastructure, NULL)
 		if (command->skip_command)
 			exit(EXIT_FAILURE);
@@ -87,9 +86,9 @@ void	exec_commands(t_command **tab, char **envp)
 	exit_status = 0;
 	number_commands = count_commands_tab(tab);
 	i = 0;
+	number_heredoc = get_heredocs(tab);
 	stdin_copy = dup(STDIN_FILENO);
 	stdout_copy = dup(STDOUT_FILENO);
-	number_heredoc = get_heredocs(tab);
 	while (i < number_commands)
 	{
 		exec_child(tab[i], envp);
