@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/22 17:13:54 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/23 16:38:23 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,14 @@ void	redirect_all_inputs(t_command *command, int pipe_fd[2])
 	{
 		if (temp->limiter)
 			i++;
-		redirect_input(command, temp, pipe_fd, number_heredoc - i);
+		redirect_input(command, temp, number_heredoc - i);
 		temp = temp->next;
 	}
+	close(pipe_fd[0]);
 }
 
 
-void	redirect_input(t_command *command, t_file *infile, int pipe_fd[2], int last)
+void	redirect_input(t_command *command, t_file *infile, int last)
 {
 	int	fd_in;
 
@@ -92,8 +93,6 @@ void	redirect_input(t_command *command, t_file *infile, int pipe_fd[2], int last
 			close(fd_in);
 		}
 	}
-	if (infile->next == NULL)
-		close(pipe_fd[0]);
 }
 
 void	redirect_all_outputs(t_command *command, int pipe_fd[2])
@@ -101,23 +100,29 @@ void	redirect_all_outputs(t_command *command, int pipe_fd[2])
 	t_file	*temp;
 
 	temp = command->outfile;
+	if (!temp && command->index != command->number_commands - 1)
+	{
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+			perror("dup error");
+	}
 	while (temp)
 	{
-		redirect_output(command, temp, pipe_fd);
+		redirect_output(temp);
 		temp = temp->next;
 	}
-
+	close(pipe_fd[1]);
 }
 
-void	redirect_output(t_command *command, t_file *outfile, int pipe_fd[2])
+void	redirect_output(t_file *outfile)
 {
 	int	fd_out;
 
-	if (outfile)
+	if (outfile->name)
 	{
+		fprintf(stderr, "je rentre ici \n");
 		if (outfile->out_append)
 			fd_out = open_file(outfile->name, 2);
-		else
+		else 
 			fd_out = open_file(outfile->name, 1);
 		if (fd_out == -1)
 		{
@@ -129,10 +134,4 @@ void	redirect_output(t_command *command, t_file *outfile, int pipe_fd[2])
 			perror("dup error");
 		close(fd_out);
 	}
-	else if (command->index != command->number_commands - 1)
-	{
-		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			perror("dup error");
-	}
-	close(pipe_fd[1]);
 }
