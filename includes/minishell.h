@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/23 16:37:07 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 15:22:45 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ void				ft_free_tab(char **tab);
 // Parsing
 
 t_command			*new_command(t_token *tokens, int index,
-		int number_commands);
+							int number_commands);
 t_command			**build_command_tab(t_token *tokens);
-void				check_tokens(t_token *tokens);
+int					check_tokens(t_token *tokens, t_data **data);
 t_file				*create_new_file(char *name, char *limiter, int out_append);
 void				add_file_back(t_file **files, char *name, char *limiter, int out_append);
 void				free_all_data(t_data **data);
@@ -122,7 +122,7 @@ void				free_all_data(t_data **data);
 
 void				exec_commands(t_data **data);
 char				*get_path(char *str, char *envp[]);
-int					get_heredocs(t_command **tab);
+int					get_heredocs(t_command **tab, t_data **data);
 void				redirect_input(t_command *command, t_file *infile, int last);
 void				redirect_output(t_file *outfile);
 void				redirect_all_inputs(t_command *command, int pipe_fd[2]);
@@ -139,6 +139,6 @@ void				print_files(t_file *file);
 
 // Error
 
-void				lex_error(char *str, t_token **tokens);
+void				lex_error(char *str, t_data **data);
 
 #endif

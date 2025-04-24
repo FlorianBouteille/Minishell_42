@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/18 17:26:08 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 14:34:33 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*try_env_paths(char *str)
 		path = NULL;
 		i++;
 	}
+	ft_free_tab(env_paths_tab);
 	return (path);
 }
 

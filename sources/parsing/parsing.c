@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/22 16:59:03 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 14:44:35 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 	command->index = index;
 	command->number_commands = number_commands;
 	command->value = cmd_string;
+	if (!command->value || ft_strlen(command->value) == 0)
+		command->skip_command = 1;
 	return (command);
 }
 

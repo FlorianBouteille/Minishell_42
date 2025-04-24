@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 15:20:16 by csolari           #+#    #+#             */
-/*   Updated: 2024/11/12 16:12:05 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 14:45:12 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (-1);
 	while (s[i] != 0)
 		i++;
 	return (i);

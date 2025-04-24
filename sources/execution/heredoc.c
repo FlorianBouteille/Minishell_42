@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:40 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/23 16:08:17 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 15:28:17 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_limiter(char *str, char *limiter)
 	return (1);
 }
 
-void	heredoc(t_command **commands, t_command *tab, t_file *file)
+void	heredoc(t_data **data, t_command *tab, t_file *file)
 {
 	char	*line;
 	int		fd[2];
@@ -45,7 +45,7 @@ void	heredoc(t_command **commands, t_command *tab, t_file *file)
 		perror("pid error");
 	else if (pid == 0)
 	{
-		close_heredocs_fd(commands);
+		close_heredocs_fd((*data)->commands);
 		while (1)
 		{
 			line = readline("heredoc > ");
@@ -60,6 +60,7 @@ void	heredoc(t_command **commands, t_command *tab, t_file *file)
 		}
 		close(fd[1]);
 		close(fd[0]);
+		free_all_data(data);
 		exit(0);
 	}
 	else
@@ -74,7 +75,7 @@ void	heredoc(t_command **commands, t_command *tab, t_file *file)
 	}
 }
 
-int	get_heredocs(t_command **tab)
+int	get_heredocs(t_command **tab, t_data **data)
 {
 	int	i;
 	int	number_heredoc;
@@ -85,12 +86,11 @@ int	get_heredocs(t_command **tab)
 	while (tab[i])
 	{
 		temp = tab[i]->infile;
-		print_files(tab[i]->infile);
 		while(temp)
 		{
 			if (temp->limiter)
 			{
-				heredoc(tab, tab[i], temp);
+				heredoc(data, tab[i], temp);
 				number_heredoc++;
 			}
 			temp = temp->next;

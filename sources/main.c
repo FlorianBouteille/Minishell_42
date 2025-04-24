@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/23 15:34:17 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 18:29:04 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	init_data(t_data **data, char **envp)
 		return ;
 	(*data)->number_of_commands = 0;
 	(*data)->number_heredoc = 0;
-	(*data)->stdin_copy = 0;
-	(*data)->stdout_copy = 0;
+	(*data)->stdin_copy = -1;
+	(*data)->stdout_copy = -1;
 	(*data)->exit_status = 0;
 	(*data)->envp = envp;
 	(*data)->tokens = NULL;
@@ -41,14 +41,15 @@ int	minishell(char **envp)
 		// check ctrl + backslash
 		line = readline("ya quoi ? > ");
 		if (!line)
-			return (0); //exit proprement
+			return (free_all_data(&data), 0); //exit proprement
 		//check ctrl + c
 		add_history(line);
 		line = add_spaces(line);
 		data->tokens = lex_string(line);
-		check_tokens(data->tokens);
+		if (!check_tokens(data->tokens, &data))
+			continue ;
 		data->commands = build_command_tab(data->tokens);
-		exec_commands(data);
+		exec_commands(&data);
 		free_all_data(&data);
 	}
 	// rl_clear_history();
@@ -65,3 +66,14 @@ int	main(int argc, char *argv[], char *envp[])
 	minishell(envp);
 	return (0);
 }
+
+
+
+// fonction get data qui va interroger la static et la renvoie
+// variable globale simulee
+// va chercher la variable persistante
+
+//foncton qui initiise set le pointeur static
+// une qui get
+
+// sigaction pour les infos du signal pid et tt ca 

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/23 16:38:23 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:53:08 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 		{
 			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
 				perror("dup error in heredoc\n");
-			close(command->fd_heredoc);
+			//close(command->fd_heredoc);
 		}
 	}
 	else if (infile->name)

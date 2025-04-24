@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/23 16:36:09 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/24 17:01:35 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	exec_child(t_command *command, t_data **data)
 
 	pipe(pipe_fd);
 	pid = fork();
+	cmd = NULL;
+	path = NULL;
 	if (pid == -1)
 	{
 		perror("fork error");
@@ -54,12 +56,21 @@ void	exec_child(t_command *command, t_data **data)
 		redirect_all_inputs(command, pipe_fd);
 		redirect_all_outputs(command, pipe_fd);
 		//sigaction(SIGINT, lastructure, NULL)
+		close_heredocs_fd((*data)->commands);
+		close((*data)->stdin_copy);
+		close((*data)->stdout_copy);	
 		if (command->skip_command)
+		{
+			free_all_data(data);
 			exit(EXIT_FAILURE);
+		}
 		cmd = ft_split(command->value, ' ');
 		path = get_path(cmd[0], (*data)->envp);
-		execve(path, cmd, (*data)->envp);
-		perror("excve");
+		if (path)
+		{
+			execve(path, cmd, (*data)->envp);
+			perror("execve");
+		}
 		free_all_data(data);
 		free(path);
 		ft_free_tab(cmd);
@@ -69,7 +80,7 @@ void	exec_child(t_command *command, t_data **data)
 	{
 		close(pipe_fd[1]);
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
-			perror("DuP ErOrRRe\n");
+			perror("dup2 error");
 		close(pipe_fd[0]);
 		if (command->fd_heredoc != -1)
 			close(command->fd_heredoc);
@@ -80,10 +91,9 @@ void	exec_commands(t_data **data)
 {
 	int	i;
 
-	(*data)->number_of_commands = count_commands_tab((*data)->commands);
-	printf("il y a %i commandes !\n", (*data)->number_of_commands);
 	i = 0;
-	(*data)->number_heredoc = get_heredocs((*data)->commands);
+	(*data)->number_of_commands = count_commands_tab((*data)->commands);
+	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
 	while (i < (*data)->number_of_commands)
