@@ -14,23 +14,28 @@
 
 int last_signal = 0;
 
-void	say_hi(int signum)
+void	init_data(t_data **data, char **envp)
 {
-	if (signum == SIGINT)
-		fprintf(stderr, "J'ai recu un ctrl + c !!\n");
-	else
-		fprintf(stderr, "j'ai recu un autre signal\n");
-	last_signal = signum;
+	*data = malloc(sizeof(t_data));
+	if (!data)
+		return ;
+	(*data)->number_of_commands = 0;
+	(*data)->number_heredoc = 0;
+	(*data)->stdin_copy = 0;
+	(*data)->stdout_copy = 0;
+	(*data)->exit_status = 0;
+	(*data)->envp = envp;
+	(*data)->tokens = NULL;
+	(*data)->commands = NULL;
 }
 
 int	minishell(char **envp)
 {
 	char		*line;
-	t_token		*tokens;
-	t_command	**tab;
-
-	tokens = NULL;
-	tab = NULL;
+	t_data		*data;
+	
+	data = NULL;
+	init_data(&data, envp);
 	while (1)
 	{
 		// check ctrl + backslash
@@ -40,14 +45,11 @@ int	minishell(char **envp)
 		//check ctrl + c
 		add_history(line);
 		line = add_spaces(line);
-		tokens = lex_string(line);
-		check_tokens(tokens);
-	//	print_tokens(tokens);
-		tab = build_command_tab(tokens);
-		//print_command_tab(tab);
-		exec_commands(tab, envp);
-		free_tokens(&tokens);
-		free_command_tab(tab);
+		data->tokens = lex_string(line);
+		check_tokens(data->tokens);
+		data->commands = *build_command_tab(data->tokens);
+		exec_commands(data);
+		free_all_data(&data);
 	}
 	// rl_clear_history();
 	return (1);

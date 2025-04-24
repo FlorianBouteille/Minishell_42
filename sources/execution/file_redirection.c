@@ -74,10 +74,8 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 	{
 		if (last == 0)
 		{
-			fprintf(stderr, "Je lis dans le fd_heredoc = %i\n", command->fd_heredoc);
 			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
-				perror("dup errorhkef2	 goifht	");
-			fprintf(stderr, "Je ferme le heredocu %i\n", command->fd_heredoc);
+				perror("dup error in heredoc\n");
 			close(command->fd_heredoc);
 		}
 	}
@@ -120,7 +118,6 @@ void	redirect_output(t_file *outfile)
 
 	if (outfile->name)
 	{
-		fprintf(stderr, "je rentre ici \n");
 		if (outfile->out_append)
 			fd_out = open_file(outfile->name, 2);
 		else 

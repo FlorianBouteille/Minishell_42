@@ -25,6 +25,7 @@
 
 extern int last_signal;
 
+
 typedef struct s_token
 {
 	char			*value;
@@ -57,6 +58,18 @@ typedef struct s_command
 	int				fd_heredoc;
 	char			*value;
 }					t_command;
+
+typedef struct s_data
+{
+	int			number_of_commands;
+	int			number_heredoc;
+	int			stdin_copy;
+	int			stdout_copy;
+	int			exit_status;
+	char		**envp;
+	t_token		*tokens;
+	t_command	*commands;
+}					t_data;
 
 // struct sigaction {
 // 	void     (*sa_handler)(int);
@@ -101,12 +114,13 @@ t_command			**build_command_tab(t_token *tokens);
 void				check_tokens(t_token *tokens);
 t_file				*create_new_file(char *name, char *limiter, int out_append);
 void				add_file_back(t_file **files, char *name, char *limiter, int out_append);
+void				free_all_data(t_data **data);
 
 
 
 // Execution
 
-void				exec_commands(t_command **tab, char *envp[]);
+void				exec_commands(t_data *data);
 char				*get_path(char *str, char *envp[]);
 int					get_heredocs(t_command **tab);
 void				redirect_input(t_command *command, t_file *infile, int last);

@@ -12,6 +12,34 @@
 
 #include "minishell.h"
 
+void	free_all_data(t_data **data)
+{
+	if (!(*data))
+		return ;
+	if ((*data)->tokens)
+		free_tokens(&(*data)->tokens);
+	if ((*data)->commands)
+		free_command_tab(&(*data)->commands);
+	free(*data);
+	*data = NULL;
+}
+
+void	free_file_list(t_file *list)
+{
+	t_file	*temp;
+
+	temp = list;
+	if (!temp)
+		return ;
+	while (temp)
+	{
+		temp = temp->next;
+		free(list->name);
+		free(list);
+		list = temp;
+	}
+}
+
 void	free_tokens(t_token **tokens)
 {
 	t_token	*tmp;
@@ -34,9 +62,9 @@ void	free_command(t_command *command)
 	if (!command)
 		return ;
 	if (command->infile)
-		free(command->infile);
+		free_file_list(command->infile);
 	if (command->outfile)
-		free(command->outfile);
+		free_file_list(command->outfile);
 	if (command->value)
 		free(command->value);
 	free(command);
@@ -67,7 +95,9 @@ void	free_command_tab(t_command **tab)
 	while (tab[i])
 	{
 		free_command(tab[i]);
+		tab[i] = NULL;
 		i++;
 	}
-	free(tab);
+	if (tab)
+		free(tab);
 }

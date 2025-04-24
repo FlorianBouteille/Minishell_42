@@ -33,7 +33,7 @@ void	close_heredocs_fd(t_command **commands)
 		i++;
 	}
 }
-void	exec_child(t_command *command, char **envp)
+void	exec_child(t_command *command, t_data *data)
 {
 	int		pipe_fd[2];
 	int		pid;
@@ -56,9 +56,10 @@ void	exec_child(t_command *command, char **envp)
 		if (command->skip_command)
 			exit(EXIT_FAILURE);
 		cmd = ft_split(command->value, ' ');
-		path = get_path(cmd[0], envp);
-		execve(path, cmd, envp);
+		path = get_path(cmd[0], data->envp);
+		execve(path, cmd, data->envp);
 		perror("excve");
+		free_all_data(&data);
 		free(path);
 		ft_free_tab(cmd);
 		exit(EXIT_FAILURE);
@@ -74,34 +75,29 @@ void	exec_child(t_command *command, char **envp)
 	}
 }
 
-void	exec_commands(t_command **tab, char **envp)
+void	exec_commands(t_data *data)
 {
 	int	i;
-	int	number_commands;
-	int	number_heredoc;
-	int	stdin_copy;
-	int	stdout_copy;
-	int	exit_status;
 
-	exit_status = 0;
-	number_commands = count_commands_tab(tab);
+	data->exit_status = 0;
+	data->number_of_commands = count_commands_tab(&data->commands);
 	i = 0;
-	number_heredoc = get_heredocs(tab);
-	stdin_copy = dup(STDIN_FILENO);
-	stdout_copy = dup(STDOUT_FILENO);
-	while (i < number_commands)
+	data->number_heredoc = get_heredocs(&data->commands);
+	data->stdin_copy = dup(STDIN_FILENO);
+	data->stdout_copy = dup(STDOUT_FILENO);
+	while (i < data->number_of_commands)
 	{
-		exec_child(tab[i], envp);
+		exec_child(&data->commands[i], data);
 		i++;
 	}
 	i = 0;
-	while (wait(&exit_status) > 0)
+	while (wait(&data->exit_status) > 0)
 		;
 	//fprintf(stderr, "exit status = %i\n", exit_status);
-	dup2(stdin_copy, STDIN_FILENO);
-	close(stdin_copy);
-	dup2(stdout_copy, STDOUT_FILENO);
-	close(stdout_copy);
+	dup2(data->stdin_copy, STDIN_FILENO);
+	close(data->stdin_copy);
+	dup2(data->stdout_copy, STDOUT_FILENO);
+	close(data->stdout_copy);
 }
 
 
