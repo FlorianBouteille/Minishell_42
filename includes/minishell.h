@@ -68,7 +68,7 @@ typedef struct s_data
 	int			exit_status;
 	char		**envp;
 	t_token		*tokens;
-	t_command	*commands;
+	t_command	**commands;
 }					t_data;
 
 // struct sigaction {
@@ -120,7 +120,7 @@ void				free_all_data(t_data **data);
 
 // Execution
 
-void				exec_commands(t_data *data);
+void				exec_commands(t_data **data);
 char				*get_path(char *str, char *envp[]);
 int					get_heredocs(t_command **tab);
 void				redirect_input(t_command *command, t_file *infile, int last);

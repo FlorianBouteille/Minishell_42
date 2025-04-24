@@ -19,7 +19,7 @@ void	free_all_data(t_data **data)
 	if ((*data)->tokens)
 		free_tokens(&(*data)->tokens);
 	if ((*data)->commands)
-		free_command_tab(&(*data)->commands);
+		free_command_tab((*data)->commands);
 	free(*data);
 	*data = NULL;
 }
@@ -29,12 +29,15 @@ void	free_file_list(t_file *list)
 	t_file	*temp;
 
 	temp = list;
-	if (!temp)
+	if (!list)
 		return ;
 	while (temp)
 	{
 		temp = temp->next;
-		free(list->name);
+		if (list->name)
+			free(list->name);
+		if (list->limiter)
+			free(list->limiter);
 		free(list);
 		list = temp;
 	}

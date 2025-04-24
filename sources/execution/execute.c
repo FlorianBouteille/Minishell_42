@@ -21,6 +21,7 @@ int	count_commands_tab(t_command **tab)
 		count++;
 	return (count);
 }
+
 void	close_heredocs_fd(t_command **commands)
 {
 	int	i;
@@ -33,7 +34,7 @@ void	close_heredocs_fd(t_command **commands)
 		i++;
 	}
 }
-void	exec_child(t_command *command, t_data *data)
+void	exec_child(t_command *command, t_data **data)
 {
 	int		pipe_fd[2];
 	int		pid;
@@ -56,10 +57,10 @@ void	exec_child(t_command *command, t_data *data)
 		if (command->skip_command)
 			exit(EXIT_FAILURE);
 		cmd = ft_split(command->value, ' ');
-		path = get_path(cmd[0], data->envp);
-		execve(path, cmd, data->envp);
+		path = get_path(cmd[0], (*data)->envp);
+		execve(path, cmd, (*data)->envp);
 		perror("excve");
-		free_all_data(&data);
+		free_all_data(data);
 		free(path);
 		ft_free_tab(cmd);
 		exit(EXIT_FAILURE);
@@ -75,29 +76,29 @@ void	exec_child(t_command *command, t_data *data)
 	}
 }
 
-void	exec_commands(t_data *data)
+void	exec_commands(t_data **data)
 {
 	int	i;
 
-	data->exit_status = 0;
-	data->number_of_commands = count_commands_tab(&data->commands);
+	(*data)->number_of_commands = count_commands_tab((*data)->commands);
+	printf("il y a %i commandes !\n", (*data)->number_of_commands);
 	i = 0;
-	data->number_heredoc = get_heredocs(&data->commands);
-	data->stdin_copy = dup(STDIN_FILENO);
-	data->stdout_copy = dup(STDOUT_FILENO);
-	while (i < data->number_of_commands)
+	(*data)->number_heredoc = get_heredocs((*data)->commands);
+	(*data)->stdin_copy = dup(STDIN_FILENO);
+	(*data)->stdout_copy = dup(STDOUT_FILENO);
+	while (i < (*data)->number_of_commands)
 	{
-		exec_child(&data->commands[i], data);
+		exec_child((*data)->commands[i], data);
 		i++;
 	}
 	i = 0;
-	while (wait(&data->exit_status) > 0)
+	while (wait(&(*data)->exit_status) > 0)
 		;
 	//fprintf(stderr, "exit status = %i\n", exit_status);
-	dup2(data->stdin_copy, STDIN_FILENO);
-	close(data->stdin_copy);
-	dup2(data->stdout_copy, STDOUT_FILENO);
-	close(data->stdout_copy);
+	dup2((*data)->stdin_copy, STDIN_FILENO);
+	close((*data)->stdin_copy);
+	dup2((*data)->stdout_copy, STDOUT_FILENO);
+	close((*data)->stdout_copy);
 }
 
 

@@ -35,9 +35,9 @@ int	minishell(char **envp)
 	t_data		*data;
 	
 	data = NULL;
-	init_data(&data, envp);
 	while (1)
 	{
+		init_data(&data, envp);
 		// check ctrl + backslash
 		line = readline("ya quoi ? > ");
 		if (!line)
@@ -47,7 +47,7 @@ int	minishell(char **envp)
 		line = add_spaces(line);
 		data->tokens = lex_string(line);
 		check_tokens(data->tokens);
-		data->commands = *build_command_tab(data->tokens);
+		data->commands = build_command_tab(data->tokens);
 		exec_commands(data);
 		free_all_data(&data);
 	}
