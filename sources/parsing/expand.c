@@ -6,153 +6,126 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:13:22 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/25 13:20:25 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:57:46 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_variable_env(char *str)
+char	*replace_content(char *str, char *content, char *new, int len_name)
 {
-	if (!str || !str[1])
-		return (-1);
-	if (ft_isalnum(str[1]) || str[1] == '_')
-		return (1);
-	return (0);
-}
-
-int	count_number_variable(char *str)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	if (!str)
-		return (-1);
-	while (str[i])
-	{
-		if (str[i] == '$' && is_variable_env(str + i))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-char	*variable_name(char *str)
-{
-	char	*name;
-	int		len;
 	int		i;
+	int		j;
+	int		k;
 
 	i = 0;
-	len = 0;
-	name = NULL;
-	if (!str)
-		return (NULL);
-	if (ft_isdigit(str[0]))
-		len = 1;
-	else
+	j = 0;
+	while (str && str[i] && str[i] != '$')
 	{
-		while (ft_isalnum(str[len]) || str[len] == '_')
-			len++;
-	}
-	name = malloc(sizeof(char)* (len + 1));
-	if (!name)
-		return (ft_putstr_fd("Error : Malloc\n", 2), NULL);
-	while (i < len)
-	{
-		name[i] = str[i];
+		new[i] = str[i];
 		i++;
 	}
-	name[i] = 0;
-	return (name);
+	while (content && content[j] && str[i] == '$')
+	{
+		new[i + j] = content[j];
+		j++;
+	}
+	k = len_name + 1 + i;
+	while (str && str[k])
+	{
+		new[i + j] = str[k];
+		i++;
+		k++;
+	}
+	new[i + j] = 0;
+	return (free(str), new);
 }
 
-// calculer longueur du contenu a inserrer
-// longueur string de base moins non variable
-//malloc niuvelle string
-// copier les infos en remplacant au bon endroit
-// free l ancienne str
-// remplacer pointeur sur str vers la nouvelle
 char	*expand_dollar(char *str, int index)
 {
 	char	*content;
 	char	*name;
 	char	*new;
 	int		len_content;
-	int		i;
-	int		j;
-	int		content_copied;
+	int		to_free;
 
-	printf("str = %s\n", str + index);
-	content_copied = 0;
-	name = variable_name(str + index + 1);
-	printf("name = %s\n", name);
-	content = getenv(name);
-	printf("content = %s\n", content);
+	to_free = 0;
+	if (str[index + 1] == '?')
+	{
+		name = ft_strdup("?");
+		content = ft_itoa(last_signal);
+		to_free = 1;
+	}
+	else if (str[index + 1] == '$')
+	{
+		name = ft_strdup("$");
+		content = getenv("SYSTEMD_EXEC_PID");
+	}
+	else
+	{
+		name = variable_name(str + index + 1);
+		content = getenv(name);
+	}
 	len_content = ft_strlen(content);
 	new = malloc(sizeof(char) * (len_content + ft_strlen(str) - ft_strlen(name) + 1));
 	if (!new)
 		return (ft_putstr_fd("Error : malloc\n", 2), NULL);
-	i = 0;
-	j = 0;
-	while (str && str[i])
-	{
-		if (str[i] == '$')
-		{
-			while (j < len_content)
-			{
-				new[i + j] = content[j];
-				j++;
-			}
-			i += (ft_strlen(name) + 1);
-		}
-		else
-		{
-			new[i + j] = str[i];
-			i++;
-		}
-	}
-	new[i + j] = 0;
-
-	free(str);
-	printf("new = %s\n", new);
-	return(new);
+	new = replace_content(str, content, new, ft_strlen(name));
+	if (to_free)
+		free(content);
+	return(free(name), new);
 }
 
 
 char	*check_and_replace(char *str)
 {
 	int	i;
-	int	is_double_quoted;
-	int	condition;
-
-	is_double_quoted = 0;
+	
 	if (!str)
 		return(NULL);
-	if (str[0] == '\"')
-		is_double_quoted = 1;
-	condition = 1;
-	while (condition > 0)
+	while (count_number_variable(str))
 	{
 		i = 0;
-		printf("number variable start : %i\n", count_number_variable(str));
-		while (str[i] && str)
+		while (str[i] && (str[0] != '\'' && str[ft_strlen(str) - 1] != '\''))
 		{
+			if (!str[i + 1] && str[i] == '$')
+				return (str);
 			if (str[i] == '$')
 			{
 				str = expand_dollar(str, i);
-				printf("new = %s\n", str);
 				break;
 			}
 			i++;
 		}
-		condition = count_number_variable(str);
-		printf("number variable end : %i\n", count_number_variable(str));
-		break ;
 	}
 	return (str);
+}
+
+char	*remove_quotes(char	*str)
+{
+	char	*new;
+	int		len_str;
+	int		i;
+
+	new = NULL;
+	i= 0;
+	len_str = ft_strlen(str);
+	if ((str[0] == '\"' && str[len_str - 1] == '\"') || (str[0] == '\'' && str[len_str - 1] == '\''))
+	{
+		new = malloc(sizeof(char) * (len_str - 1));
+		if (!new)
+			return (ft_putstr_fd("Error : Malloc\n", 2), NULL);
+		while(i < len_str - 2)
+		{
+			new[i] = str[i + 1];
+			i++;
+		}
+		new[i] = 0;
+		free(str);
+		return (new);
+	}
+	else
+		return(str);
 }
 
 void	expand_variables(t_token *tokens)
@@ -165,6 +138,7 @@ void	expand_variables(t_token *tokens)
 		if (temp->type == TOKEN_WORD)
 		{
 			temp->value = check_and_replace(temp->value);
+			//temp->value = remove_quotes(temp->value);
 			printf("token value %s\n", temp->value);
 		}
 		temp = temp->next;

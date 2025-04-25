@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/25 12:00:07 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:33:53 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,16 @@ void				ft_free_tab(char **tab);
 
 // Parsing
 
-t_command			*new_command(t_token *tokens, int index,
-							int number_commands);
+t_command			*new_command(t_token *tokens, int index, int number_commands);
 t_command			**build_command_tab(t_token *tokens);
-int					check_tokens(t_token *tokens, t_data **data);
 t_file				*create_new_file(char *name, char *limiter, int out_append);
+int					check_tokens(t_token *tokens, t_data **data);
 void				add_file_back(t_file **files, char *name, char *limiter, int out_append);
 void				free_all_data(t_data **data);
 void				expand_variables(t_token *tokens);
+int					is_variable_env(char *str);
+int					count_number_variable(char *str);
+char				*variable_name(char *str);
 
 
 // Execution

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/24 14:34:33 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/25 17:30:24 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_path(char *str, char *envp[])
 	/*if (is_builtin(str))
 		exec_builtin(str);*/
 	if (access(str, X_OK) == 0)
-		return (str);
+		return (ft_strdup(str));
 	if (envp)
 		path = try_env_paths(str);
 	if (!path)

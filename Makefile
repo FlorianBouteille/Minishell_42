@@ -6,7 +6,7 @@
 #    By: csolari <csolari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 10:48:16 by csolari           #+#    #+#              #
-#    Updated: 2025/04/24 19:04:05 by csolari          ###   ########.fr        #
+#    Updated: 2025/04/25 17:31:28 by csolari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ ERROR_DIR= $(addprefix $(SRC_DIR), error/)
 SIGNALS_DIR= $(addprefix $(SRC_DIR), signals/)
 MAIN_DIR = $(SRC_DIR)
 
-PARSING_SRC = parsing.c checks.c build_commands.c file_utils.c expand.c
+PARSING_SRC = parsing.c checks.c build_commands.c file_utils.c expand.c expand2.c
 LEXING_SRC = lexing.c word_utils.c add_spaces.c
 EXECUTION_SRC = execute.c path.c heredoc.c file_redirection.c
 MEMORY_SRC = free.c
