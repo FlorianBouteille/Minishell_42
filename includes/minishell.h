@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/24 15:22:45 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:00:07 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int					check_tokens(t_token *tokens, t_data **data);
 t_file				*create_new_file(char *name, char *limiter, int out_append);
 void				add_file_back(t_file **files, char *name, char *limiter, int out_append);
 void				free_all_data(t_data **data);
-
+void				expand_variables(t_token *tokens);
 
 
 // Execution

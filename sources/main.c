@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/24 18:29:04 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:08:10 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	minishell(char **envp)
 		if (!check_tokens(data->tokens, &data))
 			continue ;
 		data->commands = build_command_tab(data->tokens);
+		print_command_tab(data->commands);
 		exec_commands(&data);
 		free_all_data(&data);
 	}
