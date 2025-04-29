@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 16:33:00 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/29 10:39:55 by csolari          ###   ########.fr       */
+/*   Created: 2025/04/29 13:54:14 by csolari           #+#    #+#             */
+/*   Updated: 2025/04/29 14:27:07 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	lex_error(char *str, t_data **data)
+void	ft_unset(char **cmd, t_data *data)
 {
-	free_all_data(data);
-	if (str)
-		printf("%s\n", str);
+	(void)cmd;
+	(void)data;
 }

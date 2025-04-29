@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:57:30 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/24 15:03:13 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 10:40:32 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,5 @@ int	check_tokens(t_token *tokens, t_data **data)
 	}
 	return (1);
 }
-
 
 // CHECK SI LA COMMANDE EST VIDE OU QUE DES ESPACES
