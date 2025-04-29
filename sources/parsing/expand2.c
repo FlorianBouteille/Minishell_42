@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:31:15 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/25 17:53:54 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:34:14 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	count_number_variable(char *str)
 
 	i = 0;
 	count = 0;
-	if (!str)
+	if (!str || !str[0]) 
 		return (-1);
-	if (str[0] == '\'' || str[ft_strlen(str) -1] == '\'')
+	if (str[0] == '\'' || str[ft_strlen(str) - 1] == '\'')
 		return (0);
 	while (str[i])
 	{
@@ -59,7 +59,7 @@ char	*variable_name(char *str)
 		while (ft_isalnum(str[len]) || str[len] == '_')
 			len++;
 	}
-	name = malloc(sizeof(char)* (len + 1));
+	name = malloc(sizeof(char) * (len + 1));
 	if (!name)
 		return (ft_putstr_fd("Error : Malloc\n", 2), NULL);
 	while (i < len)

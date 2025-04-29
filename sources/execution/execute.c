@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/25 17:08:59 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 17:15:37 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,21 @@ void	exec_child(t_command *command, t_data **data)
 	}
 	else if (pid == 0)
 	{
-		//sigaction.sa_handler = &fonctionpourlesenfants;
+		// sigaction.sa_handler = &fonctionpourlesenfants;
 		redirect_all_inputs(command, pipe_fd);
 		redirect_all_outputs(command, pipe_fd);
-		//sigaction(SIGINT, lastructure, NULL)
+		// sigaction(SIGINT, lastructure, NULL)
 		close_heredocs_fd((*data)->commands);
 		close((*data)->stdin_copy);
-		close((*data)->stdout_copy);	
+		close((*data)->stdout_copy);
 		if (command->skip_command)
 		{
 			free_all_data(data);
 			exit(EXIT_FAILURE);
 		}
-		cmd = ft_split(command->value, ' ');
+		cmd = command->cmd_tab;
+		if (is_builtin(cmd, *data) != 0)
+			exit(EXIT_FAILURE);
 		path = get_path(cmd[0], (*data)->envp);
 		if (path)
 		{
@@ -73,7 +75,6 @@ void	exec_child(t_command *command, t_data **data)
 		}
 		free_all_data(data);
 		free(path);
-		ft_free_tab(cmd);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -96,6 +97,10 @@ void	exec_commands(t_data **data)
 	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
+	if ((*data)->number_of_commands == 1)
+	{
+		is_builtin((*data)->commands[0]->cmd_tab, data);
+	}
 	while (i < (*data)->number_of_commands)
 	{
 		exec_child((*data)->commands[i], data);
@@ -104,13 +109,12 @@ void	exec_commands(t_data **data)
 	i = 0;
 	while (wait(&(*data)->exit_status) > 0)
 		;
-	//fprintf(stderr, "exit status = %i\n", exit_status);
+	// fprintf(stderr, "exit status = %i\n", exit_status);
 	dup2((*data)->stdin_copy, STDIN_FILENO);
 	close((*data)->stdin_copy);
 	dup2((*data)->stdout_copy, STDOUT_FILENO);
 	close((*data)->stdout_copy);
 }
-
 
 /*
 ouvrir les fichiers de redirection s il y en a

@@ -6,11 +6,37 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:52:19 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/16 15:12:35 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 11:25:26 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char **copy_tab(char **tab)
+{
+	int		len;
+	int		i;
+	char	**copy;
+	
+	len = 0;
+	if (!tab || !(*tab))
+		return (NULL);
+	while (tab[len])
+		len++;
+	copy = (char **)malloc((len + 1) * sizeof(char *));
+	if (!copy)
+		return (ft_putstr_fd("Error : Malloc\n", 2), NULL);
+	i = 0;
+	while (i < len)
+	{
+		copy[i] = ft_strdup(tab[i]);
+		if (!copy[i])
+			return (NULL);
+		i++;
+	}
+	copy[i] = NULL;
+	return (copy);
+}
 
 int	get_word_len(char *str)
 {

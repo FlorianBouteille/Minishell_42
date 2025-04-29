@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:22:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/22 16:10:00 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:58:35 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_tokens(t_token *tokens)
 
 void	print_files(t_file *file)
 {
-	int	i;
+	int		i;
 	t_file	*temp;
 
 	i = 0;
@@ -59,8 +59,8 @@ void	print_command(t_command *command)
 {
 	printf("infiles = \n");
 	print_files(command->infile);
-	//printf("outfiles = \n");
-	//print_files(command->outfile);
+	// printf("outfiles = \n");
+	// print_files(command->outfile);
 	if (!command->value)
 	{
 		printf("pb affichage, pas de commande\n");
@@ -68,7 +68,6 @@ void	print_command(t_command *command)
 	}
 	printf("command and args = %s\n\n", command->value);
 	printf("heredoc = %i\n", command->fd_heredoc);
-
 }
 
 void	print_command_tab(t_command **tab)
@@ -76,11 +75,11 @@ void	print_command_tab(t_command **tab)
 	int	i;
 
 	i = 0;
-	if( !tab || !tab[i])
-		{
-			fprintf(stderr, "pb affichage, pas de commandes\n");
-			return ;
-		}
+	if (!tab || !tab[i])
+	{
+		fprintf(stderr, "pb affichage, pas de commandes\n");
+		return ;
+	}
 	printf("LES COMMMANDES :\n");
 	while (tab[i])
 	{
@@ -89,3 +88,19 @@ void	print_command_tab(t_command **tab)
 		i++;
 	}
 }
+
+void	print_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	if (!tab || !tab[i])
+		return ;
+	while (tab[i])
+	{
+		ft_putstr_fd(tab[i++], 1);
+		ft_putstr_fd("\n", 1);
+	}
+}
+
+

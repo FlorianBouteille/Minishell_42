@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/25 17:30:24 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 12:10:37 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*concat_path(char *path, char *str)
 	return (final_path);
 }
 
-char	*try_env_paths(char *str)
+char	*try_env_paths(char *str, char **envp)
 {
 	char	**env_paths_tab;
 	char	*env_path_str;
@@ -29,7 +29,7 @@ char	*try_env_paths(char *str)
 	int		i;
 
 	i = 0;
-	env_path_str = getenv("PATH");
+	env_path_str = ft_getenv("PATH", envp);
 	if (!env_path_str)
 		return (NULL);
 	env_paths_tab = ft_split(env_path_str, ':');
@@ -71,7 +71,7 @@ char	*get_path(char *str, char *envp[])
 	if (access(str, X_OK) == 0)
 		return (ft_strdup(str));
 	if (envp)
-		path = try_env_paths(str);
+		path = try_env_paths(str, envp);
 	if (!path)
 		path = try_with_bin(str);
 	return (path);

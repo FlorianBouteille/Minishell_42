@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/24 16:53:08 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 10:42:10 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,6 @@ int	open_file(char *file_name, int option)
 	return (fd);
 }
 
-int	count_heredoc_per_command(t_file *file)
-{
-	int		count;
-	t_file	*temp;
-
-	count = 0;
-	temp = file;
-	while(temp)
-	{
-		if (temp->limiter)
-			count++;
-		temp = temp->next;
-	}
-	return (count);
-}
-
 void	redirect_all_inputs(t_command *command, int pipe_fd[2])
 {
 	t_file	*temp;
@@ -65,7 +49,6 @@ void	redirect_all_inputs(t_command *command, int pipe_fd[2])
 	close(pipe_fd[0]);
 }
 
-
 void	redirect_input(t_command *command, t_file *infile, int last)
 {
 	int	fd_in;
@@ -76,7 +59,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 		{
 			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
 				perror("dup error in heredoc\n");
-			//close(command->fd_heredoc);
+			// close(command->fd_heredoc);
 		}
 	}
 	else if (infile->name)
@@ -120,12 +103,12 @@ void	redirect_output(t_file *outfile)
 	{
 		if (outfile->out_append)
 			fd_out = open_file(outfile->name, 2);
-		else 
+		else
 			fd_out = open_file(outfile->name, 1);
 		if (fd_out == -1)
 		{
 			perror("no rights on the file\n");
-			//free tous les trucs
+			// free tous les trucs
 			exit(0);
 		}
 		if (dup2(fd_out, STDOUT_FILENO) == -1)

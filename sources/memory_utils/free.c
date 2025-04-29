@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:58:59 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/24 16:41:33 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 16:32:36 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ void	free_all_data(t_data **data)
 		free_tokens(&(*data)->tokens);
 	if ((*data)->commands)
 		free_command_tab((*data)->commands);
+	// if ((*data)->envp)
+	// 	ft_free_tab((*data)->envp);
 	if ((*data)->stdin_copy != -1)
 		close((*data)->stdin_copy);
 	if ((*data)->stdout_copy != -1)
-		close((*data)->stdout_copy);	
+		close((*data)->stdout_copy);
 	free(*data);
 	*data = NULL;
 }
@@ -64,19 +66,6 @@ void	free_tokens(t_token **tokens)
 	*tokens = NULL;
 }
 
-void	free_command(t_command *command)
-{
-	if (!command)
-		return ;
-	if (command->infile)
-		free_file_list(command->infile);
-	if (command->outfile)
-		free_file_list(command->outfile);
-	if (command->value)
-		free(command->value);
-	free(command);
-}
-
 void	ft_free_tab(char **tab)
 {
 	int	i;
@@ -92,19 +81,4 @@ void	ft_free_tab(char **tab)
 	free(tab);
 }
 
-void	free_command_tab(t_command **tab)
-{
-	int	i;
 
-	i = 0;
-	if (!tab || !(*tab))
-		return ;
-	while (tab[i])
-	{
-		free_command(tab[i]);
-		tab[i] = NULL;
-		i++;
-	}
-	if (tab)
-		free(tab);
-}

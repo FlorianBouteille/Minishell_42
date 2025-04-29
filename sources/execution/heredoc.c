@@ -6,11 +6,27 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:40 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/24 15:28:17 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 10:42:21 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	count_heredoc_per_command(t_file *file)
+{
+	int		count;
+	t_file	*temp;
+
+	count = 0;
+	temp = file;
+	while (temp)
+	{
+		if (temp->limiter)
+			count++;
+		temp = temp->next;
+	}
+	return (count);
+}
 
 int	is_limiter(char *str, char *limiter)
 {
@@ -70,15 +86,15 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 			close(tab->fd_heredoc);
 		tab->fd_heredoc = fd[0];
 		// dup(fd[0]);
-		//close(fd[0]);
+		// close(fd[0]);
 		waitpid(pid, NULL, 0);
 	}
 }
 
 int	get_heredocs(t_command **tab, t_data **data)
 {
-	int	i;
-	int	number_heredoc;
+	int		i;
+	int		number_heredoc;
 	t_file	*temp;
 
 	i = 0;
@@ -86,7 +102,7 @@ int	get_heredocs(t_command **tab, t_data **data)
 	while (tab[i])
 	{
 		temp = tab[i]->infile;
-		while(temp)
+		while (temp)
 		{
 			if (temp->limiter)
 			{

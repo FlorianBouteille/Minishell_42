@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:13:22 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/25 17:57:46 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:35:10 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*replace_content(char *str, char *content, char *new, int len_name)
 {
-	int		i;
-	int		j;
-	int		k;
+	int	i;
+	int	j;
+	int	k;
 
 	i = 0;
 	j = 0;
@@ -41,7 +41,7 @@ char	*replace_content(char *str, char *content, char *new, int len_name)
 	return (free(str), new);
 }
 
-char	*expand_dollar(char *str, int index)
+char	*expand_dollar(char *str, int index, char **envp)
 {
 	char	*content;
 	char	*name;
@@ -59,31 +59,32 @@ char	*expand_dollar(char *str, int index)
 	else if (str[index + 1] == '$')
 	{
 		name = ft_strdup("$");
-		content = getenv("SYSTEMD_EXEC_PID");
+		content = ft_getenv("SYSTEMD_EXEC_PID", envp);
 	}
 	else
 	{
 		name = variable_name(str + index + 1);
-		content = getenv(name);
+		content = ft_getenv(name, envp);
+		printf("variable = %s\n", content);
 	}
 	len_content = ft_strlen(content);
-	new = malloc(sizeof(char) * (len_content + ft_strlen(str) - ft_strlen(name) + 1));
+	new = malloc(sizeof(char) * (len_content + ft_strlen(str) - ft_strlen(name)
+				+ 1));
 	if (!new)
 		return (ft_putstr_fd("Error : malloc\n", 2), NULL);
 	new = replace_content(str, content, new, ft_strlen(name));
 	if (to_free)
 		free(content);
-	return(free(name), new);
+	return (free(name), new);
 }
 
-
-char	*check_and_replace(char *str)
+char	*check_and_replace(char *str, char **envp)
 {
 	int	i;
-	
+
 	if (!str)
-		return(NULL);
-	while (count_number_variable(str))
+		return (NULL);
+	while (count_number_variable(str) > 0)
 	{
 		i = 0;
 		while (str[i] && (str[0] != '\'' && str[ft_strlen(str) - 1] != '\''))
@@ -92,8 +93,8 @@ char	*check_and_replace(char *str)
 				return (str);
 			if (str[i] == '$')
 			{
-				str = expand_dollar(str, i);
-				break;
+				str = expand_dollar(str, i, envp);
+				break ;
 			}
 			i++;
 		}
@@ -101,21 +102,22 @@ char	*check_and_replace(char *str)
 	return (str);
 }
 
-char	*remove_quotes(char	*str)
+char	*remove_quotes(char *str)
 {
 	char	*new;
 	int		len_str;
 	int		i;
 
 	new = NULL;
-	i= 0;
+	i = 0;
 	len_str = ft_strlen(str);
-	if ((str[0] == '\"' && str[len_str - 1] == '\"') || (str[0] == '\'' && str[len_str - 1] == '\''))
+	if ((str[0] == '\"' && str[len_str - 1] == '\"') || (str[0] == '\''
+			&& str[len_str - 1] == '\''))
 	{
 		new = malloc(sizeof(char) * (len_str - 1));
 		if (!new)
 			return (ft_putstr_fd("Error : Malloc\n", 2), NULL);
-		while(i < len_str - 2)
+		while (i < len_str - 2)
 		{
 			new[i] = str[i + 1];
 			i++;
@@ -125,20 +127,20 @@ char	*remove_quotes(char	*str)
 		return (new);
 	}
 	else
-		return(str);
+		return (str);
 }
 
-void	expand_variables(t_token *tokens)
+void	expand_variables(t_data *data)
 {
-	t_token *temp;
+	t_token	*temp;
 
-	temp = tokens;
+	temp = data->tokens;
 	while (temp)
 	{
 		if (temp->type == TOKEN_WORD)
 		{
-			temp->value = check_and_replace(temp->value);
-			//temp->value = remove_quotes(temp->value);
+			temp->value = check_and_replace(temp->value, data->envp);
+			// temp->value = remove_quotes(temp->value);
 			printf("token value %s\n", temp->value);
 		}
 		temp = temp->next;

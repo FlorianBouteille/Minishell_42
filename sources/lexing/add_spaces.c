@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:35:58 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/18 17:26:33 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/29 10:41:38 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	is_special(char c)
 {
 	return ((c == '>' || c == '<' || c == '|'));
 }
+
 char	*add_space(char *str, int index)
 {
 	char	*new_str;
@@ -40,6 +41,7 @@ char	*add_space(char *str, int index)
 	new_str[i + 1] = 0;
 	return (new_str);
 }
+
 char	*add_spaces(char *str)
 {
 	int i;
