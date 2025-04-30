@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 17:39:33 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/30 14:20:19 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,15 +139,17 @@ void				close_heredocs_fd(t_command **commands);
 
 // Builtins
 
-void				ft_export(char **cmd, t_data **data);
+void				ft_export_child(char **cmd, t_data **data);
+void				ft_export_parent(char **cmd, t_data **data);
 void				ft_cd(char **cmd, t_data *data);
 void				ft_echo(char **cmd, t_data *data);
-void				ft_pwd(char **cmd, t_data *data);
-void				ft_unset(char **cmd, t_data *data);
-void				ft_env(char **cmd, t_data *data);
+void				ft_pwd(t_data *data);
+void				ft_unset(char **cmd, t_data **data);
+void				ft_env(t_data *data);
 void				ft_exit(char **cmd, t_data *data);
 void				add_to_env(t_data **data, char *str);
-int					is_builtin(char **cmd, t_data *data);
+int					is_builtin_child(char **cmd, t_data *data);
+int					is_builtin_parent(char **cmd, t_data *data);
 
 
 // Debug

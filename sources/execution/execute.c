@@ -6,11 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/04/24 17:01:35 by csolari          ###   ########.fr       */
-=======
-/*   Updated: 2025/04/29 17:15:37 by csolari          ###   ########.fr       */
->>>>>>> 7f9c87e (export et envp)
+/*   Updated: 2025/04/30 14:11:57 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +65,8 @@ void	exec_child(t_command *command, t_data **data)
 			exit(EXIT_FAILURE);
 		}
 		cmd = command->cmd_tab;
-		if (is_builtin(cmd, *data) != 0)
-			exit(EXIT_FAILURE);
+		if (is_builtin_child(cmd, *data) != 0)
+			exit(EXIT_SUCCESS);
 		path = get_path(cmd[0], (*data)->envp);
 		if (path)
 		{
@@ -101,9 +97,9 @@ void	exec_commands(t_data **data)
 	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
-	if ((*data)->number_of_commands == 1)
+	if ((*data)->number_of_commands == 1 )//&& is_parent_builtin((*data)->commands->cmd_tab[0]))
 	{
-		is_builtin((*data)->commands[0]->cmd_tab, data);
+		is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
 	}
 	while (i < (*data)->number_of_commands)
 	{
@@ -120,16 +116,3 @@ void	exec_commands(t_data **data)
 	close((*data)->stdout_copy);
 }
 
-/*
-ouvrir les fichiers de redirection s il y en a
-creer pipe redirection
-fork
-
-execution
-check commands patati patata
-path
-
-
-close
-free
-*/

@@ -6,16 +6,15 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:15:44 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 16:17:16 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/30 12:17:41 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_env(char **cmd, t_data *data)
+void	ft_env(t_data *data)
 {
 	print_tab(data->envp);
 	free_all_data(&data);
-	ft_free_tab(cmd);
 	exit(EXIT_SUCCESS);
 }

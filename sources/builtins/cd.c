@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 14:26:34 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/30 14:29:32 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void	ft_cd(char **cmd, t_data *data)
 {
-	(void)cmd;
-	(void)data;
+	if (!*data->envp)
+		return ;
 }

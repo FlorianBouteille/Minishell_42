@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 17:40:04 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/30 12:30:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		last_signal = 0;
 
-void	init_data(t_data **data, char **envp)
+void	init_data(t_data **data, char **envp, char **envp_mem)
 {
 	*data = malloc(sizeof(t_data));
 	if (!data)
@@ -26,19 +26,24 @@ void	init_data(t_data **data, char **envp)
 	(*data)->exit_status = 0;
 	(*data)->tokens = NULL;
 	(*data)->commands = NULL;
-	if (!(*data)->envp)
+	if (!envp_mem)
 		(*data)->envp = copy_tab(envp);
+	else
+		(*data)->envp = envp_mem;
+
 }
 
 int	minishell(char **envp)
 {
 	char	*line;
 	t_data	*data;
+	char	**envp_mem;
 
 	data = NULL;
+	envp_mem = NULL;
 	while (1)
 	{
-		init_data(&data, envp);
+		init_data(&data, envp, envp_mem);
 		// check ctrl + backslash
 		line = readline("ya quoi ? > ");
 		if (!line)
@@ -52,6 +57,7 @@ int	minishell(char **envp)
 		data->commands = build_command_tab(data);
 		print_command_tab(data->commands);
 		exec_commands(&data);
+		envp_mem = data->envp;
 		free_all_data(&data);
 	}
 	// rl_clear_history();

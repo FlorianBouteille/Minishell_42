@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:49 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 16:57:54 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/30 12:17:12 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,30 +78,27 @@ void	update_env(t_data **data, char *str)
 		i++;
 	}
 	add_to_env(data, str);
-	i = 0;
-	while ((*data)->envp[i])
-	{
-		fprintf(stderr, "%s\n", (*data)->envp[i]);
-		i++;
-	}
 }
-void	ft_export(char **cmd, t_data **data)
+void	ft_export_parent(char **cmd, t_data **data)
 {
 	int	i;
 
 	i = 1;
+
+	while (cmd[i])
+	{
+		if (is_a_variable(cmd[i]))
+			update_env(data, cmd[i]);
+		i++;
+	}
+	//(*data)->commands[0]->skip_command = 1;
+	return;
+}
+
+void	ft_export_child(char **cmd, t_data **data)
+{
 	if (cmd[1] == NULL)
 		print_export((*data)->envp);
-	else
-	{
-		while (cmd[i])
-		{
-			if (is_a_variable(cmd[i]))
-				update_env(data, cmd[i]);
-			i++;
-		}
-	}
-	ft_free_tab(cmd);
 	free_all_data(data);
 	exit(EXIT_SUCCESS);
 }

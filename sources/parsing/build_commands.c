@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:53:11 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/29 12:08:45 by csolari          ###   ########.fr       */
+/*   Updated: 2025/04/30 11:13:43 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_command	**build_command_tab(t_data *data)
 	tab = malloc((number_of_commands + 1) * sizeof(t_command));
 	if (!tab)
 		return (NULL);
-	expand_variables(data);
+	//expand_variables(data);
 	tmp = data->tokens;
 	while (i < number_of_commands)
 	{
