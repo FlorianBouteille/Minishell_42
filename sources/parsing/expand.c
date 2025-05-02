@@ -1,192 +1,87 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   expand.c                                           :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/04/24 17:13:22 by csolari           #+#    #+#             */
-// /*   Updated: 2025/04/30 13:26:45 by csolari          ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 10:21:46 by fbouteil          #+#    #+#             */
+/*   Updated: 2025/05/02 16:32:03 by csolari          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "minishell.h"
+#include "minishell.h"
 
-// int	is_variable_env(char *str)
-// {
-// 	if (!str || !str[1])
-// 	return (-1);
-// if (ft_isalnum(str[1]) || str[1] == '_')
-// 	return (1);
-// return (0);
-// }
-// char	*replace_content(char *str, char*content, char *new, int len_name)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	k;
+void	expand_tokens(t_data *data)
+{
+	t_token	*tmp;
 
-// 	i = 0;
-// 	j = 0;
-// 	while (str && str[i] && str[i] != '$')
-// 	{
-// 		new[i] = str[i];
-// 		i++;
-// 	}
-// 	while (content && content[j] && str[i] == '$')
-// 	{
-// 		new[i + j] = content[j];
-// 		j++;
-// 	}
-// 	k = len_name + 1 + i;
-// 	while (str && str[k])
-// 	{
-// 		new[i + j] = str[k];
-// 		i++;
-// 		k++;
-// 	}
-// 	new[i + j] = 0;
-// 	return (free(str), new);
-// }
+	tmp = data->tokens;
+	while (tmp)
+	{
+		tmp->value = expand_dollars(tmp->value, data->envp);
+		//tmp->value = remove_quotes(tmp->value);
+		tmp = tmp->next;
+	}
+}
 
-// char	*expand_dollar(char *str, int index, char **envp)
-// {
-// 	char	*content;
-// 	char	*name;
-// 	char	*name;
-// 	int		len_content;
-// 	int		to_free;
+int	contains_expandables(char *str)
+{
+	int	i;
 
-// 	to_free = 0;
-// 	if ()
+	i = 0;
+	if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
+		return (-1);
+	while (str[i] && str[i + 1])
+	{
+		if (str[i] == '$')
+		{
+			if (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'
+				|| str[i + 1] == '$')
+				return (i);
+		}
+		i++;
+	}
+	return (-1);
+}
 
+int	len_to_replace(char *str)
+{
+	int	i;
 
+	i = 0;
+	if (str[1] == '$' || str[1] == '?' || ft_isdigit(str[1]))
+		return (2);
+	i++;
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
+		i++;
+	return (i);
+}
 
+char	*var_to_replace(char *str)
+{
+	int		i;
+	int		var_len;
+	char	*var_name;
 
+	i = 0;
+	var_len = len_to_replace(str);
+	printf("len to replace = %i\n", var_len);
+	var_name = (char *)malloc((var_len + 1) * sizeof(char));
+	if (!var_name)
+		return (NULL);
+	while (i < var_len)
+	{
+		var_name[i] = str[i];
+		i++;
+	}
+	var_name[i] = 0;
+	return (var_name);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 	int	i;
-// 	int	count;
-
-// 	i = 0;
-// 	count = 0;
-// 	if (!str)
-// 		return (-1);
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$' && is_variable_env(str + i))
-// 			count++;
-// 		i++;
-// 	}
-// 	else if (str[index + 1] == '$')
-// 	{
-// 		name = ft_strdup("$");
-// 		content = ft_getenv("SYSTEMD_EXEC_PID", envp);
-// 	}
-// 	else
-// 	{
-// 		name = variable_name(str + index + 1);
-// 		content = ft_getenv(name, envp);
-// 		printf("variable = %s\n", content);
-// 	}
-// 	len_content = ft_strlen(content);
-// 	new = malloc(sizeof(char) * (len_content + ft_strlen(str) - ft_strlen(name)
-// 				+ 1));
-// 	if (!new)
-// 		return (ft_putstr_fd("Error : malloc\n", 2), NULL);
-// 	new = replace_content(str, content, new, ft_strlen(name));
-// 	if (to_free)
-// 		free(content);
-// 	return (free(name), new);
-// }
-
-// char	*check_and_replace(char *str, char **envp)
-// {
-// 	int	i;
-
-// 	if (!str)
-// 		return (NULL);
-// 	while (count_number_variable(str) > 0)
-// 	{
-// 		i = 0;
-// 		while (str[i] && str[i] != '\"')
-// 		{
-// 			if (str[i] == '$')
-// 			{
-// 				str = expand_dollar(str, i, envp);
-// 				break ;
-// 			}
-// 			i++;
-// 		}
-// 	}
-// 	return (str);
-// }
-
-// char	*remove_quotes(char *str)
-// {
-// 	char	*new;
-// 	int		len_str;
-// 	int		i;
-
-// 	new = NULL;
-// 	i = 0;
-// 	len_str = ft_strlen(str);
-// 	if ((str[0] == '\"' && str[len_str - 1] == '\"') || (str[0] == '\''
-// 			&& str[len_str - 1] == '\''))
-// 	{
-// 		new = malloc(sizeof(char) * (len_str - 1));
-// 		if (!new)
-// 			return (ft_putstr_fd("Error : Malloc\n", 2), NULL);
-// 		while (i < len_str - 2)
-// 		{
-// 			new[i] = str[i + 1];
-// 			i++;
-// 		}
-// 		new[i] = 0;
-// 		free(str);
-// 		return (new);
-// 	}
-// 	else
-// 		return (str);
-// }
-
-// void	expand_variables(t_data *data)
-// {
-// 	t_token	*temp;
-
-// 	temp = data->tokens;
-// 	while (temp)
-// 	{
-// 		if (temp->type == TOKEN_WORD)
-// 		{
-// 			temp->value = check_and_replace(temp->value, data->envp);
-// 			// temp->value = remove_quotes(temp->value);
-// 			printf("token value %s\n", temp->value);
-// 		}
-// 	}
-// }
+char	*expand_dollars(char *str, char **envp)
+{
+	while (contains_expandables(str) != -1)
+		str = replace_first_expandable(str, envp);
+	return (str);
+}

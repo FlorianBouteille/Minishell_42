@@ -6,14 +6,56 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 14:29:32 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 13:03:02 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_cd(char **cmd, t_data *data)
+void	replace_env_pwd(t_data **data, char	*variable)
 {
-	if (!*data->envp)
+	int		i;
+	char	*actual_path;
+	char	*variable_name_content;
+
+	i = 0;
+	actual_path = NULL;
+	actual_path = getcwd(actual_path, 10000);
+	variable_name_content = ft_strjoin(variable, actual_path);
+	free(actual_path);
+	while ((*data)->envp[i])
+	{
+		if (ft_strncmp((*data)->envp[i], variable , ft_strlen(variable)) == 0)
+		{
+			free((*data)->envp[i]);
+			(*data)->envp[i] = variable_name_content;
+			return ;
+		}
+		i++;
+	}
+}
+
+void	ft_cd(char **cmd, t_data **data)
+{
+	char	*target_path;
+
+	target_path = NULL;
+	if (!(*data)->envp)
 		return ;
+	if (cmd[2])
+	{
+		ft_putstr_fd("cd : too many arguments\n", 2);
+		return ;
+	}
+	replace_env_pwd(data, "OLDPWD=");
+	if (!cmd[1])
+		target_path = ft_getenv("HOME", (*data)->envp);
+	else
+		target_path = cmd[1];
+	if (chdir(target_path) == -1)
+	{
+		perror("error chdir");
+		return ;
+	}
+	replace_env_pwd(data, "PWD=");	
 }

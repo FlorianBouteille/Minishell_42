@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:49 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 12:17:12 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 10:38:43 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ void	update_env(t_data **data, char *str)
 	{
 		if (ft_strncmp((*data)->envp[i], str, contains_equal(str) + 1) == 0)
 		{
-			fprintf(stderr, "je dois reafecter la variable \n");
-			fprintf(stderr, "avant : %s\n", (*data)->envp[i]);
+			// fprintf(stderr, "je dois reafecter la variable \n");
+			// fprintf(stderr, "avant : %s\n", (*data)->envp[i]);
 			free((*data)->envp[i]);
 			(*data)->envp[i] = ft_strdup(str);
-			fprintf(stderr, "apres : %s\n", (*data)->envp[i]);
+			// fprintf(stderr, "apres : %s\n", (*data)->envp[i]);
 			return ;
 		}
 		i++;

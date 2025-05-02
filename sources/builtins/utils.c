@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:01:58 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 14:24:16 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 15:34:31 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	is_builtin_parent(char **cmd, t_data *data)
 	if (ft_strncmp(cmd[0], "export", len_cmd) == 0 && len_cmd == 6)
 		ft_export_parent(cmd, &data);
 	else if (ft_strncmp(cmd[0], "cd", len_cmd) == 0 && len_cmd == 2)
-		ft_cd(cmd, data);
+		ft_cd(cmd, &data);
 	else if (ft_strncmp(cmd[0], "unset", len_cmd) == 0 && len_cmd == 5)
 		ft_unset(cmd, &data);
-	// else if (ft_strncmp(cmd[0], "exit", len_cmd) == 0 && len_cmd == 4)
-	// 	ft_exit(cmd, data);
+	else if (ft_strncmp(cmd[0], "exit", len_cmd) == 0 && len_cmd == 4)
+		ft_exit(cmd, data);
 	return (0);
 }
 
@@ -40,13 +40,13 @@ int	is_builtin_child(char **cmd, t_data *data)
 	len_cmd = ft_strlen(cmd[0]);
 	if (ft_strncmp(cmd[0], "export", len_cmd) == 0 && len_cmd == 6)
 		return(ft_export_child(cmd, &data), 1);
-	// else if (ft_strncmp(cmd[0], "echo", len_cmd) == 0 && len_cmd == 4)
-	// 	ft_echo(cmd, data);
+	else if (ft_strncmp(cmd[0], "echo", len_cmd) == 0 && len_cmd == 4)
+		return(ft_echo(cmd, data), 1);
 	else if (ft_strncmp(cmd[0], "pwd", len_cmd) == 0 && len_cmd == 3)
-		ft_pwd(data);
+		return(ft_pwd(data), 1);
 	else if (ft_strncmp(cmd[0], "env", len_cmd) == 0 && len_cmd == 3)
 		return(ft_env(data), 1);
-	// else if (ft_strncmp(cmd[0], "exit", len_cmd) == 0 && len_cmd == 4)
-	// 	ft_exit(cmd, data);
+	else if (ft_strncmp(cmd[0], "exit", len_cmd) == 0 && len_cmd == 4)
+		return(ft_exit(cmd, data), 1);
 	return (0);
 }

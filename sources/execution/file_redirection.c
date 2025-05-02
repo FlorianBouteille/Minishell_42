@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 10:42:10 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 12:35:06 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 	}
 	else if (infile->name)
 	{
-		fprintf(stderr, "Je lis dans le infile : %s\n", infile->name);
+		//fprintf(stderr, "Je lis dans le infile : %s\n", infile->name);
 		fd_in = open_file(infile->name, 0);
 		if (fd_in == -1)
 			command->skip_command = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csolari <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:36 by csolari           #+#    #+#             */
-/*   Updated: 2024/11/18 16:12:37 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 12:41:04 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s)
 	char	*cpy;
 	int		count;
 
+	if (!s)
+		return (NULL);
 	count = ft_strlen(s);
 	cpy = (char *)malloc(sizeof(char) * (count + 1));
 	if (!cpy)

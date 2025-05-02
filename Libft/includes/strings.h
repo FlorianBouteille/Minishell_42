@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:52:09 by csolari           #+#    #+#             */
-/*   Updated: 2025/02/05 13:24:05 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 16:44:22 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define STRINGS_H
 
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	**ft_split_space_quote(char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strnstr(const char *big, const char *little, size_t len);

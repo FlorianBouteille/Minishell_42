@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 14:20:19 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/02 15:08:51 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,19 @@ t_file				*create_new_file(char *name, char *limiter, int out_append);
 int					check_tokens(t_token *tokens, t_data **data);
 void				add_file_back(t_file **files, char *name, char *limiter,
 						int out_append);
-void				expand_variables(t_data *data);
+// void				expand_variables(t_data *data);
 int					is_variable_env(char *str);
-int					count_number_variable(char *str);
-char				*variable_name(char *str);
+// int					count_number_variable(char *str);
+// char				*variable_name(char *str);
 char				*ft_getenv(char *str, char **envp);
+
+void                expand_tokens(t_data *data);
+char                *expand_dollars(char *str, char **envp);
+char                *replace_first_expandable(char *str, char **envp);
+int                 contains_expandables(char *str);
+char                *var_to_replace(char *str);
+char				*remove_quotes(char *str);
+
 
 // Execution
 
@@ -141,13 +149,14 @@ void				close_heredocs_fd(t_command **commands);
 
 void				ft_export_child(char **cmd, t_data **data);
 void				ft_export_parent(char **cmd, t_data **data);
-void				ft_cd(char **cmd, t_data *data);
+void				ft_cd(char **cmd, t_data **data);
 void				ft_echo(char **cmd, t_data *data);
 void				ft_pwd(t_data *data);
 void				ft_unset(char **cmd, t_data **data);
 void				ft_env(t_data *data);
 void				ft_exit(char **cmd, t_data *data);
 void				add_to_env(t_data **data, char *str);
+void				update_env(t_data **data, char *str);
 int					is_builtin_child(char **cmd, t_data *data);
 int					is_builtin_parent(char **cmd, t_data *data);
 
