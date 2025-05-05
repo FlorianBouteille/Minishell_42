@@ -6,13 +6,13 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/02 15:14:19 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:08:07 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		last_signal = 0;
+int		g_last_signal = 0;
 
 void	init_data(t_data **data, char **envp, char **envp_mem)
 {
@@ -31,7 +31,6 @@ void	init_data(t_data **data, char **envp, char **envp_mem)
 		(*data)->envp = copy_tab(envp);
 	else
 		(*data)->envp = envp_mem;
-
 }
 
 int	minishell(char **envp)
@@ -44,6 +43,7 @@ int	minishell(char **envp)
 	envp_mem = NULL;
 	while (1)
 	{
+		signals();
 		init_data(&data, envp, envp_mem);
 		// check ctrl + backslash
 		line = readline("ya quoi ? > ");
@@ -56,10 +56,11 @@ int	minishell(char **envp)
 		if (!check_tokens(data->tokens, &data))
 			continue ;
 		data->commands = build_command_tab(data);
-		//print_command_tab(data->commands);
+		// print_command_tab(data->commands);
 		print_tokens(data->tokens);
 		exec_commands(&data);
 		envp_mem = data->envp;
+		data->envp = NULL;
 		free_all_data(&data);
 	}
 	ft_free_tab(envp_mem);

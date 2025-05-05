@@ -6,7 +6,7 @@
 #    By: csolari <csolari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 10:48:16 by csolari           #+#    #+#              #
-#    Updated: 2025/05/02 15:09:14 by csolari          ###   ########.fr        #
+#    Updated: 2025/05/05 15:12:36 by csolari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ MAIN_DIR = $(SRC_DIR)
 
 PARSING_SRC = parsing.c checks.c build_commands.c file_utils.c expand.c expand2.c environment_tab.c remove_quotes.c
 LEXING_SRC = lexing.c word_utils.c add_spaces.c
-EXECUTION_SRC = execute.c path.c heredoc.c file_redirection.c
+EXECUTION_SRC = execute.c execute2.c path.c heredoc.c file_redirection.c
 MEMORY_SRC = free.c free2.c
 ERROR_SRC = error.c
 DEBUG_SRC = print.c

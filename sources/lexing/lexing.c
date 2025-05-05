@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:56:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/02 16:18:30 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:03:46 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_token	*new_token(char *str)
 {
 	t_token	*token;
 
-	// token = NULL;
+	token = NULL;
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);

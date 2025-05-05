@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:55:59 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/02 15:08:08 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:40:43 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ char	*remove_quotes(char *str)
 
 	i = 0;
 	j = 0;
-	new = NULL;
 	quote_type = 0;
+	if (get_new_len(str) == -1)
+		return (str);
 	new = (char *)malloc((get_new_len(str) + 1) * sizeof(char));
 	if (!new)
 		return (NULL);
@@ -61,6 +62,17 @@ char	*remove_quotes(char *str)
 		i++;
 	}
 	new[j] = 0;
-	free(str);
-	return (new);
+	return (free(str), new);
+}
+
+void	remove_quotes_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		tab[i] = remove_quotes(tab[i]);
+		i++;
+	}
 }

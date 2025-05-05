@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:58:59 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/30 12:19:03 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:02:23 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	free_all_data(t_data **data)
 		free_tokens(&(*data)->tokens);
 	if ((*data)->commands)
 		free_command_tab((*data)->commands);
-	// if ((*data)->envp)
-		// 	ft_free_tab((*data)->envp);
 	if ((*data)->stdin_copy != -1)
 		close((*data)->stdin_copy);
 	if ((*data)->stdout_copy != -1)
@@ -80,5 +78,3 @@ void	ft_free_tab(char **tab)
 	}
 	free(tab);
 }
-
-

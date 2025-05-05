@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 14:52:09 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/02 16:44:22 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 12:24:55 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strjoin_free(char *s1, char *s2);
+char	*ft_strjoin_free2(char *s1, char *s2);
 char	*ft_strjoin_free_sep(char *s1, char *s2, char c);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 size_t	ft_strlen(const char *s);

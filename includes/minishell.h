@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/02 15:08:51 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:08:56 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-extern int			last_signal;
+extern int			g_last_signal;
 
 typedef struct s_token
 {
@@ -50,10 +50,8 @@ typedef struct s_command
 	int				number_commands;
 	int				number_heredocs;
 	int				skip_command;
-	// int			out_append;
 	t_file			*infile;
 	t_file			*outfile;
-	// char			*limiter;
 	int				fd_heredoc;
 	char			*value;
 	char			**cmd_tab;
@@ -97,7 +95,7 @@ void				add_token(char *str, t_token **tokens);
 t_token				*new_token(char *str);
 int					get_word_len(char *str);
 char				*make_word(char *str);
-char 				**copy_tab(char **tab);
+char				**copy_tab(char **tab);
 char				*add_spaces(char *str);
 int					is_special(char c);
 
@@ -118,19 +116,16 @@ t_file				*create_new_file(char *name, char *limiter, int out_append);
 int					check_tokens(t_token *tokens, t_data **data);
 void				add_file_back(t_file **files, char *name, char *limiter,
 						int out_append);
-// void				expand_variables(t_data *data);
 int					is_variable_env(char *str);
-// int					count_number_variable(char *str);
-// char				*variable_name(char *str);
 char				*ft_getenv(char *str, char **envp);
 
-void                expand_tokens(t_data *data);
-char                *expand_dollars(char *str, char **envp);
-char                *replace_first_expandable(char *str, char **envp);
-int                 contains_expandables(char *str);
-char                *var_to_replace(char *str);
+void				expand_tokens(t_data *data);
+char				*expand_dollars(char *str, char **envp);
+char				*replace_first_expandable(char *str, char **envp);
+int					contains_expandables(char *str);
+char				*var_to_replace(char *str);
 char				*remove_quotes(char *str);
-
+void				remove_quotes_tab(char **tab);
 
 // Execution
 
@@ -144,11 +139,14 @@ void				redirect_output(t_file *outfile);
 void				redirect_all_inputs(t_command *command, int pipe_fd[2]);
 void				redirect_all_outputs(t_command *command, int pipe_fd[2]);
 void				close_heredocs_fd(t_command **commands);
+int					count_commands_tab(t_command **tab);
+int					done_in_parent(char *cmd);
 
 // Builtins
 
 void				ft_export_child(char **cmd, t_data **data);
 void				ft_export_parent(char **cmd, t_data **data);
+void				print_export(char **tab);
 void				ft_cd(char **cmd, t_data **data);
 void				ft_echo(char **cmd, t_data *data);
 void				ft_pwd(t_data *data);
@@ -159,7 +157,6 @@ void				add_to_env(t_data **data, char *str);
 void				update_env(t_data **data, char *str);
 int					is_builtin_child(char **cmd, t_data *data);
 int					is_builtin_parent(char **cmd, t_data *data);
-
 
 // Debug
 
@@ -172,5 +169,8 @@ void				print_tab(char **tab);
 // Error
 
 void				lex_error(char *str, t_data **data);
+
+// Signals
+void				signals(void);
 
 #endif

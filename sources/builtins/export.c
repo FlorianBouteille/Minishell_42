@@ -6,27 +6,11 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:49 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/02 10:38:43 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:24:10 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_export(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab || !tab[i])
-		return ;
-	while (tab[i])
-	{
-		ft_putstr_fd("export ", 1);
-		ft_putstr_fd(tab[i], 1);
-		ft_putstr_fd("\n", 1);
-		i++;
-	}
-}
 
 int	contains_equal(char *str)
 {
@@ -36,11 +20,12 @@ int	contains_equal(char *str)
 	while (str[i])
 	{
 		if (str[i] == '=')
-			return (1);
+			return (i);
 		i++;
 	}
-	return (i);
+	return (0);
 }
+
 int	is_a_variable(char *str)
 {
 	int	i;
@@ -56,6 +41,7 @@ int	is_a_variable(char *str)
 	}
 	if (!contains_equal(str))
 		return (0);
+	printf("%s is a variable to add\n", str);
 	return (1);
 }
 
@@ -68,37 +54,34 @@ void	update_env(t_data **data, char *str)
 	{
 		if (ft_strncmp((*data)->envp[i], str, contains_equal(str) + 1) == 0)
 		{
-			// fprintf(stderr, "je dois reafecter la variable \n");
-			// fprintf(stderr, "avant : %s\n", (*data)->envp[i]);
 			free((*data)->envp[i]);
 			(*data)->envp[i] = ft_strdup(str);
-			// fprintf(stderr, "apres : %s\n", (*data)->envp[i]);
 			return ;
 		}
 		i++;
 	}
 	add_to_env(data, str);
 }
+
 void	ft_export_parent(char **cmd, t_data **data)
 {
 	int	i;
 
 	i = 1;
-
 	while (cmd[i])
 	{
 		if (is_a_variable(cmd[i]))
 			update_env(data, cmd[i]);
 		i++;
 	}
-	//(*data)->commands[0]->skip_command = 1;
-	return;
+	return ;
 }
 
 void	ft_export_child(char **cmd, t_data **data)
 {
 	if (cmd[1] == NULL)
 		print_export((*data)->envp);
+	ft_free_tab((*data)->envp);
 	free_all_data(data);
 	exit(EXIT_SUCCESS);
 }

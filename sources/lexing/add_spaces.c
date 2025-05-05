@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:35:58 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 10:41:38 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:03:16 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*add_space(char *str, int index)
 
 char	*add_spaces(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:40 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 10:42:21 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:36:14 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 		if (tab->fd_heredoc > 0)
 			close(tab->fd_heredoc);
 		tab->fd_heredoc = fd[0];
-		// dup(fd[0]);
-		// close(fd[0]);
 		waitpid(pid, NULL, 0);
 	}
 }

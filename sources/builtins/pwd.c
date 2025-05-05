@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:33 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 14:19:58 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:20:04 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_pwd(t_data *data)
 	}
 	ft_putstr_fd(pwd, 1);
 	ft_putstr_fd("\n", 1);
+	ft_free_tab(data->envp);
 	free_all_data(&data);
 	exit(EXIT_SUCCESS);
 }

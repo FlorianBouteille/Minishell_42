@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:33:19 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/02 16:48:28 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:09:19 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static int	get_word_len(char *str)
 static char	*build_word(char *str)
 {
 	int		len;
- 	char	*word;
+	char	*word;
 
 	len = get_word_len(str);
- 	word = malloc((len + 1) * sizeof(char));
- 	if (!word)
- 		return (NULL);
- 	ft_strlcpy(word, str, (size_t)len + 1);
- 	return (word);
+	word = malloc((len + 1) * sizeof(char));
+	if (!word)
+		return (NULL);
+	ft_strlcpy(word, str, (size_t)len + 1);
+	return (word);
 }
 
 static int	count_words(char *str)
@@ -62,7 +62,7 @@ static int	count_words(char *str)
 		i += len;
 		count++;
 	}
-	return(count);
+	return (count);
 }
 
 char	**ft_split_space_quote(char *str)
@@ -72,7 +72,7 @@ char	**ft_split_space_quote(char *str)
 	char	**tab;
 	int		len;
 
-	tab = (char **)malloc((count_words(str) + 1)* sizeof(char *));
+	tab = (char **)malloc((count_words(str) + 1) * sizeof(char *));
 	if (!tab)
 		return (NULL);
 	i = 0;
@@ -89,5 +89,5 @@ char	**ft_split_space_quote(char *str)
 		i += len;
 	}
 	tab[j] = NULL;
-	return(tab);
+	return (tab);
 }

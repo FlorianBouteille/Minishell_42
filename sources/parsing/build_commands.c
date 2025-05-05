@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:53:11 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/02 15:06:54 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:01:47 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_command	**build_command_tab(t_data *data)
 	if (!tab)
 		return (NULL);
 	expand_tokens(data);
-	
 	tmp = data->tokens;
 	while (i < number_of_commands)
 	{

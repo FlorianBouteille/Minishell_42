@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 10:21:46 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/02 16:32:03 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:41:00 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	expand_tokens(t_data *data)
 	while (tmp)
 	{
 		tmp->value = expand_dollars(tmp->value, data->envp);
-		tmp->value = remove_quotes(tmp->value);
 		tmp = tmp->next;
 	}
 }

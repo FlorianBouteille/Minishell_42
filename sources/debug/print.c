@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:22:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/04/30 12:05:06 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:04:56 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	print_command(t_command *command)
 {
 	printf("infiles = \n");
 	print_files(command->infile);
-	// printf("outfiles = \n");
-	// print_files(command->outfile);
 	if (!command->value)
 	{
 		printf("pb affichage, pas de commande\n");
@@ -102,5 +100,3 @@ void	print_tab(char **tab)
 		ft_putstr_fd("\n", 1);
 	}
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/02 16:44:56 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:59:02 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,14 @@ void	init_command(t_command **command)
 	(*command)->number_commands = 0;
 	(*command)->index = -1;
 }
+
 t_command	*new_command(t_token *tokens, int index, int number_commands)
 {
 	t_command	*command;
 	char		*cmd_string;
+	int			condition_next;
 
+	condition_next = 1;
 	cmd_string = NULL;
 	command = malloc(sizeof(t_command));
 	if (!command)
@@ -36,41 +39,29 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 	{
 		if (tokens->type == TOKEN_REDIR_IN && tokens->next
 			&& tokens->next->type == TOKEN_WORD)
-		{
 			add_file_back(&command->infile, ft_strdup(tokens->next->value),
 				NULL, 0);
-			// command->infile = ft_strdup(tokens->next->value);
-			tokens = tokens->next;
-		}
 		else if (tokens->type == TOKEN_REDIR_OUT && tokens->next
 			&& tokens->next->type == TOKEN_WORD)
-		{
 			add_file_back(&command->outfile, ft_strdup(tokens->next->value),
 				NULL, 0);
-			// command->outfile = ft_strdup(tokens->next->value);
-			tokens = tokens->next;
-		}
 		else if (tokens->type == TOKEN_HEREDOC && tokens->next
 			&& tokens->next->type == TOKEN_WORD)
-		{
 			add_file_back(&command->infile, NULL,
 				ft_strdup(tokens->next->value), 0);
-			// command->limiter = ft_strdup(tokens->next->value);
-			tokens = tokens->next;
-		}
 		else if (tokens->type == TOKEN_APPEND && tokens->next
 			&& tokens->next->type == TOKEN_WORD)
-		{
 			add_file_back(&command->outfile, ft_strdup(tokens->next->value),
 				NULL, 1);
-			// command->outfile = ft_strdup(tokens->next->value);
-			// command->out_append = 1;
-			tokens = tokens->next;
-		}
 		else if (tokens->type == TOKEN_WORD)
+		{
+			condition_next = 0;
 			cmd_string = ft_strjoin_free_sep(cmd_string, tokens->value, ' ');
+		}
 		else
 			printf("ERROR PARSING\n");
+		if (condition_next)
+			tokens = tokens->next;
 		tokens = tokens->next;
 	}
 	command->index = index;
@@ -79,6 +70,7 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 	command->cmd_tab = ft_split_space_quote(command->value);
 	if (!command->cmd_tab)
 		ft_free_tab(command->cmd_tab);
+	remove_quotes_tab(command->cmd_tab);
 	if (!command->value || ft_strlen(command->value) == 0)
 		command->skip_command = 1;
 	return (command);

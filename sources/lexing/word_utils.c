@@ -6,18 +6,18 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:52:19 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/02 16:29:01 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:02:46 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **copy_tab(char **tab)
+char	**copy_tab(char **tab)
 {
 	int		len;
 	int		i;
 	char	**copy;
-	
+
 	len = 0;
 	if (!tab || !(*tab))
 		return (NULL);
@@ -37,30 +37,6 @@ char **copy_tab(char **tab)
 	copy[i] = NULL;
 	return (copy);
 }
-
-// int	get_word_len(char *str)
-// {
-// 	int	i;
-// 	int	quote_type;
-
-// 	i = 0;
-// 	quote_type = 0;
-// 	if (str[i] == '\'' || str[i] == '\"')
-// 		quote_type = str[i++];
-// 	if (!quote_type)
-// 	{
-// 		while (str[i] && str[i] != ' ' && str[i] != '\'' && str[i] != '\"')
-// 			i++;
-// 	}
-// 	else
-// 	{
-// 		while (str[i] && str[i] != quote_type)
-// 			i++;
-// 		if (str[i] && str[i] == quote_type)
-// 			i++;
-// 	}
-// 	return (i);
-// }
 
 int	get_word_len(char *str)
 {

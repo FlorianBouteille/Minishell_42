@@ -6,77 +6,78 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 14:11:57 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:39:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_commands_tab(t_command **tab)
+void	execute(char *path, char **cmd, t_data **data)
 {
-	int	count;
-
-	count = 0;
-	while (tab[count])
-		count++;
-	return (count);
-}
-
-void	close_heredocs_fd(t_command **commands)
-{
-	int	i;
-
-	i = 0;
-	while (commands[i] != NULL)
+	if (done_in_parent(cmd[0]) == 1)
 	{
-		if (commands[i]->fd_heredoc != -1)
-			close(commands[i]->fd_heredoc);
-		i++;
+		fprintf(stderr, "done in parent !\n");
+		ft_free_tab((*data)->envp);
+		free_all_data(data);
+		exit(EXIT_SUCCESS);
 	}
+	if (!path)
+	{
+		ft_putstr_fd(cmd[0], 2);
+		ft_putstr_fd(" : command not found !\n", 2);
+	}
+	else
+	{
+		execve(path, cmd, (*data)->envp);
+		perror("execve");
+	}
+	ft_free_tab((*data)->envp);
+	free_all_data(data);
+	free(path);
+	exit(EXIT_FAILURE);
 }
-void	exec_child(t_command *command, t_data **data)
+
+void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 {
-	int		pipe_fd[2];
-	int		pid;
 	char	*path;
 	char	**cmd;
 
+	path = NULL;
+	cmd = NULL;
+	// sigaction.sa_handler = &fonctionpourlesenfants;
+	redirect_all_inputs(command, pipe_fd);
+	redirect_all_outputs(command, pipe_fd);
+	// sigaction(SIGINT, lastructure, NULL)
+	close_heredocs_fd((*data)->commands);
+	close((*data)->stdin_copy);
+	close((*data)->stdout_copy);
+	cmd = command->cmd_tab;
+	if (is_builtin_child(cmd, *data) != 0)
+		exit(EXIT_SUCCESS);
+	if (command->skip_command)
+	{
+		ft_free_tab((*data)->envp);
+		free_all_data(data);
+		exit(EXIT_FAILURE);
+	}
+	path = get_path(cmd[0], (*data)->envp);
+	execute(path, cmd, data);
+}
+
+void	exec_fork(t_command *command, t_data **data)
+{
+	int	pipe_fd[2];
+	int	pid;
+
 	pipe(pipe_fd);
 	pid = fork();
-	cmd = NULL;
-	path = NULL;
 	if (pid == -1)
 	{
 		perror("fork error");
 		return ;
 	}
 	else if (pid == 0)
-	{
-		// sigaction.sa_handler = &fonctionpourlesenfants;
-		redirect_all_inputs(command, pipe_fd);
-		redirect_all_outputs(command, pipe_fd);
-		// sigaction(SIGINT, lastructure, NULL)
-		close_heredocs_fd((*data)->commands);
-		close((*data)->stdin_copy);
-		close((*data)->stdout_copy);
-		if (command->skip_command)
-		{
-			free_all_data(data);
-			exit(EXIT_FAILURE);
-		}
-		cmd = command->cmd_tab;
-		if (is_builtin_child(cmd, *data) != 0)
-			exit(EXIT_SUCCESS);
-		path = get_path(cmd[0], (*data)->envp);
-		if (path)
-		{
-			execve(path, cmd, (*data)->envp);
-			perror("execve");
-		}
-		free_all_data(data);
-		free(path);
-		exit(EXIT_FAILURE);
-	}
+		exec_child(command, data, pipe_fd);
 	else
 	{
 		close(pipe_fd[1]);
@@ -97,13 +98,14 @@ void	exec_commands(t_data **data)
 	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
-	if ((*data)->number_of_commands == 1 )//&& is_parent_builtin((*data)->commands->cmd_tab[0]))
+	if ((*data)->number_of_commands == 1)
 	{
 		is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
+		//(*data)->commands[0]->skip_command = 1;
 	}
 	while (i < (*data)->number_of_commands)
 	{
-		exec_child((*data)->commands[i], data);
+		exec_fork((*data)->commands[i], data);
 		i++;
 	}
 	i = 0;
@@ -115,4 +117,3 @@ void	exec_commands(t_data **data)
 	dup2((*data)->stdout_copy, STDOUT_FILENO);
 	close((*data)->stdout_copy);
 }
-

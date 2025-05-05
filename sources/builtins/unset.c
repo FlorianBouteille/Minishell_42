@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:54:14 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/30 14:10:08 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:23:20 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,12 @@ void	unset_variable(t_data **data, char *variable)
 
 void	ft_unset(char **cmd, t_data **data)
 {
-	int i;
+	int	i;
 
 	i = 1;
-	if (!cmd[1])
-		(*data)->commands[0]->skip_command = 1; //A REVOIR POUR L EXIT car ici doit etre EXIT_SUCCES differencier skip_command failure et skip commande succes????
-	else
+	while (cmd[i])
 	{
-		while (cmd[i])
-		{
-			unset_variable(data, cmd[i]);
-			i++;
-		}
+		unset_variable(data, cmd[i]);
+		i++;
 	}
 }
