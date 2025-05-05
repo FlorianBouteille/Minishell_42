@@ -20,7 +20,7 @@ void	expand_tokens(t_data *data)
 	while (tmp)
 	{
 		tmp->value = expand_dollars(tmp->value, data->envp);
-		//tmp->value = remove_quotes(tmp->value);
+		tmp->value = remove_quotes(tmp->value);
 		tmp = tmp->next;
 	}
 }
@@ -28,13 +28,17 @@ void	expand_tokens(t_data *data)
 int	contains_expandables(char *str)
 {
 	int	i;
+	int	quote_type;
 
 	i = 0;
-	if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
-		return (-1);
+	quote_type = 0;
 	while (str[i] && str[i + 1])
 	{
-		if (str[i] == '$')
+		if ((str[i] == '\'' || str[i] == '\"') && quote_type == 0)
+			quote_type = str[i];
+		else if (str[i] == quote_type)
+			quote_type = 0;
+		else if (str[i] == '$' && quote_type != '\'')
 		{
 			if (ft_isalnum(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'
 				|| str[i + 1] == '$')
@@ -66,7 +70,6 @@ char	*var_to_replace(char *str)
 
 	i = 0;
 	var_len = len_to_replace(str);
-	printf("len to replace = %i\n", var_len);
 	var_name = (char *)malloc((var_len + 1) * sizeof(char));
 	if (!var_name)
 		return (NULL);
