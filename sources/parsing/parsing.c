@@ -29,7 +29,6 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 	char		*cmd_string;
 	int			condition_next;
 
-	condition_next = 1;
 	cmd_string = NULL;
 	command = malloc(sizeof(t_command));
 	if (!command)
@@ -37,6 +36,7 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 	init_command(&command);
 	while (tokens && tokens->type != TOKEN_PIPE)
 	{
+		condition_next = 1;
 		if (tokens->type == TOKEN_REDIR_IN && tokens->next
 			&& tokens->next->type == TOKEN_WORD)
 			add_file_back(&command->infile, ft_strdup(tokens->next->value),
@@ -64,6 +64,7 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 			tokens = tokens->next;
 		tokens = tokens->next;
 	}
+	printf("command string = %s\n", cmd_string);
 	command->index = index;
 	command->number_commands = number_commands;
 	command->value = cmd_string;

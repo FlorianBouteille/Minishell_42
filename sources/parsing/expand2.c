@@ -65,7 +65,7 @@ char	*get_content(char *str, char **envp)
 	if (!str)
 		return (NULL);
 	if (str[0] == '?')
-		return (ft_itoa(last_signal));
+		return (ft_itoa(g_last_signal));
 	else if (str[0] == '$')
 		return (ft_strdup(ft_getenv("SYSTEMD_EXEC_PID", envp)));
 	else
