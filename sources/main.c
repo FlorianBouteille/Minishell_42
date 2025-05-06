@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 17:08:07 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 16:16:03 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	minishell(char **envp)
 	envp_mem = NULL;
 	while (1)
 	{
-		signals();
+		setup_signals();
 		init_data(&data, envp, envp_mem);
 		// check ctrl + backslash
 		line = readline("ya quoi ? > ");
 		if (!line)
-			return (free_all_data(&data), 0); // exit proprement
+			return (ft_free_tab(data->envp), free_all_data(&data), 0); // exit proprement
 		// check ctrl + c
 		add_history(line);
 		line = add_spaces(line);
@@ -57,7 +57,6 @@ int	minishell(char **envp)
 			continue ;
 		data->commands = build_command_tab(data);
 		// print_command_tab(data->commands);
-		print_tokens(data->tokens);
 		exec_commands(&data);
 		envp_mem = data->envp;
 		data->envp = NULL;

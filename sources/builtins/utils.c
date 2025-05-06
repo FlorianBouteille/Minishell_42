@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:01:58 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:23:52 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 12:06:03 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	is_builtin_parent(char **cmd, t_data *data)
 	if (!cmd || !cmd[0])
 		return (-1);
 	len_cmd = ft_strlen(cmd[0]);
-	printf("cmd[0] = %s\n", cmd[0]);
 	if (ft_strncmp(cmd[0], "export", len_cmd) == 0 && len_cmd == 6)
 		return (ft_export_parent(cmd, &data), 1);
 	else if (ft_strncmp(cmd[0], "cd", len_cmd) == 0 && len_cmd == 2)

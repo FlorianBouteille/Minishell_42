@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 17:08:56 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 15:52:34 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,15 @@ typedef struct s_data
 	t_command		**commands;
 }					t_data;
 
-// struct sigaction {
+typedef struct sigaction	t_sigaction;
+
+// {
 // 	void     (*sa_handler)(int);
 // 	void     (*sa_sigaction)(int, siginfo_t *, void *);
 // 	sigset_t   sa_mask;
 // 	int        sa_flags;
 // 	void     (*sa_restorer)(void);
-// };
+// }		t_sig;
 
 typedef enum e_token_type
 {
@@ -172,5 +174,8 @@ void				lex_error(char *str, t_data **data);
 
 // Signals
 void				signals(void);
+void				reset_signals(void);
+void				setup_signals(void);
+void				ignore_signals(void);
 
 #endif

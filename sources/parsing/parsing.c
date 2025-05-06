@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/05 16:59:02 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 12:03:18 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ t_command	*new_command(t_token *tokens, int index, int number_commands)
 			tokens = tokens->next;
 		tokens = tokens->next;
 	}
-	printf("command string = %s\n", cmd_string);
 	command->index = index;
 	command->number_commands = number_commands;
 	command->value = cmd_string;

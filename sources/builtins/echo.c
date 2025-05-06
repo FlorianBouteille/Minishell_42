@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:15:17 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:13:35 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 16:25:26 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	echo_no_args(t_data *data)
 	ft_putstr_fd("\n", 1);
 	ft_free_tab(data->envp);
 	free_all_data(&data);
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 void	ft_echo(char **cmd, t_data *data)

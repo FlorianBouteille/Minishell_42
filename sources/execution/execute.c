@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:39:40 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 18:08:27 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	execute(char *path, char **cmd, t_data **data)
 {
 	if (done_in_parent(cmd[0]) == 1)
 	{
-		fprintf(stderr, "done in parent !\n");
 		ft_free_tab((*data)->envp);
 		free_all_data(data);
 		exit(EXIT_SUCCESS);
@@ -34,7 +33,7 @@ void	execute(char *path, char **cmd, t_data **data)
 	ft_free_tab((*data)->envp);
 	free_all_data(data);
 	free(path);
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
 void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
@@ -45,6 +44,7 @@ void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 	path = NULL;
 	cmd = NULL;
 	// sigaction.sa_handler = &fonctionpourlesenfants;
+	reset_signals();
 	redirect_all_inputs(command, pipe_fd);
 	redirect_all_outputs(command, pipe_fd);
 	// sigaction(SIGINT, lastructure, NULL)
@@ -80,7 +80,8 @@ void	exec_fork(t_command *command, t_data **data)
 		exec_child(command, data, pipe_fd);
 	else
 	{
-		close(pipe_fd[1]);
+		ignore_signals();
+			close(pipe_fd[1]);
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
 			perror("dup2 error");
 		close(pipe_fd[0]);
@@ -88,7 +89,14 @@ void	exec_fork(t_command *command, t_data **data)
 			close(command->fd_heredoc);
 	}
 }
-
+int		get_exit_code(int exit_status)
+{
+	if (WIFEXITED(exit_status))
+		return (WEXITSTATUS(exit_status));
+	else if (WIFSIGNALED(exit_status))
+		return (128 + WTERMSIG(exit_status));
+	return (0);
+}
 void	exec_commands(t_data **data)
 {
 	int	i;
@@ -110,7 +118,7 @@ void	exec_commands(t_data **data)
 	}
 	i = 0;
 	while (wait(&(*data)->exit_status) > 0)
-		;
+		g_last_signal = get_exit_code((*data)->exit_status);
 	// fprintf(stderr, "exit status = %i\n", exit_status);
 	dup2((*data)->stdin_copy, STDIN_FILENO);
 	close((*data)->stdin_copy);

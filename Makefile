@@ -6,7 +6,7 @@
 #    By: csolari <csolari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 10:48:16 by csolari           #+#    #+#              #
-#    Updated: 2025/05/05 15:12:36 by csolari          ###   ########.fr        #
+#    Updated: 2025/05/06 15:17:53 by csolari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ MEMORY_SRC = free.c free2.c
 ERROR_SRC = error.c
 DEBUG_SRC = print.c
 BUILTINS_SRC = export.c export2.c unset.c cd.c echo.c pwd.c env.c exit.c utils.c
-SIGNALS_SRC = signals.c
+SIGNALS_SRC = signals.c signals2.c
 MAIN_SRC = main.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(PARSING_SRC:.c=.o)) \

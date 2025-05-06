@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/02 12:38:05 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:33:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*try_env_paths(char *str, char **envp)
 	return (path);
 }
 
+//EST CE QUE ON GARDE??
 char	*try_with_bin(char *str)
 {
 	char	*path_to_try;
@@ -70,7 +71,7 @@ char	*get_path(char *str, char *envp[])
 		return (str);
 	if (envp)
 		path = try_env_paths(str, envp);
-	if (!path)
-		path = try_with_bin(str);
+	// if (!path)
+	// 	path = try_with_bin(str);
 	return (path);
 }

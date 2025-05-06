@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:46:07 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 17:06:12 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/06 15:50:29 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,25 @@ void	control_c_parent(int signum)
 
 // }
 
-// void control_c_heredoc()
-// {
+void control_c_heredoc()
+{
+	
+}
 
-// }
-
-// void control_back_parent(int signum)
-// {
-// 	(void)signum;
-// 	rl_replace_line("minishell >", 12);
-// 	return ;
-// }
-
+void control_back_parent(int signum)
+{
+	(void)signum;
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
+	return ;
+}
+void	backslash(int signum)
+{
+	(void)signum;
+	if (g_last_signal == 2)
+		write(1, "\n", 1);
+}
 // void control_back_child()
 // {
 
@@ -47,10 +54,17 @@ void	control_c_parent(int signum)
 // void control_back_heredoc()
 // {
 // //ne fait rien, fonction necessaire??
+
 // }
 
-void	signals(void)
-{
-	signal(SIGINT, control_c_parent);
-///	signal(SIGQUIT, control_back_parent);
-}
+// void	reset_signals(void)
+// {
+// 	signal(SIGQUIT, SIG_DFL);
+// 	signal(SIGINT, SIG_DFL);
+// }
+// void	signals(void)
+// {
+// 	signal(SIGINT, control_c_parent);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGCHLD, backslash);
+// }
