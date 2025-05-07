@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/06 18:08:27 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:41:21 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_fork(t_command *command, t_data **data)
 	else
 	{
 		ignore_signals();
-			close(pipe_fd[1]);
+		close(pipe_fd[1]);
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
 			perror("dup2 error");
 		close(pipe_fd[0]);
@@ -108,8 +108,8 @@ void	exec_commands(t_data **data)
 	fprintf(stderr, "glbale dans le  parent = %i\n", g_last_signal);
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
-	if (g_last_signal == 0)
-	{
+	// if (g_last_signal == 0)
+	// {
 		if ((*data)->number_of_commands == 1)
 		{
 			is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
@@ -123,7 +123,7 @@ void	exec_commands(t_data **data)
 		i = 0;
 		while (wait(&(*data)->exit_status) > 0)
 			g_last_signal = get_exit_code((*data)->exit_status);
-	}
+	// }
 	// fprintf(stderr, "exit status = %i\n", exit_status);
 	dup2((*data)->stdin_copy, STDIN_FILENO);
 	close((*data)->stdin_copy);

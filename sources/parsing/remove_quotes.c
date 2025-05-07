@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 14:55:59 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:40:43 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:31:45 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	remove_quotes_tab(char **tab)
 	int	i;
 
 	i = 0;
-	while (tab[i])
+	while (tab && tab[i])
 	{
 		tab[i] = remove_quotes(tab[i]);
 		i++;

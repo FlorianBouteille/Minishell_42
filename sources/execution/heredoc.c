@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:40 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/06 13:31:50 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:38:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,33 @@ int	is_limiter(char *str, char *limiter)
 	return (1);
 }
 
-void	heredoc(t_data **data, t_command *tab, t_file *file)
+void	heredoc_child(t_data **data, t_file *file, int fd[2])
 {
 	char	*line;
+
+	reset_signals();
+	close_heredocs_fd((*data)->commands);
+	while (1)
+	{
+		line = readline("heredoc > ");
+		if (!line || (is_limiter(line, file->limiter) == 1))
+		{
+			free(line);
+			break ;
+		}
+		write(fd[1], line, ft_strlen(line));
+		write(fd[1], "\n", 1);
+		free(line);
+	}
+	close(fd[1]);
+	close(fd[0]);
+	ft_free_tab((*data)->envp);
+	free_all_data(data);
+	exit(0);
+}
+
+void	heredoc(t_data **data, t_command *tab, t_file *file)
+{
 	int		fd[2];
 	int		pid;
 
@@ -60,27 +84,7 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 	if (pid == -1)
 		perror("pid error");
 	else if (pid == 0)
-	{
-		reset_signals();
-		close_heredocs_fd((*data)->commands);
-		while (1)
-		{
-			line = readline("heredoc > ");
-			if (!line || (is_limiter(line, file->limiter) == 1))
-			{
-				free(line);
-				break ;
-			}
-			write(fd[1], line, ft_strlen(line));
-			write(fd[1], "\n", 1);
-			free(line);
-		}
-		close(fd[1]);
-		close(fd[0]);
-		ft_free_tab((*data)->envp);
-		free_all_data(data);
-		exit(0);
-	}
+		heredoc_child(data, file, fd);
 	else
 	{
 		close(fd[1]);

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:35:43 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:41:33 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,10 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 		{
 			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
 				perror("dup error in heredoc\n");
-			// close(command->fd_heredoc);
 		}
 	}
 	else if (infile->name)
 	{
-		// fprintf(stderr, "Je lis dans le infile : %s\n", infile->name);
 		fd_in = open_file(infile->name, 0);
 		if (fd_in == -1)
 			command->skip_command = 1;
@@ -108,7 +106,6 @@ void	redirect_output(t_file *outfile)
 		if (fd_out == -1)
 		{
 			perror("no rights on the file\n");
-			// free tous les trucs
 			exit(0);
 		}
 		if (dup2(fd_out, STDOUT_FILENO) == -1)

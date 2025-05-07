@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:33:19 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 17:09:19 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:30:47 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	count_words(char *str)
 	len = 1;
 	i = 0;
 	count = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		while (str[i] && str[i] == ' ')
 			i++;
@@ -72,12 +72,14 @@ char	**ft_split_space_quote(char *str)
 	char	**tab;
 	int		len;
 
+	if (!str)
+		return (NULL);
 	tab = (char **)malloc((count_words(str) + 1) * sizeof(char *));
 	if (!tab)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		while (str[i] && str[i] == ' ')
 			i++;

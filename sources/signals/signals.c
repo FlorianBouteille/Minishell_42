@@ -5,66 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 10:46:07 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/06 15:50:29 by csolari          ###   ########.fr       */
+/*   Created: 2025/05/06 15:17:25 by csolari           #+#    #+#             */
+/*   Updated: 2025/05/07 14:33:47 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
-void	control_c_parent(int signum)
+void	handle_signals(int signum)
+{
+	if (!g_last_signal && signum == SIGINT)
+		g_last_signal = 130;
+	if (signum == SIGINT || signum == SIGCHLD)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+void	sigint_child(int signum)
 {
 	(void)signum;
 	g_last_signal = 130;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	write(2, "\n", 1);
+	exit(130);
 }
 
-// void control_c_child()
-// {
-
-// }
-
-void control_c_heredoc()
+void	ignore_signals(void)
 {
-	
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void control_back_parent(int signum)
+void	reset_signals(void)
 {
-	(void)signum;
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
-	return ;
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = sigint_child;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &sa, NULL);
 }
-void	backslash(int signum)
+
+void	setup_signals(void)
 {
-	(void)signum;
-	if (g_last_signal == 2)
-		write(1, "\n", 1);
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = handle_signals;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
 }
-// void control_back_child()
-// {
-
-// }
-
-// void control_back_heredoc()
-// {
-// //ne fait rien, fonction necessaire??
-
-// }
-
-// void	reset_signals(void)
-// {
-// 	signal(SIGQUIT, SIG_DFL);
-// 	signal(SIGINT, SIG_DFL);
-// }
-// void	signals(void)
-// {
-// 	signal(SIGINT, control_c_parent);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGCHLD, backslash);
-// }

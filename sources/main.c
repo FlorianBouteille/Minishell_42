@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/06 16:16:03 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:42:25 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,23 @@ int	minishell(char **envp)
 	{
 		setup_signals();
 		init_data(&data, envp, envp_mem);
-		// check ctrl + backslash
 		line = readline("ya quoi ? > ");
 		if (!line)
-			return (ft_free_tab(data->envp), free_all_data(&data), 0); // exit proprement
+			return (ft_free_tab(data->envp), free_all_data(&data), 0);
 		g_last_signal = 0;
-		// check ctrl + c
 		add_history(line);
 		line = add_spaces(line);
 		data->tokens = lex_string(line);
 		if (!check_tokens(data->tokens, &data))
 			continue ;
 		data->commands = build_command_tab(data);
-		// print_command_tab(data->commands);
 		exec_commands(&data);
 		envp_mem = data->envp;
 		data->envp = NULL;
 		free_all_data(&data);
 	}
 	ft_free_tab(envp_mem);
-	// rl_clear_history();
+	rl_clear_history();
 	return (1);
 }
 
@@ -72,7 +69,6 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	if (argc > 1)
 		return (printf("Minishell needs no arguments \n"), 1);
-	// sigaction(SIGINT, say_hi, NULL);
 	(void)argv;
 	minishell(envp);
 	return (0);

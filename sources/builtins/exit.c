@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:54 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:14:29 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 13:43:18 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	is_numeric(char *str)
 
 void	ft_exit(char **cmd, t_data *data)
 {
-	int exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	ft_putstr_fd("exit\n", 2);

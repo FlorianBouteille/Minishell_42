@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:35:58 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 17:03:16 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/07 13:42:11 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ char	*add_spaces(char *str)
 			quote_type = str[i];
 		else if (str[i] == quote_type)
 			quote_type = 0;
-		if (!is_special(str[i]) && is_special(str[i + 1]) && str[i] != ' ' &&
-			quote_type == 0)
+		if (!is_special(str[i]) && is_special(str[i + 1]) && str[i] != ' '
+			&& quote_type == 0)
 			str = add_space(str, (i + 1));
-		if (is_special(str[i]) && str[i + 1] != str[i] && str[i + 1] != ' ' &&
-			quote_type == 0)
+		if (is_special(str[i]) && str[i + 1] != str[i] && str[i + 1] != ' '
+			&& quote_type == 0)
 			str = add_space(str, (i + 1));
 		i++;
 	}
