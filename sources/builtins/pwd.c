@@ -16,7 +16,7 @@ void	ft_pwd(t_data *data)
 {
 	char	*pwd;
 
-	pwd = ft_getenv("PWD", data->envp);
+	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
 		free_all_data(&data);
@@ -24,6 +24,7 @@ void	ft_pwd(t_data *data)
 	}
 	ft_putstr_fd(pwd, 1);
 	ft_putstr_fd("\n", 1);
+	free(pwd);
 	ft_free_tab(data->envp);
 	free_all_data(&data);
 	exit(EXIT_SUCCESS);

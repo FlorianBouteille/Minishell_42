@@ -21,6 +21,20 @@ char	*concat_path(char *path, char *str)
 	return (final_path);
 }
 
+int	contains_slash(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*try_env_paths(char *str, char **envp)
 {
 	char	**env_paths_tab;
@@ -48,18 +62,6 @@ char	*try_env_paths(char *str, char **envp)
 	return (path);
 }
 
-//EST CE QUE ON GARDE??
-char	*try_with_bin(char *str)
-{
-	char	*path_to_try;
-
-	path_to_try = ft_strjoin("/bin/", str);
-	if (access(path_to_try, F_OK) == 0 && access(path_to_try, X_OK) == 0)
-		return (path_to_try);
-	free(path_to_try);
-	return (NULL);
-}
-
 char	*get_path(char *str, char *envp[])
 {
 	char	*path;
@@ -67,11 +69,9 @@ char	*get_path(char *str, char *envp[])
 	if (!str)
 		return (NULL);
 	path = NULL;
-	if (access(str, X_OK) == 0)
+	if (contains_slash(str) && access(str, X_OK) == 0)
 		return (str);
-	if (envp)
+	if (envp && !contains_slash(str))
 		path = try_env_paths(str, envp);
-	// if (!path)
-	// 	path = try_with_bin(str);
 	return (path);
 }

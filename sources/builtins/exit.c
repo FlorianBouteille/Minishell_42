@@ -12,11 +12,44 @@
 
 #include "minishell.h"
 
+static int	is_numeric(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '-' || str[0] == '+')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	ft_exit(char **cmd, t_data *data)
 {
-	if (cmd[1])
-		ft_putstr_fd("exit : doesn't require arguments\n", 2);
+	int exit_code;
+
+	exit_code = 0;
+	ft_putstr_fd("exit\n", 2);
+	if (cmd[1] && is_numeric(cmd[1]) && cmd[2])
+	{
+		ft_putstr_fd("exit : too many arguments\n", 2);
+		g_last_signal = 1;
+		return ;
+	}
+	else if (cmd[1] && !is_numeric(cmd[1]))
+	{
+		ft_putstr_fd("exit : ", 2);
+		ft_putstr_fd(cmd[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit_code = 2;
+	}
+	else if (cmd[1] && is_numeric(cmd[1]) && !cmd[2])
+		exit_code = ft_atoi(cmd[1]) % 256;
 	ft_free_tab(data->envp);
 	free_all_data(&data);
-	exit(EXIT_SUCCESS);
+	exit(exit_code);
 }

@@ -61,6 +61,7 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 		perror("pid error");
 	else if (pid == 0)
 	{
+		reset_signals();
 		close_heredocs_fd((*data)->commands);
 		while (1)
 		{
@@ -76,6 +77,7 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 		}
 		close(fd[1]);
 		close(fd[0]);
+		ft_free_tab((*data)->envp);
 		free_all_data(data);
 		exit(0);
 	}
@@ -85,7 +87,7 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 		if (tab->fd_heredoc > 0)
 			close(tab->fd_heredoc);
 		tab->fd_heredoc = fd[0];
-		waitpid(pid, NULL, 0);
+		g_last_signal = get_exit_code(wait(&(*data)->exit_status));
 	}
 }
 
@@ -97,10 +99,10 @@ int	get_heredocs(t_command **tab, t_data **data)
 
 	i = 0;
 	number_heredoc = 0;
-	while (tab[i])
+	while (tab[i] && g_last_signal == 0)
 	{
 		temp = tab[i]->infile;
-		while (temp)
+		while (temp && g_last_signal == 0)
 		{
 			if (temp->limiter)
 			{

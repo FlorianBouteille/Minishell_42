@@ -49,6 +49,7 @@ int	minishell(char **envp)
 		line = readline("ya quoi ? > ");
 		if (!line)
 			return (ft_free_tab(data->envp), free_all_data(&data), 0); // exit proprement
+		g_last_signal = 0;
 		// check ctrl + c
 		add_history(line);
 		line = add_spaces(line);

@@ -53,7 +53,7 @@ void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 	close((*data)->stdout_copy);
 	cmd = command->cmd_tab;
 	if (is_builtin_child(cmd, *data) != 0)
-		exit(EXIT_SUCCESS);
+		exit(g_last_signal);
 	if (command->skip_command)
 	{
 		ft_free_tab((*data)->envp);
@@ -102,23 +102,28 @@ void	exec_commands(t_data **data)
 	int	i;
 
 	i = 0;
+	ignore_signals();
 	(*data)->number_of_commands = count_commands_tab((*data)->commands);
 	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
+	fprintf(stderr, "glbale dans le  parent = %i\n", g_last_signal);
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
-	if ((*data)->number_of_commands == 1)
+	if (g_last_signal == 0)
 	{
-		is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
-		//(*data)->commands[0]->skip_command = 1;
+		if ((*data)->number_of_commands == 1)
+		{
+			is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
+			//(*data)->commands[0]->skip_command = 1;
+		}
+		while (i < (*data)->number_of_commands)
+		{
+			exec_fork((*data)->commands[i], data);
+			i++;
+		}
+		i = 0;
+		while (wait(&(*data)->exit_status) > 0)
+			g_last_signal = get_exit_code((*data)->exit_status);
 	}
-	while (i < (*data)->number_of_commands)
-	{
-		exec_fork((*data)->commands[i], data);
-		i++;
-	}
-	i = 0;
-	while (wait(&(*data)->exit_status) > 0)
-		g_last_signal = get_exit_code((*data)->exit_status);
 	// fprintf(stderr, "exit status = %i\n", exit_status);
 	dup2((*data)->stdin_copy, STDIN_FILENO);
 	close((*data)->stdin_copy);

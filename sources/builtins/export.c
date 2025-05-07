@@ -50,7 +50,7 @@ void	update_env(t_data **data, char *str)
 	int	i;
 
 	i = 0;
-	while ((*data)->envp[i])
+	while ((*data)->envp && (*data)->envp[i])
 	{
 		if (ft_strncmp((*data)->envp[i], str, contains_equal(str) + 1) == 0)
 		{

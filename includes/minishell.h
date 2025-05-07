@@ -143,6 +143,7 @@ void				redirect_all_outputs(t_command *command, int pipe_fd[2]);
 void				close_heredocs_fd(t_command **commands);
 int					count_commands_tab(t_command **tab);
 int					done_in_parent(char *cmd);
+int					get_exit_code(int exit_status);
 
 // Builtins
 

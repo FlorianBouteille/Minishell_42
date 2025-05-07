@@ -45,7 +45,5 @@ int	is_builtin_child(char **cmd, t_data *data)
 		return (ft_pwd(data), 1);
 	else if (ft_strncmp(cmd[0], "env", len_cmd) == 0 && len_cmd == 3)
 		return (ft_env(data), 1);
-	else if (ft_strncmp(cmd[0], "exit", len_cmd) == 0 && len_cmd == 4)
-		return (ft_exit(cmd, data), 1);
 	return (0);
 }

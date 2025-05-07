@@ -28,7 +28,8 @@ void	handle_signals(int signum)
 
 void	sigint_child(int signum)
 {
-	signum++;
+	(void)signum;
+	g_last_signal = 130;
 	fprintf(stderr, "je suis appellleeeeeeee \n");
 	write(2, "\n", 1);
 	exit(130);
