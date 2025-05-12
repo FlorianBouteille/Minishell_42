@@ -178,5 +178,7 @@ void				signals(void);
 void				reset_signals(void);
 void				setup_signals(void);
 void				ignore_signals(void);
+void				heredoc_signals(void);
+
 
 #endif

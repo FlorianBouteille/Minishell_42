@@ -89,14 +89,25 @@ void	exec_fork(t_command *command, t_data **data)
 			close(command->fd_heredoc);
 	}
 }
+
 int		get_exit_code(int exit_status)
 {
+	int	signal;
+
 	if (WIFEXITED(exit_status))
 		return (WEXITSTATUS(exit_status));
 	else if (WIFSIGNALED(exit_status))
-		return (128 + WTERMSIG(exit_status));
+	{
+		signal = WTERMSIG(exit_status);
+		if (signal == SIGSYS)
+			return (127);
+		if (signal == SIGPIPE)
+			return (127);
+		return (128 + signal);
+	}
 	return (0);
 }
+
 void	exec_commands(t_data **data)
 {
 	int	i;
@@ -105,26 +116,28 @@ void	exec_commands(t_data **data)
 	ignore_signals();
 	(*data)->number_of_commands = count_commands_tab((*data)->commands);
 	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
-	fprintf(stderr, "glbale dans le  parent = %i\n", g_last_signal);
+	if (WIFSIGNALED((*data)->number_heredoc))
+	{
+		g_last_signal = 130;
+		// close_heredocs_fd((*data)->commands);
+		return ;
+	}
 	(*data)->stdin_copy = dup(STDIN_FILENO);
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
-	// if (g_last_signal == 0)
-	// {
-		if ((*data)->number_of_commands == 1)
-		{
-			is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
-			//(*data)->commands[0]->skip_command = 1;
-		}
-		while (i < (*data)->number_of_commands)
-		{
-			exec_fork((*data)->commands[i], data);
-			i++;
-		}
-		i = 0;
-		while (wait(&(*data)->exit_status) > 0)
-			g_last_signal = get_exit_code((*data)->exit_status);
-	// }
-	// fprintf(stderr, "exit status = %i\n", exit_status);
+	if ((*data)->number_of_commands == 1)
+		is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
+	while (i < (*data)->number_of_commands)
+	{
+		exec_fork((*data)->commands[i], data);
+		i++;
+	}
+	i = 0;
+	while (wait(&(*data)->exit_status) > 0)
+	{
+		printf("exits on %i\n", (*data)->exit_status);
+		g_last_signal = get_exit_code((*data)->exit_status);
+		printf("so g_last_signal = %i\n", g_last_signal);
+	}
 	dup2((*data)->stdin_copy, STDIN_FILENO);
 	close((*data)->stdin_copy);
 	dup2((*data)->stdout_copy, STDOUT_FILENO);

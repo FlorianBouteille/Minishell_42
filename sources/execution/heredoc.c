@@ -52,7 +52,7 @@ void	heredoc_child(t_data **data, t_file *file, int fd[2])
 {
 	char	*line;
 
-	reset_signals();
+	heredoc_signals();
 	close_heredocs_fd((*data)->commands);
 	while (1)
 	{
@@ -73,11 +73,13 @@ void	heredoc_child(t_data **data, t_file *file, int fd[2])
 	exit(0);
 }
 
-void	heredoc(t_data **data, t_command *tab, t_file *file)
+int	heredoc(t_data **data, t_command *tab, t_file *file)
 {
 	int		fd[2];
 	int		pid;
+	int		signal;
 
+	signal = 0;
 	if (pipe(fd) == -1)
 		perror("pipe");
 	pid = fork();
@@ -91,8 +93,15 @@ void	heredoc(t_data **data, t_command *tab, t_file *file)
 		if (tab->fd_heredoc > 0)
 			close(tab->fd_heredoc);
 		tab->fd_heredoc = fd[0];
-		g_last_signal = get_exit_code(wait(&(*data)->exit_status));
+		wait(&(*data)->exit_status);
+		signal = get_exit_code((*data)->exit_status);
+		if (signal != 0)
+		{
+			printf("je close sur signal = %i\n", signal);
+			close(tab->fd_heredoc);			
+		}
 	}
+	return (signal);
 }
 
 int	get_heredocs(t_command **tab, t_data **data)
@@ -100,8 +109,11 @@ int	get_heredocs(t_command **tab, t_data **data)
 	int		i;
 	int		number_heredoc;
 	t_file	*temp;
+	int		signal;
 
 	i = 0;
+	signal = 0;
+	g_last_signal = 0;
 	number_heredoc = 0;
 	while (tab[i] && g_last_signal == 0)
 	{
@@ -110,12 +122,14 @@ int	get_heredocs(t_command **tab, t_data **data)
 		{
 			if (temp->limiter)
 			{
-				heredoc(data, tab[i], temp);
+				signal = heredoc(data, tab[i], temp);
+				if (signal != 0)
+					return (signal);
 				number_heredoc++;
 			}
 			temp = temp->next;
 		}
 		i++;
 	}
-	return (number_heredoc);
+	return (signal);
 }

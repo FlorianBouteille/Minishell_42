@@ -26,6 +26,13 @@ void	handle_signals(int signum)
 	}
 }
 
+void	sigint_heredoc(int signum)
+{
+	if (!g_last_signal && signum == SIGINT)
+		g_last_signal = 130;
+	rl_redisplay();
+}
+
 void	sigint_child(int signum)
 {
 	(void)signum;
@@ -47,6 +54,18 @@ void	ignore_signals(void)
 }
 
 void	reset_signals(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = sigint_child;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	heredoc_signals(void)
 {
 	struct sigaction	sa;
 
