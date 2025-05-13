@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:54 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/07 13:43:18 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:54:36 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	ft_exit(char **cmd, t_data *data)
 	if (cmd[1] && is_numeric(cmd[1]) && cmd[2])
 	{
 		ft_putstr_fd("exit : too many arguments\n", 2);
-		g_last_signal = 1;
-		return ;
+		exit_code = 1;
 	}
 	else if (cmd[1] && !is_numeric(cmd[1]))
 	{
@@ -51,5 +50,6 @@ void	ft_exit(char **cmd, t_data *data)
 		exit_code = ft_atoi(cmd[1]) % 256;
 	ft_free_tab(data->envp);
 	free_all_data(&data);
+	g_last_signal = exit_code;
 	exit(exit_code);
 }

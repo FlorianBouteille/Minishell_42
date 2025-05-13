@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/13 11:04:42 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:07:46 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <strings.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <dirent.h>
 
 extern int					g_last_signal;
 typedef struct sigaction	t_sigaction;
@@ -136,6 +137,7 @@ void				close_heredocs_fd(t_command **commands);
 int					count_commands_tab(t_command **tab);
 int					done_in_parent(char *cmd);
 int					get_exit_code(int exit_status);
+void				is_a_directory(t_data **data, char *cmd);
 
 // Builtins
 

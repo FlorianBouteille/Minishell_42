@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/07 14:41:33 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 16:05:39 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	open_file(char *file_name, int option)
 		fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd("error : no such file or rights on one of the file\n", 2);
+		ft_putstr_fd("error : no such file or directory\n", 2);
 	}
 	return (fd);
 }
@@ -63,6 +63,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 	}
 	else if (infile->name)
 	{
+		infile->name = remove_quotes(infile->name);
 		fd_in = open_file(infile->name, 0);
 		if (fd_in == -1)
 			command->skip_command = 1;
@@ -99,6 +100,7 @@ void	redirect_output(t_file *outfile)
 
 	if (outfile->name)
 	{
+		outfile->name = remove_quotes(outfile->name);
 		if (outfile->out_append)
 			fd_out = open_file(outfile->name, 2);
 		else
@@ -106,7 +108,7 @@ void	redirect_output(t_file *outfile)
 		if (fd_out == -1)
 		{
 			perror("no rights on the file\n");
-			exit(0);
+			exit(1);
 		}
 		if (dup2(fd_out, STDOUT_FILENO) == -1)
 			perror("dup error");

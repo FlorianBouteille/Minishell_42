@@ -6,11 +6,28 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 15:07:06 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:25:46 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:21:52 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	is_a_directory(t_data **data, char *cmd)
+{
+	DIR	*dir;
+
+	dir = opendir(cmd);
+	if (dir)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(" : Is a directory\n", 2);
+		ft_free_tab((*data)->envp);
+		free_all_data(data);
+		closedir(dir);
+		exit(126);
+	}
+	closedir(dir);
+}
 
 int	count_commands_tab(t_command **tab)
 {

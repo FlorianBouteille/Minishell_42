@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:50:49 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:24:10 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:37:42 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,15 @@ int	is_a_variable(char *str)
 
 	i = 0;
 	if (str[0] == '=' || isdigit(str[0]))
-		return (ft_putstr_fd("export : Not a valid identifier 1\n", 2), 0);
+		return (ft_putstr_fd("export : not a valid identifier\n", 2), -1);
 	while (str[i] && str[i] != '=')
 	{
 		if (!isalnum(str[i]) && str[i] != '_')
-			return (ft_putstr_fd("export : Not a valid identifier 2\n", 2), 0);
+			return (ft_putstr_fd("export : not a valid identifier\n", 2), -1);
 		i++;
 	}
 	if (!contains_equal(str))
 		return (0);
-	printf("%s is a variable to add\n", str);
 	return (1);
 }
 
@@ -66,12 +65,16 @@ void	update_env(t_data **data, char *str)
 void	ft_export_parent(char **cmd, t_data **data)
 {
 	int	i;
+	int	is_variable;
 
 	i = 1;
 	while (cmd[i])
 	{
-		if (is_a_variable(cmd[i]))
+		is_variable = is_a_variable(cmd[i]);
+		if (is_variable == 1)
 			update_env(data, cmd[i]);
+		else if (is_variable == -1)
+			(*data)->exit_status = 1;
 		i++;
 	}
 	return ;

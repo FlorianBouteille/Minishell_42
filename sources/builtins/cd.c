@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 16:08:30 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 14:46:06 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,48 @@ void	replace_env_pwd(t_data **data, char *variable)
 	free(variable_name_content);
 }
 
+char	*get_target_path(char *cmd, char **envp)
+{
+	char	*target_path;
+	char	*pwd;
+
+	if (!cmd)
+		target_path = ft_getenv("HOME", envp);
+	else if (cmd && cmd[0] == '~' && ft_strlen(cmd) == 1)
+		target_path = ft_getenv("HOME", envp);
+	else if (cmd && cmd[0] == '-' && ft_strlen(cmd) == 1)
+	{
+		pwd = getcwd(NULL, 0);
+		ft_putstr_fd(pwd, 1);
+		ft_putstr_fd("\n", 1);
+		free(pwd);
+		return (NULL);
+	}
+	else
+		target_path = cmd;
+	return (target_path);
+}
+
 void	ft_cd(char **cmd, t_data **data)
 {
 	char	*target_path;
 
-	target_path = NULL;
 	if (!(*data)->envp)
 		return ;
 	if (cmd[0] && cmd[1] && cmd[2])
 	{
 		ft_putstr_fd("cd : too many arguments\n", 2);
+		(*data)->exit_status = 1;
 		return ;
 	}
 	replace_env_pwd(data, "OLDPWD=");
-	if (!cmd[1])
-		target_path = ft_getenv("HOME", (*data)->envp);
-	else if (cmd[1][0] == '~' && ft_strlen(cmd[1]) == 1)
-		target_path = ft_getenv("HOME", (*data)->envp);
-	else
-		target_path = cmd[1];
+	target_path = get_target_path(cmd[1], (*data)->envp);
+	if (cmd[1] && cmd[1][0] == '-' && ft_strlen(cmd[1]) == 1)
+		return ;
 	if (chdir(target_path) == -1)
 	{
 		perror("error chdir");
+		(*data)->exit_status = 1;
 		return ;
 	}
 	replace_env_pwd(data, "PWD=");
