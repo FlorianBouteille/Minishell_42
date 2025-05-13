@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/07 14:41:21 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 10:37:11 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 
 	path = NULL;
 	cmd = NULL;
-	// sigaction.sa_handler = &fonctionpourlesenfants;
 	reset_signals();
 	redirect_all_inputs(command, pipe_fd);
 	redirect_all_outputs(command, pipe_fd);
-	// sigaction(SIGINT, lastructure, NULL)
 	close_heredocs_fd((*data)->commands);
 	close((*data)->stdin_copy);
 	close((*data)->stdout_copy);
@@ -90,7 +88,7 @@ void	exec_fork(t_command *command, t_data **data)
 	}
 }
 
-int		get_exit_code(int exit_status)
+int	get_exit_code(int exit_status)
 {
 	int	signal;
 
@@ -119,7 +117,6 @@ void	exec_commands(t_data **data)
 	if (WIFSIGNALED((*data)->number_heredoc))
 	{
 		g_last_signal = 130;
-		// close_heredocs_fd((*data)->commands);
 		return ;
 	}
 	(*data)->stdin_copy = dup(STDIN_FILENO);
@@ -127,19 +124,14 @@ void	exec_commands(t_data **data)
 	if ((*data)->number_of_commands == 1)
 		is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
 	while (i < (*data)->number_of_commands)
-	{
-		exec_fork((*data)->commands[i], data);
-		i++;
-	}
-	i = 0;
+		exec_fork((*data)->commands[i++], data);
 	while (wait(&(*data)->exit_status) > 0)
-	{
-		printf("exits on %i\n", (*data)->exit_status);
 		g_last_signal = get_exit_code((*data)->exit_status);
-		printf("so g_last_signal = %i\n", g_last_signal);
-	}
 	dup2((*data)->stdin_copy, STDIN_FILENO);
 	close((*data)->stdin_copy);
 	dup2((*data)->stdout_copy, STDOUT_FILENO);
 	close((*data)->stdout_copy);
 }
+
+// printf("exits on %i\n", (*data)->exit_status);
+// printf("so g_last_signal = %i\n", g_last_signal);

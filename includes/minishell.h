@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/06 15:52:34 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 11:04:42 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-extern int			g_last_signal;
+extern int					g_last_signal;
+typedef struct sigaction	t_sigaction;
 
 typedef struct s_token
 {
 	char			*value;
 	int				type;
 	struct s_token	*next;
-}					t_token;
+}							t_token;
 
 /// ^ boolean  (lib stdbool.h, bool ture false)
 /// qui nous permette de savoir si faut expendre les dollars
@@ -42,7 +43,7 @@ typedef struct s_file
 	char			*limiter;
 	int				out_append;
 	struct s_file	*next;
-}					t_file;
+}							t_file;
 
 typedef struct s_command
 {
@@ -55,7 +56,7 @@ typedef struct s_command
 	int				fd_heredoc;
 	char			*value;
 	char			**cmd_tab;
-}					t_command;
+}							t_command;
 
 typedef struct s_data
 {
@@ -67,17 +68,7 @@ typedef struct s_data
 	char			**envp;
 	t_token			*tokens;
 	t_command		**commands;
-}					t_data;
-
-typedef struct sigaction	t_sigaction;
-
-// {
-// 	void     (*sa_handler)(int);
-// 	void     (*sa_sigaction)(int, siginfo_t *, void *);
-// 	sigset_t   sa_mask;
-// 	int        sa_flags;
-// 	void     (*sa_restorer)(void);
-// }		t_sig;
+}							t_data;
 
 typedef enum e_token_type
 {
@@ -88,7 +79,7 @@ typedef enum e_token_type
 	TOKEN_HEREDOC,
 	TOKEN_APPEND,
 	TOKEN_END
-}					t_token_type;
+}							t_token_type;
 
 // Lexing
 
@@ -102,6 +93,7 @@ char				*add_spaces(char *str);
 int					is_special(char c);
 
 // Memory_utils
+
 void				free_command(t_command *command);
 void				free_command_tab(t_command **tab);
 void				free_tokens(t_token **tokens);
@@ -174,11 +166,13 @@ void				print_tab(char **tab);
 void				lex_error(char *str, t_data **data);
 
 // Signals
-void				signals(void);
+
 void				reset_signals(void);
 void				setup_signals(void);
 void				ignore_signals(void);
 void				heredoc_signals(void);
-
+void				handle_signals(int signum);
+void				sigint_child(int signum);
+void				sigint_heredoc(int signum);
 
 #endif

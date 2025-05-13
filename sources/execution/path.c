@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/06 11:33:40 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 10:37:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_path(char *str, char *envp[])
 {
 	char	*path;
 
-	if (!str)
+	if (!str || !str[0])
 		return (NULL);
 	path = NULL;
 	if (contains_slash(str) && access(str, X_OK) == 0)

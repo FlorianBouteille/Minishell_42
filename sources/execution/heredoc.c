@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:34:40 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/12 17:02:07 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/13 10:22:18 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,7 @@ int	heredoc(t_data **data, t_command *tab, t_file *file)
 		wait(&(*data)->exit_status);
 		signal = get_exit_code((*data)->exit_status);
 		if (signal != 0)
-		{
-			printf("je close sur signal = %i\n", signal);
-			close(tab->fd_heredoc);			
-		}
+			close(tab->fd_heredoc);
 	}
 	return (signal);
 }
@@ -107,14 +104,12 @@ int	heredoc(t_data **data, t_command *tab, t_file *file)
 int	get_heredocs(t_command **tab, t_data **data)
 {
 	int		i;
-	int		number_heredoc;
 	t_file	*temp;
 	int		signal;
 
 	i = 0;
 	signal = 0;
 	g_last_signal = 0;
-	number_heredoc = 0;
 	while (tab[i] && g_last_signal == 0)
 	{
 		temp = tab[i]->infile;
@@ -125,7 +120,6 @@ int	get_heredocs(t_command **tab, t_data **data)
 				signal = heredoc(data, tab[i], temp);
 				if (signal != 0)
 					return (signal);
-				number_heredoc++;
 			}
 			temp = temp->next;
 		}
