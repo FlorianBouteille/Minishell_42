@@ -100,6 +100,7 @@ char						*make_word(char *str);
 char						**copy_tab(char **tab);
 char						*add_spaces(char *str);
 int							is_special(char c);
+int							check_line(char *line);
 
 // Memory_utils
 

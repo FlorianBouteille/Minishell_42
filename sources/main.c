@@ -39,6 +39,7 @@ int	minishell(char **envp)
 	char	*line;
 	t_data	*data;
 	char	**envp_mem;
+	int		temp;
 
 	data = NULL;
 	envp_mem = NULL;
@@ -52,10 +53,14 @@ int	minishell(char **envp)
 		add_history(line);
 		line = add_spaces(line);
 		data->tokens = lex_string(line);
-		if (!check_tokens(data->tokens, &data))
-			continue ;
-		data->commands = build_command_tab(data);
-		exec_commands(&data);
+		temp = check_tokens(data->tokens, &data);
+		if (temp == 2)
+			g_last_signal = temp;
+		if (data->tokens && temp == 0)
+		{
+			data->commands = build_command_tab(data);
+			exec_commands(&data);
+		}
 		envp_mem = data->envp;
 		data->envp = NULL;
 		free_all_data(&data);

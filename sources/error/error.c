@@ -14,7 +14,7 @@
 
 void	lex_error(char *str, t_data **data)
 {
-	free_all_data(data);
+	(void)data;
 	if (str)
 		printf("%s\n", str);
 }

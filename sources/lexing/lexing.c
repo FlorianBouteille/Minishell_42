@@ -69,6 +69,8 @@ t_token	*lex_string(char *str)
 
 	tokens = NULL;
 	i = 0;
+	if (!check_line(str))
+		return (free(str), NULL);
 	while (str[i])
 	{
 		while (str[i] && str[i] == ' ')
