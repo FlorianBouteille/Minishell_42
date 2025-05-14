@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:22:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/05 17:04:56 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:14:18 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_files(t_file *file)
 		printf("file %i\n", i);
 		printf("name = %s\n", temp->name);
 		printf("limiter = %s\n", temp->limiter);
-		if (temp->out_append)
+		if (temp->type == OUT_APPEND)
 			printf("je dois append\n");
 		temp = temp->next;
 		i++;
@@ -58,7 +58,7 @@ void	print_files(t_file *file)
 void	print_command(t_command *command)
 {
 	printf("infiles = \n");
-	print_files(command->infile);
+	print_files(command->file);
 	if (!command->value)
 	{
 		printf("pb affichage, pas de commande\n");

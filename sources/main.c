@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:02:37 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/13 10:58:59 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:34:24 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_data(t_data **data, char **envp, char **envp_mem)
 	(*data)->exit_status = 0;
 	(*data)->tokens = NULL;
 	(*data)->commands = NULL;
+	(*data)->pid_tab = NULL;
 	(*data)->envp = NULL;
 	if (!envp_mem)
 		(*data)->envp = copy_tab(envp);

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/13 17:29:12 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:42:14 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 	path = NULL;
 	cmd = NULL;
 	reset_signals();
-	// redirect_all_inputs(command, pipe_fd);
-	// if (command->skip_command == 0)
-	// 	redirect_all_outputs(command, pipe_fd);
 	apply_redirections(command, pipe_fd);
 	close_heredocs_fd((*data)->commands);
 	close((*data)->stdin_copy);
@@ -68,7 +65,7 @@ void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 	execute(path, cmd, data);
 }
 
-void	exec_fork(t_command *command, t_data **data)
+void	exec_fork(t_command *command, t_data **data, int index)
 {
 	int	pipe_fd[2];
 	int	pid;
@@ -84,6 +81,7 @@ void	exec_fork(t_command *command, t_data **data)
 		exec_child(command, data, pipe_fd);
 	else
 	{
+		(*data)->pid_tab[index] = pid;
 		ignore_signals();
 		close(pipe_fd[1]);
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
@@ -94,47 +92,58 @@ void	exec_fork(t_command *command, t_data **data)
 	}
 }
 
-int	get_exit_code(int exit_status)
-{
-	int	signal;
 
-	if (WIFEXITED(exit_status))
-		return (WEXITSTATUS(exit_status));
-	else if (WIFSIGNALED(exit_status))
+void	init_tab(int *tab, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
 	{
-		signal = WTERMSIG(exit_status);
-		if (signal == SIGSYS)
-			return (127);
-		if (signal == SIGPIPE)
-			return (0);
-		return (128 + signal);
+		tab[i] = 0;
+		i++;
 	}
-	return (0);
 }
 
+int	setup_command(t_data **data)
+{
+	ignore_signals();
+	(*data)->number_of_commands = count_commands_tab((*data)->commands);
+	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
+	(*data)->pid_tab = (int *)malloc(((*data)->number_of_commands)
+			* sizeof(int));
+	if (!(*data)->pid_tab)
+		return (1);
+	init_tab((*data)->pid_tab, (*data)->number_of_commands);
+	if (WIFSIGNALED((*data)->number_heredoc))
+	{
+		g_last_signal = 130;
+		return (1);
+	}
+	(*data)->stdin_copy = dup(STDIN_FILENO);
+	(*data)->stdout_copy = dup(STDOUT_FILENO);
+	return (0);
+}
 void	exec_commands(t_data **data)
 {
 	int	i;
 
 	i = 0;
-	ignore_signals();
-	(*data)->number_of_commands = count_commands_tab((*data)->commands);
-	(*data)->number_heredoc = get_heredocs((*data)->commands, data);
-	if (WIFSIGNALED((*data)->number_heredoc))
-	{
-		g_last_signal = 130;
+	if (setup_command(data))
 		return ;
-	}
-	(*data)->stdin_copy = dup(STDIN_FILENO);
-	(*data)->stdout_copy = dup(STDOUT_FILENO);
 	if ((*data)->number_of_commands == 1)
 	{
 		is_builtin_parent((*data)->commands[0]->cmd_tab, *data);
 		g_last_signal = (*data)->exit_status;
 	}
 	while (i < (*data)->number_of_commands)
-		exec_fork((*data)->commands[i++], data);
-	while (wait(&(*data)->exit_status) > 0)
+	{
+		exec_fork((*data)->commands[i], data, i);
+		i++;
+	}
+	i = 0;
+	while (i < (*data)->number_of_commands && waitpid((*data)->pid_tab[i++],
+			&(*data)->exit_status, 0) > 0)
 	{
 		if ((*data)->commands[1]
 			|| !done_in_parent((*data)->commands[0]->cmd_tab[0]))

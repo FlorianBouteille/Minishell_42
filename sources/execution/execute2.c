@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 15:07:06 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/13 17:21:52 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:23:13 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,23 @@ int	done_in_parent(char *cmd)
 		return (1);
 	else if (ft_strncmp(cmd, "exit", len_cmd) == 0 && len_cmd == 4)
 		return (1);
+	return (0);
+}
+
+int	get_exit_code(int exit_status)
+{
+	int	signal;
+
+	if (WIFEXITED(exit_status))
+		return (WEXITSTATUS(exit_status));
+	else if (WIFSIGNALED(exit_status))
+	{
+		signal = WTERMSIG(exit_status);
+		if (signal == SIGSYS)
+			return (127);
+		if (signal == SIGPIPE)
+			return (0);
+		return (128 + signal);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/13 16:05:39 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:31:06 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,57 @@ int	open_file(char *file_name, int option)
 	else if (option == 2)
 		fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
-	{
 		perror(file_name);
-		//ft_putstr_fd("error : no such file or directory\n", 2);
-	}
 	return (fd);
+}
+
+void	redirect_input(t_command *command, t_file *infile, int last)
+{
+	int	fd_in;
+
+	if (infile->limiter)
+	{
+		if (last == 0)
+		{
+			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
+				perror("dup error in heredoc\n");
+		}
+	}
+	else if (infile->name)
+	{
+		infile->name = remove_quotes(infile->name);
+		fd_in = open_file(infile->name, 0);
+		if (fd_in == -1)
+			command->skip_command = 1;
+		else
+		{
+			if (dup2(fd_in, STDIN_FILENO) == -1)
+				perror("dup error");
+			close(fd_in);
+		}
+	}
+}
+
+void	redirect_output(t_command *command, t_file *outfile)
+{
+	int	fd_out;
+
+	if (outfile->name)
+	{
+		outfile->name = remove_quotes(outfile->name);
+		if (outfile->type == OUT_APPEND)
+			fd_out = open_file(outfile->name, 2);
+		else
+			fd_out = open_file(outfile->name, 1);
+		if (fd_out == -1)
+		{
+			command->skip_command = 1;
+			return ;
+		}
+		if (dup2(fd_out, STDOUT_FILENO) == -1)
+			perror("dup error");
+		close(fd_out);
+	}
 }
 
 // void	redirect_all_inputs(t_command *command, int pipe_fd[2])
@@ -50,34 +96,6 @@ int	open_file(char *file_name, int option)
 // 	close(pipe_fd[0]);
 // }
 
-void	redirect_input(t_command *command, t_file *infile, int last)
-{
-	int	fd_in;
-
-	if (infile->limiter)
-	{
-		if (last == 0)
-		{
-			fprintf(stderr, "fd_heredoc = %i\n", command->fd_heredoc);
-			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
-				perror("dup error in heredoc\n");
-		}
-	}
-	else if (infile->name)
-	{
-		infile->name = remove_quotes(infile->name);
-		fd_in = open_file(infile->name, 0);
-		if (fd_in == -1)
-			command->skip_command = 1;
-		else
-		{
-			if (dup2(fd_in, STDIN_FILENO) == -1)
-				perror("dup error");
-			close(fd_in);
-		}
-	}
-}
-
 // void	redirect_all_outputs(t_command *command, int pipe_fd[2])
 // {
 // 	t_file	*temp;
@@ -95,25 +113,3 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 // 	}
 // 	close(pipe_fd[1]);
 // }
-
-void	redirect_output(t_command *command, t_file *outfile)
-{
-	int	fd_out;
-
-	if (outfile->name)
-	{
-		outfile->name = remove_quotes(outfile->name);
-		if (outfile->type == OUT_APPEND)
-			fd_out = open_file(outfile->name, 2);
-		else
-			fd_out = open_file(outfile->name, 1);
-		if (fd_out == -1)
-		{
-			command->skip_command = 1;	
-			return ;
-		}
-		if (dup2(fd_out, STDOUT_FILENO) == -1)
-			perror("dup error");
-		close(fd_out);
-	}
-}

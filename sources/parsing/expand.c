@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 10:21:46 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/07 14:20:01 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:47:45 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	contains_expandables(char *str)
 
 	i = 0;
 	quote_type = 0;
-	while (str[i] && str[i + 1])
+	while (str && str[i] && str[i + 1])
 	{
 		if ((str[i] == '\'' || str[i] == '\"') && quote_type == 0)
 			quote_type = str[i];

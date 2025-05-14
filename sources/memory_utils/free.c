@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:58:59 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/05 17:02:23 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:35:08 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	free_all_data(t_data **data)
 		free_command_tab((*data)->commands);
 	if ((*data)->stdin_copy != -1)
 		close((*data)->stdin_copy);
+	if ((*data)->pid_tab)
+		free((*data)->pid_tab);
 	if ((*data)->stdout_copy != -1)
 		close((*data)->stdout_copy);
 	free(*data);
