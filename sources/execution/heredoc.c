@@ -70,7 +70,7 @@ void	heredoc_child(t_data **data, t_file *file, int fd[2])
 	close(fd[0]);
 	ft_free_tab((*data)->envp);
 	free_all_data(data);
-	exit(0);
+	exit(g_last_signal);
 }
 
 int	heredoc(t_data **data, t_command *tab, t_file *file)
@@ -95,7 +95,7 @@ int	heredoc(t_data **data, t_command *tab, t_file *file)
 		tab->fd_heredoc = fd[0];
 		wait(&(*data)->exit_status);
 		signal = get_exit_code((*data)->exit_status);
-		if (signal != 0)
+		if (signal != 0 && tab->fd_heredoc != -1)
 			close(tab->fd_heredoc);
 	}
 	return (signal);
@@ -112,7 +112,7 @@ int	get_heredocs(t_command **tab, t_data **data)
 	g_last_signal = 0;
 	while (tab[i] && g_last_signal == 0)
 	{
-		temp = tab[i]->infile;
+		temp = tab[i]->file;
 		while (temp && g_last_signal == 0)
 		{
 			if (temp->limiter)

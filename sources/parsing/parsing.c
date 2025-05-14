@@ -14,8 +14,7 @@
 
 void	init_command(t_command **command)
 {
-	(*command)->infile = NULL;
-	(*command)->outfile = NULL;
+	(*command)->file = NULL;
 	(*command)->value = NULL;
 	(*command)->fd_heredoc = -1;
 	(*command)->skip_command = 0;
@@ -28,20 +27,20 @@ char	*add_token_to_command(t_token *tokens, t_command *command,
 {
 	if (tokens->type == TOKEN_REDIR_IN && tokens->next
 		&& tokens->next->type == TOKEN_WORD)
-		add_file_back(&command->infile, ft_strdup(tokens->next->value), NULL,
-			0);
+		add_file_back(&command->file, ft_strdup(tokens->next->value), NULL,
+			IN);
 	else if (tokens->type == TOKEN_REDIR_OUT && tokens->next
 		&& tokens->next->type == TOKEN_WORD)
-		add_file_back(&command->outfile, ft_strdup(tokens->next->value), NULL,
-			0);
+		add_file_back(&command->file, ft_strdup(tokens->next->value), NULL,
+			OUT);
 	else if (tokens->type == TOKEN_HEREDOC && tokens->next
 		&& tokens->next->type == TOKEN_WORD)
-		add_file_back(&command->infile, NULL, ft_strdup(tokens->next->value),
-			0);
+		add_file_back(&command->file, NULL, ft_strdup(tokens->next->value),
+			HEREDOC);
 	else if (tokens->type == TOKEN_APPEND && tokens->next
 		&& tokens->next->type == TOKEN_WORD)
-		add_file_back(&command->outfile, ft_strdup(tokens->next->value), NULL,
-			1);
+		add_file_back(&command->file, ft_strdup(tokens->next->value), NULL,
+			OUT_APPEND);
 	else if (tokens->type == TOKEN_WORD)
 	{
 		*condition_next = 0;

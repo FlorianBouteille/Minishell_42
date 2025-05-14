@@ -48,9 +48,10 @@ void	exec_child(t_command *command, t_data **data, int pipe_fd[2])
 	path = NULL;
 	cmd = NULL;
 	reset_signals();
-	redirect_all_inputs(command, pipe_fd);
-	if (command->skip_command == 0)
-		redirect_all_outputs(command, pipe_fd);
+	// redirect_all_inputs(command, pipe_fd);
+	// if (command->skip_command == 0)
+	// 	redirect_all_outputs(command, pipe_fd);
+	apply_redirections(command, pipe_fd);
 	close_heredocs_fd((*data)->commands);
 	close((*data)->stdin_copy);
 	close((*data)->stdout_copy);

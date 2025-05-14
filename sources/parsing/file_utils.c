@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_file	*create_new_file(char *name, char *limiter, int out_append)
+t_file	*create_new_file(char *name, char *limiter, int type)
 {
 	t_file	*new;
 
@@ -22,24 +22,24 @@ t_file	*create_new_file(char *name, char *limiter, int out_append)
 		return (NULL);
 	new->name = name;
 	new->limiter = limiter;
-	new->out_append = out_append;
+	new->type = type;
 	new->next = NULL;
 	return (new);
 }
 
-void	add_file_back(t_file **files, char *name, char *limiter, int out_append)
+void	add_file_back(t_file **files, char *name, char *limiter, int type)
 {
 	t_file	*temp;
 
 	if (!files || !(*files))
 	{
-		*files = create_new_file(name, limiter, out_append);
+		*files = create_new_file(name, limiter, type);
 		return ;
 	}
 	temp = *files;
 	while (temp->next != NULL)
 		temp = temp->next;
-	temp->next = create_new_file(name, limiter, out_append);
+	temp->next = create_new_file(name, limiter, type);
 }
 
 /*

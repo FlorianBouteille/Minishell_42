@@ -42,7 +42,7 @@ typedef struct s_file
 {
 	char			*name;
 	char			*limiter;
-	int				out_append;
+	int				type;
 	struct s_file	*next;
 }							t_file;
 
@@ -52,8 +52,7 @@ typedef struct s_command
 	int				number_commands;
 	int				number_heredocs;
 	int				skip_command;
-	t_file			*infile;
-	t_file			*outfile;
+	t_file			*file;
 	int				fd_heredoc;
 	char			*value;
 	char			**cmd_tab;
@@ -81,6 +80,14 @@ typedef enum e_token_type
 	TOKEN_APPEND,
 	TOKEN_END
 }							t_token_type;
+
+typedef enum e_redir_type
+{
+	IN,
+	OUT,
+	OUT_APPEND,
+	HEREDOC
+}							t_redir_type;
 
 // Lexing
 
@@ -130,9 +137,8 @@ int					get_heredocs(t_command **tab, t_data **data);
 int					count_heredoc_per_command(t_file *file);
 void				redirect_input(t_command *command, t_file *infile,
 						int last);
-void				redirect_output(t_file *outfile);
-void				redirect_all_inputs(t_command *command, int pipe_fd[2]);
-void				redirect_all_outputs(t_command *command, int pipe_fd[2]);
+void   				apply_redirections(t_command *command, int pipe_fd[2]);
+void				redirect_output(t_command *command, t_file *outfile);
 void				close_heredocs_fd(t_command **commands);
 int					count_commands_tab(t_command **tab);
 int					done_in_parent(char *cmd);

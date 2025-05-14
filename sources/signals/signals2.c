@@ -37,9 +37,6 @@ void	sigint_heredoc(int signum)
 {
 	(void)signum;
 	g_last_signal = 130;
-	write(2, "\0", 1);
 	write(2, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	close(0);
 }

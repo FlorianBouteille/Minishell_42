@@ -25,29 +25,30 @@ int	open_file(char *file_name, int option)
 		fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		ft_putstr_fd("error : no such file or directory\n", 2);
+		perror(file_name);
+		//ft_putstr_fd("error : no such file or directory\n", 2);
 	}
 	return (fd);
 }
 
-void	redirect_all_inputs(t_command *command, int pipe_fd[2])
-{
-	t_file	*temp;
-	int		number_heredoc;
-	int		i;
+// void	redirect_all_inputs(t_command *command, int pipe_fd[2])
+// {
+// 	t_file	*temp;
+// 	int		number_heredoc;
+// 	int		i;
 
-	temp = command->infile;
-	i = 0;
-	number_heredoc = count_heredoc_per_command(command->infile);
-	while (temp)
-	{
-		if (temp->limiter)
-			i++;
-		redirect_input(command, temp, number_heredoc - i);
-		temp = temp->next;
-	}
-	close(pipe_fd[0]);
-}
+// 	temp = command->infile;
+// 	i = 0;
+// 	number_heredoc = count_heredoc_per_command(command->infile);
+// 	while (temp)
+// 	{
+// 		if (temp->limiter)
+// 			i++;
+// 		redirect_input(command, temp, number_heredoc - i);
+// 		temp = temp->next;
+// 	}
+// 	close(pipe_fd[0]);
+// }
 
 void	redirect_input(t_command *command, t_file *infile, int last)
 {
@@ -57,6 +58,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 	{
 		if (last == 0)
 		{
+			fprintf(stderr, "fd_heredoc = %i\n", command->fd_heredoc);
 			if (dup2(command->fd_heredoc, STDIN_FILENO) == -1)
 				perror("dup error in heredoc\n");
 		}
@@ -76,39 +78,39 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 	}
 }
 
-void	redirect_all_outputs(t_command *command, int pipe_fd[2])
-{
-	t_file	*temp;
+// void	redirect_all_outputs(t_command *command, int pipe_fd[2])
+// {
+// 	t_file	*temp;
 
-	temp = command->outfile;
-	if (!temp && command->index != command->number_commands - 1)
-	{
-		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			perror("dup error");
-	}
-	while (temp)
-	{
-		redirect_output(temp);
-		temp = temp->next;
-	}
-	close(pipe_fd[1]);
-}
+// 	temp = command->outfile;
+// 	if (!temp && command->index != command->number_commands - 1)
+// 	{
+// 		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+// 			perror("dup error");
+// 	}
+// 	while (temp)
+// 	{
+// 		redirect_output(temp);
+// 		temp = temp->next;
+// 	}
+// 	close(pipe_fd[1]);
+// }
 
-void	redirect_output(t_file *outfile)
+void	redirect_output(t_command *command, t_file *outfile)
 {
 	int	fd_out;
 
 	if (outfile->name)
 	{
 		outfile->name = remove_quotes(outfile->name);
-		if (outfile->out_append)
+		if (outfile->type == OUT_APPEND)
 			fd_out = open_file(outfile->name, 2);
 		else
 			fd_out = open_file(outfile->name, 1);
 		if (fd_out == -1)
 		{
-			perror("no rights on the file\n");
-			exit(1);
+			command->skip_command = 1;	
+			return ;
 		}
 		if (dup2(fd_out, STDOUT_FILENO) == -1)
 			perror("dup error");

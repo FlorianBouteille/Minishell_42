@@ -16,10 +16,8 @@ void	free_command(t_command *command)
 {
 	if (!command)
 		return ;
-	if (command->infile)
-		free_file_list(command->infile);
-	if (command->outfile)
-		free_file_list(command->outfile);
+	if (command->file)
+		free_file_list(command->file);
 	if (command->value)
 		free(command->value);
 	if (command->cmd_tab)
