@@ -34,12 +34,17 @@ void	init_data(t_data **data, char **envp, char **envp_mem)
 		(*data)->envp = envp_mem;
 }
 
+void	build_and_exec(t_data **data)
+{	
+	(*data)->commands = build_command_tab(*data);
+	exec_commands(data);
+}
+
 int	minishell(char **envp)
 {
 	char	*line;
 	t_data	*data;
 	char	**envp_mem;
-	int		temp;
 
 	data = NULL;
 	envp_mem = NULL;
@@ -53,14 +58,8 @@ int	minishell(char **envp)
 		add_history(line);
 		line = add_spaces(line);
 		data->tokens = lex_string(line);
-		temp = check_tokens(data->tokens, &data);
-		if (temp == 2)
-			g_last_signal = temp;
-		if (data->tokens && temp == 0)
-		{
-			data->commands = build_command_tab(data);
-			exec_commands(&data);
-		}
+		if (data->tokens && check_tokens(data->tokens, &data))
+			build_and_exec(&data);
 		envp_mem = data->envp;
 		data->envp = NULL;
 		free_all_data(&data);

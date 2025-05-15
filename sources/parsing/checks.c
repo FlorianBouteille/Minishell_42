@@ -30,47 +30,55 @@ int	check_line(char *line)
 	int	i;
 
 	i = 0;
-	if (!line || !line[0])
-		return (0);
 	if (ft_strlen(line) == 0)
 		return (0);
-	if (ft_strlen(line) == 1 && (line[0] == ':' || line[0] == '!'))
-		return (0);
+	if (ft_strlen(line) == 1)
+	{
+		if (line[0] == ':' || line[0] == '#')
+		{
+			g_last_signal = 0;
+			return (0);
+		}
+		if (line[0] == '!')
+		{
+			g_last_signal = 1;
+			return (0);
+		}
+	}
 	while (line[i])
 	{
 		if (line[i] != ' ' && (line[i] < '\b' || line[i] > '\r'))
 			return (1);
 		i++;
 	}
+	g_last_signal = 0;
 	return (0);
 }
 
 int	check_tokens(t_token *tokens, t_data **data)
 {
-	t_token	*tmp;
+	int		temp;
 
-	if (!tokens)
-		return (lex_error(NULL, data), 0);
-	tmp = tokens;
+	temp = g_last_signal;
+	g_last_signal = 2;
 	if (tokens->type == TOKEN_PIPE)
-		return (lex_error("syntax error near |", data), 2);
+		return (lex_error("syntax error near |", data), 0);
 	while (tokens)
 	{
 		if (!check_meta_caracters(tokens->value))
-			return (lex_error("syntax error near <, > or | !", data), 2);
+			return (lex_error("syntax error near <, > or | !", data), 0);
 		if (tokens->type != TOKEN_WORD && tokens->type != TOKEN_PIPE)
 		{
 			if (!(tokens->next) || tokens->next->type != TOKEN_WORD)
-				return (lex_error("syntax error : file missing !", data), 2);
+				return (lex_error("syntax error : file missing !", data), 0);
 		}
 		if (tokens->type == TOKEN_PIPE)
 		{
 			if (!(tokens->next) || tokens->next->type == TOKEN_PIPE)
-				return (lex_error("syntax error : near |", data), 2);
+				return (lex_error("syntax error : near |", data), 0);
 		}
 		tokens = tokens->next;
 	}
-	return (0);
+	g_last_signal = temp;
+	return (1);
 }
-
-// CHECK SI LA COMMANDE EST VIDE OU QUE DES ESPACES

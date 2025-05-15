@@ -92,19 +92,6 @@ void	exec_fork(t_command *command, t_data **data, int index)
 	}
 }
 
-
-void	init_tab(int *tab, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		tab[i] = 0;
-		i++;
-	}
-}
-
 int	setup_command(t_data **data)
 {
 	ignore_signals();
@@ -124,6 +111,7 @@ int	setup_command(t_data **data)
 	(*data)->stdout_copy = dup(STDOUT_FILENO);
 	return (0);
 }
+
 void	exec_commands(t_data **data)
 {
 	int	i;
@@ -149,10 +137,7 @@ void	exec_commands(t_data **data)
 			|| !done_in_parent((*data)->commands[0]->cmd_tab[0]))
 			g_last_signal = get_exit_code((*data)->exit_status);
 	}
-	dup2((*data)->stdin_copy, STDIN_FILENO);
-	close((*data)->stdin_copy);
-	dup2((*data)->stdout_copy, STDOUT_FILENO);
-	close((*data)->stdout_copy);
+	reset_stdin_stdout(data);
 }
 
 // printf("exits on %i\n", (*data)->exit_status);

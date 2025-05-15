@@ -70,3 +70,15 @@ char	*make_word(char *str)
 	ft_strlcpy(word, str, (size_t)len + 1);
 	return (word);
 }
+
+void	init_tab(int *tab, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		tab[i] = 0;
+		i++;
+	}
+}

@@ -65,7 +65,7 @@ typedef struct s_data
 	int						stdin_copy;
 	int						stdout_copy;
 	int						exit_status;
-	int					 	*pid_tab;
+	int						*pid_tab;
 	char					**envp;
 	t_token					*tokens;
 	t_command				**commands;
@@ -100,6 +100,7 @@ char						*make_word(char *str);
 char						**copy_tab(char **tab);
 char						*add_spaces(char *str);
 int							is_special(char c);
+void						init_tab(int *tab, int size);
 int							check_line(char *line);
 
 // Memory_utils
@@ -149,6 +150,7 @@ int							count_commands_tab(t_command **tab);
 int							done_in_parent(char *cmd);
 int							get_exit_code(int exit_status);
 void						is_a_directory(t_data **data, char *cmd);
+void						reset_stdin_stdout(t_data **data);
 
 // Builtins
 
