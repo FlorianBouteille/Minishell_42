@@ -6,7 +6,7 @@
 #    By: csolari <csolari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 10:48:16 by csolari           #+#    #+#              #
-#    Updated: 2025/05/13 10:46:09 by csolari          ###   ########.fr        #
+#    Updated: 2025/05/15 12:55:22 by csolari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,6 @@ $(OBJ_DIR)%.o: $(LEXING_DIR)%.c | $(OBJ_DIR)
 $(OBJ_DIR)%.o: $(EXECUTION_DIR)%.c | $(OBJ_DIR)
 		$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
-
 clean :
 		rm -rf $(OBJ_DIR)
 		make -C $(LIBFT_DIR) clean
@@ -95,11 +94,6 @@ clean :
 fclean : clean
 		rm -f $(NAME)
 		make -C $(LIBFT_DIR) fclean
-
-
-go : all
-		./$(NAME)
-		rm -f $(NAME)
 	
 re : fclean all
 
