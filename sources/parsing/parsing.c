@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/13 10:19:13 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 11:20:46 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	init_command(t_command **command)
 	(*command)->value = NULL;
 	(*command)->fd_heredoc = -1;
 	(*command)->skip_command = 0;
+	(*command)->stop_redir = 0;
+	(*command)->cmd_tab = NULL;
 	(*command)->number_commands = 0;
 	(*command)->index = -1;
 }
@@ -57,12 +59,12 @@ void	fill_command(t_command *command, int index, int number_commands,
 	command->index = index;
 	command->number_commands = number_commands;
 	command->value = cmd_string;
-	command->cmd_tab = ft_split_space_quote(command->value);
-	if (!command->cmd_tab)
-		ft_free_tab(command->cmd_tab);
-	remove_quotes_tab(command->cmd_tab);
 	if (!command->value || ft_strlen(command->value) == 0)
 		command->skip_command = 1;
+	if (command->skip_command == 0)
+		command->cmd_tab = ft_split_space_quote(command->value);
+	if (command->cmd_tab)
+		remove_quotes_tab(command->cmd_tab);
 }
 
 t_command	*new_command(t_token *tokens, int index, int number_commands)

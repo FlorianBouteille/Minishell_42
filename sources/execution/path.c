@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:42:05 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/13 10:37:40 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 11:45:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ int	contains_slash(char *str)
 	int	i;
 
 	i = 0;
+	if (ft_strlen(str) == 1 && str[0] == '.')
+		return (1);
+	else if (ft_strlen(str) == 2 && str[0] == '.' && str[1] == '.')
+		return (1);
 	while (str[i])
 	{
 		if (str[i] == '/')

@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:56:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/05 17:03:46 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:38:44 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_token	*lex_string(char *str)
 
 	tokens = NULL;
 	i = 0;
-	if (!check_line(str))
+	if (!check_line(str) || !check_line_bis(str))
 		return (free(str), NULL);
 	while (str[i])
 	{

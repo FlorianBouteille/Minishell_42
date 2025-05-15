@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:39:01 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/14 14:42:14 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:44:49 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void	exec_commands(t_data **data)
 	while (i < (*data)->number_of_commands && waitpid((*data)->pid_tab[i++],
 			&(*data)->exit_status, 0) > 0)
 	{
-		if ((*data)->commands[1]
-			|| !done_in_parent((*data)->commands[0]->cmd_tab[0]))
+		if ((*data)->commands[1] || ((*data)->commands[0]->cmd_tab
+				&& !done_in_parent((*data)->commands[0]->cmd_tab[0])))
 			g_last_signal = get_exit_code((*data)->exit_status);
 	}
 	reset_stdin_stdout(data);

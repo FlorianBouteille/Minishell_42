@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:22:37 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/14 13:14:18 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:34:31 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	print_command_tab(t_command **tab)
 	i = 0;
 	if (!tab || !tab[i])
 	{
-		fprintf(stderr, "pb affichage, pas de commandes\n");
+		printf("pb affichage, pas de commandes\n");
 		return ;
 	}
 	printf("LES COMMMANDES :\n");

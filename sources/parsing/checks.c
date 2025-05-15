@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:57:30 by csolari           #+#    #+#             */
-/*   Updated: 2025/04/29 10:40:32 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:43:35 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,23 @@ static int	check_meta_caracters(char *str)
 	return (1);
 }
 
-int	check_line(char *line)
+int	check_line_bis(char *line)
 {
 	int	i;
 
 	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && (line[i] < '\b' || line[i] > '\r'))
+			return (1);
+		i++;
+	}
+	g_last_signal = 0;
+	return (0);
+}
+
+int	check_line(char *line)
+{
 	if (ft_strlen(line) == 0)
 		return (0);
 	if (ft_strlen(line) == 1)
@@ -45,14 +57,7 @@ int	check_line(char *line)
 			return (0);
 		}
 	}
-	while (line[i])
-	{
-		if (line[i] != ' ' && (line[i] < '\b' || line[i] > '\r'))
-			return (1);
-		i++;
-	}
-	g_last_signal = 0;
-	return (0);
+	return (1);
 }
 
 int	check_tokens(t_token *tokens, t_data **data)

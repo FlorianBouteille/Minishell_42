@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:43:22 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/05 17:02:02 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 11:38:38 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_command_tab(t_command **tab)
 	i = 0;
 	if (!tab || !(*tab))
 		return ;
-	while (tab[i])
+	while (tab && tab[i])
 	{
 		free_command(tab[i]);
 		tab[i] = NULL;

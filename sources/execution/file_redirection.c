@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:03 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/14 14:31:06 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 11:21:35 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	redirect_input(t_command *command, t_file *infile, int last)
 		infile->name = remove_quotes(infile->name);
 		fd_in = open_file(infile->name, 0);
 		if (fd_in == -1)
-			command->skip_command = 1;
+			command->stop_redir = 1;
 		else
 		{
 			if (dup2(fd_in, STDIN_FILENO) == -1)
@@ -68,7 +68,7 @@ void	redirect_output(t_command *command, t_file *outfile)
 			fd_out = open_file(outfile->name, 1);
 		if (fd_out == -1)
 		{
-			command->skip_command = 1;
+			command->stop_redir = 1;
 			return ;
 		}
 		if (dup2(fd_out, STDOUT_FILENO) == -1)

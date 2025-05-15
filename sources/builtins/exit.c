@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:14:54 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/13 12:54:36 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:36:08 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_exit(char **cmd, t_data *data)
 	{
 		ft_putstr_fd("exit : too many arguments\n", 2);
 		exit_code = 1;
+		return ;
 	}
 	else if (cmd[1] && !is_numeric(cmd[1]))
 	{

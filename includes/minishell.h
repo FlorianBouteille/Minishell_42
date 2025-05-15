@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:01:16 by csolari           #+#    #+#             */
-/*   Updated: 2025/05/14 13:33:33 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:41:41 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_command
 	int						number_commands;
 	int						number_heredocs;
 	int						skip_command;
+	int						stop_redir;
 	t_file					*file;
 	int						fd_heredoc;
 	char					*value;
@@ -102,6 +103,7 @@ char						*add_spaces(char *str);
 int							is_special(char c);
 void						init_tab(int *tab, int size);
 int							check_line(char *line);
+int							check_line_bis(char *line);
 
 // Memory_utils
 

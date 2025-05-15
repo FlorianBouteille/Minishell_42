@@ -6,7 +6,7 @@
 /*   By: csolari <csolari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 10:25:56 by fbouteil          #+#    #+#             */
-/*   Updated: 2025/05/14 13:20:11 by csolari          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:46:40 by csolari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int	nbr_outfile(t_file *file)
 	return (count);
 }
 
+void	close_both_pipes(int pipe_fd[2])
+{
+	close(pipe_fd[1]);
+	close(pipe_fd[0]);
+}
+
 void	apply_redirections(t_command *command, int pipe_fd[2])
 {
 	t_file	*temp;
@@ -42,7 +48,7 @@ void	apply_redirections(t_command *command, int pipe_fd[2])
 			perror("dup error");
 	}
 	number_heredoc = count_heredoc_per_command(command->file);
-	while (temp && command->skip_command == 0)
+	while (temp && command->stop_redir == 0)
 	{
 		if (temp->type == HEREDOC)
 			i++;
@@ -52,6 +58,7 @@ void	apply_redirections(t_command *command, int pipe_fd[2])
 			redirect_output(command, temp);
 		temp = temp->next;
 	}
-	close(pipe_fd[1]);
-	close(pipe_fd[0]);
+	if (command->skip_command != 1)
+		command->skip_command = command->stop_redir;
+	close_both_pipes(pipe_fd);
 }
